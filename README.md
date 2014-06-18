@@ -48,14 +48,14 @@ There is a [difference](http://www.libelium.com/forum/viewtopic.php?f=23&t=9729)
 ### XBee Module (802.15.4)
 
 ### Waspmote Code  (V1.1 and V1.2)
-The [V1.2 Code](https://github.com/xianlin/wsn/blob/master/WSN/Waspmote/default_waspmote_v1.2.pde) and [V1.1 Code]() are different in coding but they have the same function that it is sending the data frames to the Meshlium gateway periodically while having a time window to listen to the OTAP command. The output of the frames (readings on the gateway):
+The [V1.2 Code](https://github.com/xianlin/WSN/blob/master/Waspmote/default_waspmote_v1.2.pde) and [V1.1 Code]() are different in coding but they have the same function that it is sending the data frames to the Meshlium gateway periodically while having a time window to listen to the OTAP command. The output of the frames (readings on the gateway):
 
     <=>#382540822#A09#30#STR:senor reading#TCA:25.80#DUST:0.014#MCP:53.#LUM:73.704#HUMA:63.1#BAT:93#
         
 ## Meshlium Gateway
 
 ### Java Parsing Program
-The java program [/bin/sensorParser.jar](https://github.com/xianlin/wsn/blob/master/WSN/Meshlium/sensorParser.jar) automatically capture the readings from serial port `/dev/ttyS0` with which the the XBee module is connected, it then parse the readings (sensor IDs and measurements etc.) into database table `MeshliumDB.sensorParser`. 
+The java program [/bin/sensorParser.jar](https://github.com/xianlin/WSN/blob/master/Meshlium/sensorParser.jar) automatically capture the readings from serial port `/dev/ttyS0` with which the the XBee module is connected, it then parse the readings (sensor IDs and measurements etc.) into database table `MeshliumDB.sensorParser`. 
 
 To start the java parsing program and run it in the background:
 
@@ -67,7 +67,7 @@ To end the program:
     killall java
 
 ### DataBase
-The [default DB schema file](https://github.com/xianlin/wsn/blob/master/WSN/Meshlium/MeshliumDB_3.1.3.sql) shows the detailed default schema with Gateway Firmware Version 3.1.3. The table `sensorParser` contains all the sensor reading data and the table `currentSensors` will only be updated by calling [ArcGIS API]() and it will be filled up with current sensor reading data from `sensorParser` table.
+The [default DB schema file](https://github.com/xianlin/WSN/blob/master/Meshlium/MeshliumDB_3.1.3.sql) shows the detailed default schema with Gateway Firmware Version 3.1.3. The table `sensorParser` contains all the sensor reading data and the table `currentSensors` will only be updated by calling [ArcGIS API]() and it will be filled up with current sensor reading data from `sensorParser` table.
 
     meshlium:~# mysql -u root -p
     mysql> show databases;
@@ -155,7 +155,7 @@ Some of the sample data are listed here:
     +----+---------------------------+---------------------------+----------+---------+-------+
 
 ### ArcGIS API
-The [php code](https://github.com/xianlin/wsn/tree/master/WSN/Meshlium/ESRI-ArcGIS-API) for the restful API is used to integrate the sensor and measured data into ArcGIS map services
+The [php code](https://github.com/xianlin/WSN/tree/master/Meshlium/ESRI-ArcGIS-API) for the restful API is used to integrate the sensor and measured data into ArcGIS map services
 
 ### XBee Module (802.15.4)
 The configuration parameter is as the below:
