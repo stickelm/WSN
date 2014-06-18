@@ -44,6 +44,9 @@ There is a [difference](http://www.libelium.com/forum/viewtopic.php?f=23&t=9729)
 * Humidity
 * Battery
 * Audio
+The audio sensor reading need to calibrate with [an array of 11 coefficient values](https://github.com/xianlin/WSN/blob/master/Waspmote/audio_coefs) to produce relatively accurate measurement results in unit of dB. 
+
+The calibration method is done by writing the 11 coefficient values into MCU EEPROM memory at the address of #164. The detailed [program code](https://github.com/xianlin/WSN/blob/master/Waspmote/load_calibration_coefficients_for_audio.pde) will achieve the value writing and loading task.
 
 ### XBee Module (802.15.4)
 
