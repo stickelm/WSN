@@ -1,0 +1,120 @@
+mysql> use WSN
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_WSN     |
++-------------------+
+| corrupted         |
+| event_board       |
+| event_sensor      |
+| smart_city_board  |
+| smart_city_sensor |
+| test_board        |
++-------------------+
+6 rows in set (0.00 sec)
+
+mysql> describe smart_city_sensor;
++-----------------+---------------+------+-----+---------+----------------+
+| Field           | Type          | Null | Key | Default | Extra          |
++-----------------+---------------+------+-----+---------+----------------+
+| Index_mac       | bigint(19)    | NO   | PRI | NULL    | auto_increment |
+| date_time_stamp | datetime      | YES  |     | NULL    |                |
+| mac             | char(16)      | NO   |     | NULL    |                |
+| id              | char(3)       | NO   |     | NULL    |                |
+| temperature     | float(10,2)   | NO   |     | NULL    |                |
+| dust            | decimal(10,3) | NO   |     | NULL    |                |
+| audio           | decimal(10,2) | NO   |     | NULL    |                |
+| luminosity      | decimal(10,2) | NO   |     | NULL    |                |
+| humidity        | decimal(10,2) | NO   |     | NULL    |                |
+| Sequence        | int(11)       | YES  |     | NULL    |                |
+| Remarks         | varchar(16)   | YES  |     | NULL    |                |
++-----------------+---------------+------+-----+---------+----------------+
+11 rows in set (0.01 sec)
+
+mysql> select * from smart_city_sensor limit 1;
++-----------+---------------------+----------+-----+-------------+-------+-------+------------+----------+----------+---------+
+| Index_mac | date_time_stamp     | mac      | id  | temperature | dust  | audio | luminosity | humidity | Sequence | Remarks |
++-----------+---------------------+----------+-----+-------------+-------+-------+------------+----------+----------+---------+
+|         1 | 2014-03-26 09:26:40 | 408BCECC | A02 |       27.74 | 0.059 | 56.00 |      62.00 |    90.39 |     6336 | 2411.0  |
++-----------+---------------------+----------+-----+-------------+-------+-------+------------+----------+----------+---------+
+1 row in set (0.00 sec)
+
+mysql> describe smart_city_board;
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+| Field           | Type          | Null | Key | Default           | Extra                       |
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+| Index_mac       | bigint(19)    | NO   | PRI | NULL              | auto_increment              |
+| date_time_stamp | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| mac             | char(16)      | NO   |     | NULL              |                             |
+| id              | char(3)       | NO   |     | NULL              |                             |
+| x               | decimal(10,2) | NO   |     | NULL              |                             |
+| y               | decimal(10,2) | NO   |     | NULL              |                             |
+| z               | decimal(10,2) | NO   |     | NULL              |                             |
+| temperature     | decimal(10,2) | NO   |     | NULL              |                             |
+| battery         | decimal(10,2) | NO   |     | NULL              |                             |
+| Sequence        | int(11)       | YES  |     | NULL              |                             |
+| Remarks         | varchar(16)   | YES  |     | NULL              |                             |
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+11 rows in set (0.00 sec)
+
+mysql> select * from smart_city_board limit 1;
++-----------+---------------------+----------+-----+---------+--------+---------+-------------+---------+----------+---------+
+| Index_mac | date_time_stamp     | mac      | id  | x       | y      | z       | temperature | battery | Sequence | Remarks |
++-----------+---------------------+----------+-----+---------+--------+---------+-------------+---------+----------+---------+
+|    233373 | 2014-05-08 15:00:08 | 408BCECA | A06 | -988.00 | -70.00 | -199.00 |       25.00 |   88.00 |     9691 | 1411.0  |
++-----------+---------------------+----------+-----+---------+--------+---------+-------------+---------+----------+---------+
+1 row in set (0.00 sec)
+
+mysql> describe event_board;
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+| Field           | Type          | Null | Key | Default           | Extra                       |
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+| Index_mac       | bigint(19)    | NO   | PRI | NULL              | auto_increment              |
+| date_time_stamp | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| mac             | char(16)      | NO   |     | NULL              |                             |
+| id              | char(4)       | NO   |     | NULL              |                             |
+| x               | decimal(10,2) | NO   |     | NULL              |                             |
+| y               | decimal(10,2) | NO   |     | NULL              |                             |
+| z               | decimal(10,2) | NO   |     | NULL              |                             |
+| temperature     | decimal(10,2) | NO   |     | NULL              |                             |
+| battery         | decimal(10,2) | NO   |     | NULL              |                             |
+| Sequence        | int(11)       | YES  |     | NULL              |                             |
+| Remarks         | varchar(16)   | YES  |     | NULL              |                             |
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+11 rows in set (0.01 sec)
+
+mysql> describe event_sensor;
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+| Field           | Type          | Null | Key | Default           | Extra                       |
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+| Index_mac       | bigint(19)    | NO   | PRI | NULL              | auto_increment              |
+| date_time_stamp | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| mac             | char(16)      | NO   |     | NULL              |                             |
+| id              | char(4)       | NO   |     | NULL              |                             |
+| temperature     | decimal(10,2) | NO   |     | NULL              |                             |
+| luminosity      | decimal(10,2) | NO   |     | NULL              |                             |
+| presence        | decimal(10,2) | NO   |     | NULL              |                             |
+| Sequence        | int(11)       | YES  |     | NULL              |                             |
+| Remarks         | varchar(16)   | YES  |     | NULL              |                             |
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+9 rows in set (0.00 sec)
+
+mysql> describe test_board;
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+| Field           | Type          | Null | Key | Default           | Extra                       |
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+| date_time_stamp | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| mac             | char(16)      | NO   |     | NULL              |                             |
+| id              | char(4)       | NO   |     | NULL              |                             |
+| x               | decimal(10,2) | NO   |     | NULL              |                             |
+| y               | decimal(10,2) | NO   |     | NULL              |                             |
+| z               | decimal(10,2) | NO   |     | NULL              |                             |
+| temperature     | decimal(10,2) | NO   |     | NULL              |                             |
+| battery         | decimal(10,2) | NO   |     | NULL              |                             |
+| Sequence        | int(11)       | YES  |     | NULL              |                             |
++-----------------+---------------+------+-----+-------------------+-----------------------------+
+9 rows in set (0.01 sec)
+
