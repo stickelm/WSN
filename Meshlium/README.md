@@ -1,8 +1,19 @@
+### Meshlium Router Info
+
+CPU: 500MHz (Geode(TM) Integrated Processor by AMD PCS)
+Memory: 256MB
+
+[The detailed system information](https://github.com/xianlin/WSN/blob/master/Meshlium/meshlium_system_info)
+
 ### Manager Web GUI
 
 ### ESRI Restful API Integration
 
 ### Mysql Database
+The Mysql Database [schema backup file](https://github.com/xianlin/WSN/blob/master/Meshlium/MeshliumDB_3.1.3.sql) can be used to recover the broken database.
+
+The [sample table file](https://github.com/xianlin/WSN/blob/master/Meshlium/MeshliumDB_table_sample) shows how the sensor datas are stored inside `MeshliumDB` database.
+
 
 ### Meshlium Command Line
 
