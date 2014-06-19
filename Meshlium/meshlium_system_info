@@ -34,7 +34,7 @@ auto ath0
         dns-nameservers 8.8.8.8 8.8.8.4
         broadcast 10.10.10.255
         pre-up wlanconfig ath0 create wlandev wifi0 wlanmode ap
-        pre-up iwconfig ath0 essid meshliumA
+        pre-up iwconfig ath0 essid meshlium
         up iwpriv ath0 hide_ssid 0
         pre-up iwconfig ath0 mode master
         pre-up iwconfig ath0 channel 6
@@ -60,7 +60,42 @@ auto ath1
         pre-up iwconfig ath1 txpower auto
         pre-up iwconfig ath1 rate auto
 
-meshliumA:~# netstat -tulpn
+meshlium:~# iptables -nvL -t nat
+Chain PREROUTING (policy ACCEPT 2009K packets, 152M bytes)
+ pkts bytes target     prot opt in     out     source               destination
+
+Chain POSTROUTING (policy ACCEPT 22205 packets, 1344K bytes)
+ pkts bytes target     prot opt in     out     source               destination
+23038 1401K ath0-NAT   all  --  *      *       0.0.0.0/0            0.0.0.0/0
+
+Chain OUTPUT (policy ACCEPT 22205 packets, 1344K bytes)
+ pkts bytes target     prot opt in     out     source               destination
+
+Chain ath0-NAT (1 references)
+ pkts bytes target     prot opt in     out     source               destination
+  834 56568 MASQUERADE  all  --  *      eth0    10.10.10.0/24        0.0.0.0/0
+meshlium:~# iptables -nvL
+Chain INPUT (policy ACCEPT 6423K packets, 1046M bytes)
+ pkts bytes target     prot opt in     out     source               destination
+
+Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination
+ 2600  598K ath0-INBOUND  all  --  *      *       0.0.0.0/0            10.10.10.0/24
+ 3639  440K ath0-FORWARD  all  --  *      *       10.10.10.0/24        0.0.0.0/0
+
+Chain OUTPUT (policy ACCEPT 2706K packets, 273M bytes)
+ pkts bytes target     prot opt in     out     source               destination
+
+Chain ath0-FORWARD (1 references)
+ pkts bytes target     prot opt in     out     source               destination
+ 3639  440K ACCEPT     all  --  *      *       10.10.10.0/24        0.0.0.0/0
+
+Chain ath0-INBOUND (1 references)
+ pkts bytes target     prot opt in     out     source               destination
+ 2600  598K ACCEPT     all  --  *      *       0.0.0.0/0            10.10.10.0/24
+
+
+meshlium:~# netstat -tulpn
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
 tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN      4599/twems
@@ -82,7 +117,7 @@ udp        0      0 0.0.0.0:67              0.0.0.0:*                           
 udp        0      0 0.0.0.0:111             0.0.0.0:*                           4069/portmap
 udp6       0      0 :::53                   :::*                                4196/dnsmasq
 
-meshliumA:~# ps aux
+meshlium:~# ps aux
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 root         1  0.0  0.2   1976   692 ?        Ss   Jun10   0:01 init [2]
 root         2  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kthreadd]
@@ -216,6 +251,3 @@ meshlium:~# tree -L 2 /mnt/lib/var/www/arcgis/
     `-- main.css
 
 3 directories, 9 files
-
-
-
