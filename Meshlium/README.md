@@ -1,6 +1,6 @@
-# Meshlium Command Line
+## Meshlium Command Line
 
-## Change Xbee Configuration
+### Change Xbee Configuration
 
 We can change the Xbee default configurtion parameter by using [AT command](http://www.digi.com/support/kbase/kbaseresultdetl?id=2205) inside Meshlium router.
 
@@ -17,21 +17,20 @@ Lastly, we need to write the changed configuration into Xbee memory
 
     ATWR
 
-## Running Program At Background
+### Running Program At Background
 
 For example, the below command will run the java program `sensorParser.jar` at the background without displaying any error messages or output to the terminal screen even after user logout the terminal.
 
     nohup java -jar /bin/sensorParser.jar >/dev/null 2>&1 &
 
-# Problem and Solution
+## Problem and Solution
 
 The meshlium router software has some bugs and we need to rectify those bugs by using the below solutions.
 
-## Linux OS Time Drift
+### Linux OS Time Drift
 
 Some of the meshlium router may experience time drift after running OS for a while. We can use crontab to sync time with NTP server every 10 minutue:
 
     crontab -e
     */10 * * * * /usr/sbin/ntpdate -s ntp.comp.nus.edu.sg
 
-## 
