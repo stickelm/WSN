@@ -179,9 +179,9 @@ Baud Rate: 38400
 
 This is the speed at which the java program `otap.jar` talk to the serial-USB port on your PC. On your computer, the USB to serial port baud rate configuration has to be set to `38400`, use windows device manager to change it if you are using Windows.
 
-API Mode: 1 
+API Mode: `1` 
 
-Easy to use, but doesn't provide the added reliability of using the AP=2, escape character sequence, same here, the java program didn't use the AP=2 mode so you have to set this to AP=1.
+Easy to use, but doesn't provide the added reliability of using the `AP=2`, escape character sequence, same here, the java program didn't use the AP=2 mode so you have to set this to `AP=1`.
 
 Xbee.conf
 
@@ -193,13 +193,13 @@ Take out the Xbee module on the waspmote and use X-CTU to set the below paramete
 
 PANID, CH set to the same as the Gateway Xbee;
 
-Firmware: set the same as your USB Dongle, in my case it's 802.15.4.
+Firmware: set the same as your USB Dongle, in my case it's `802.15.4`.
 
-Baud Rate: 115200 (NOT 38400 because this Xbee is talking to MCU on the waspmote at 115200 bps)
+Baud Rate: `115200` (NOT `38400` because this Xbee is talking to MCU on the waspmote at `115200` bps)
 
-AP=2 (API mode is 2 as it supports escape character sequence)
+AP=2 (API mode is `2` as it supports escape character sequence)
 
-Now put back the Xbee module onto the waspmote and upload the example code `OTA_03_802`. (in your Waspmote IDE example folder and `OTA` subfolder), you can change the "id_mote" as you want, but don't change the key_access as it must be the same key in `Xbee.conf` file on your PC.
+Now put back the Xbee module onto the waspmote and upload the example code `OTA_03_802`. (in your Waspmote IDE example folder and `OTA` subfolder), you can change the `id_mote` as you want, but don't change the key_access as it must be the same key in `Xbee.conf` file on your PC.
 
 Connect the waspmote with battery and turn on the switch, connect the USB dongle to your PC USB port and under windows command line, type OTAP command:
 
