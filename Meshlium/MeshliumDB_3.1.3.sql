@@ -141,7 +141,9 @@ CREATE TABLE `sensorParser` (
   `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
   `sync` int(1) NOT NULL default '0',
   `raw` text character set utf8 collate utf8_unicode_ci,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+   KEY `id_wasp` (`id_wasp`,`sensor`,`timestamp`),
+  KEY `id_wasp_2` (`id_wasp`,`timestamp`)
 ) ENGINE=MyISAM AUTO_INCREMENT=78053 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
