@@ -7,10 +7,11 @@ Memory: 256MB
 
 ### Manager Web GUI
 
+[The source code](https://github.com/xianlin/WSN/tree/master/Meshlium/ManagerSystem)
+
 ### ESRI Restful API Integration
 
-[The source code ](https://github.com/xianlin/WSN/tree/master/Meshlium/ESRI-ArcGIS-API)
-
+[The source code](https://github.com/xianlin/WSN/tree/master/Meshlium/ESRI-ArcGIS-API)
 
 ### Mysql Database
 The Mysql Database [schema backup file](https://github.com/xianlin/WSN/blob/master/Meshlium/MeshliumDB_3.1.3.sql) can be used to recover the broken database.
