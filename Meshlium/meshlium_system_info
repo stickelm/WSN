@@ -1,0 +1,221 @@
+meshlium:~# cat /proc/version
+Linux version 2.6.30-voyage (2.6.30-8squeeze1) (root@punknix-uml) (gcc version 4.3.2 (Debian 4.3.2-1.1) ) #1 PREEMPT Wed Dec 30 18:39:44 GMT 2009
+
+meshlium:~# uname -a
+Linux meshlium 2.6.30-voyage #1 PREEMPT Wed Dec 30 18:39:44 GMT 2009 i586 GNU/Linux
+
+meshlium:~# df -h
+Filesystem            Size  Used Avail Use% Mounted on
+rootfs                1.5G  988M  413M  71% /
+udev                   10M  2.7M  7.4M  27% /dev
+/dev/disk/by-label/ROOT_FS
+                      1.5G  988M  413M  71% /
+tmpfs                 125M  5.6M  120M   5% /lib/init/rw
+varrun                125M   64K  125M   1% /var/run
+varlock               125M  4.0K  125M   1% /var/lock
+tmpfs                 125M  4.0K  125M   1% /dev/shm
+/dev/hda3             4.9G  192M  4.5G   5% /mnt/user
+tmpfs                 125M   44K  125M   1% /tmp
+tmpfs                 125M  5.6M  120M   5% /var/log
+tmpfs                 125M  5.6M  120M   5% /var/tmp
+/dev/mapper/lib       887M   79M  764M  10% /mnt/lib
+
+meshlium:~# cat /etc/network/interfaces
+auto lo
+        iface lo inet loopback
+
+#dhcp active
+auto eth0
+        iface eth0 inet dhcp
+auto ath0
+        iface ath0 inet static
+        address 10.10.10.1
+        netmask 255.255.255.0
+        dns-nameservers 8.8.8.8 8.8.8.4
+        broadcast 10.10.10.255
+        pre-up wlanconfig ath0 create wlandev wifi0 wlanmode ap
+        pre-up iwconfig ath0 essid meshliumA
+        up iwpriv ath0 hide_ssid 0
+        pre-up iwconfig ath0 mode master
+        pre-up iwconfig ath0 channel 6
+        up iwpriv ath0 mode 11g
+        pre-up iwconfig ath0 txpower auto
+        pre-up iwconfig ath0 rate auto
+        up iwconfig ath0 txpower auto
+        up iwconfig ath0 rate auto
+post-up /usr/sbin/hostapd -B /etc/hostapd/hostapd_ath0.conf
+auto ath1
+        iface ath1 inet static
+        address 10.10.11.1
+        netmask 255.255.255.0
+        dns-nameservers 8.8.8.8 8.8.8.4
+        broadcast 10.10.11.255
+        pre-up wlanconfig ath1 create wlandev wifi1 wlanmode adhoc
+        pre-up iwconfig ath1 essid meshlium-X
+        pre-up iwconfig ath1 ap AA:AA:AA:AA:AA:AA
+        up iwpriv ath1 hide_ssid 0
+        pre-up iwconfig ath1 mode ad-hoc
+        pre-up iwconfig ath1 channel 64
+        up iwpriv ath1 mode 11a
+        pre-up iwconfig ath1 txpower auto
+        pre-up iwconfig ath1 rate auto
+
+meshliumA:~# netstat -tulpn
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN      4599/twems
+tcp        0      0 0.0.0.0:5001            0.0.0.0:*               LISTEN      4635/iperf
+tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      15604/mysqld
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      4069/portmap
+tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      4461/olsrd
+tcp        0      0 0.0.0.0:53              0.0.0.0:*               LISTEN      4196/dnsmasq
+tcp        0      0 0.0.0.0:2006            0.0.0.0:*               LISTEN      4461/olsrd
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      4237/sshd
+tcp        0      0 0.0.0.0:1723            0.0.0.0:*               LISTEN      4464/pptpd
+tcp6       0      0 :::80                   :::*                    LISTEN      4611/apache2
+tcp6       0      0 :::53                   :::*                    LISTEN      4196/dnsmasq
+tcp6       0      0 :::22                   :::*                    LISTEN      4237/sshd
+tcp6       0      0 :::443                  :::*                    LISTEN      4611/apache2
+udp        0      0 0.0.0.0:53              0.0.0.0:*                           4196/dnsmasq
+udp      344      0 0.0.0.0:698             0.0.0.0:*                           4461/olsrd
+udp        0      0 0.0.0.0:67              0.0.0.0:*                           4196/dnsmasq
+udp        0      0 0.0.0.0:111             0.0.0.0:*                           4069/portmap
+udp6       0      0 :::53                   :::*                                4196/dnsmasq
+
+meshliumA:~# ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.2   1976   692 ?        Ss   Jun10   0:01 init [2]
+root         2  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kthreadd]
+root         3  0.0  0.0      0     0 ?        S<   Jun10   0:38 [ksoftirqd/0]
+root         4  0.0  0.0      0     0 ?        S<   Jun10   0:00 [events/0]
+root         5  0.0  0.0      0     0 ?        S<   Jun10   0:00 [khelper]
+root         8  0.0  0.0      0     0 ?        S<   Jun10   0:00 [async/mgr]
+root        86  0.0  0.0      0     0 ?        S<   Jun10   0:05 [kblockd/0]
+root        94  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kseriod]
+root       145  0.0  0.0      0     0 ?        S    Jun10   0:00 [pdflush]
+root       146  0.0  0.0      0     0 ?        S    Jun10   0:00 [pdflush]
+root       147  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kswapd0]
+root       148  0.0  0.0      0     0 ?        S<   Jun10   0:00 [aio/0]
+root       149  0.0  0.0      0     0 ?        S<   Jun10   0:00 [nfsiod]
+root       150  0.0  0.0      0     0 ?        S<   Jun10   0:00 [crypto/0]
+root       803  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kpsmoused]
+root       809  0.0  0.0      0     0 ?        S<   Jun10   0:00 [rpciod/0]
+root      1561  0.0  0.0      0     0 ?        S<   Jun10   0:00 [ksuspend_usbd]
+root      1562  0.0  0.0      0     0 ?        S<   Jun10   0:00 [khubd]
+root      1570  0.0  0.0      0     0 ?        S<   Jun10   0:00 [ata/0]
+root      1571  0.0  0.0      0     0 ?        S<   Jun10   0:00 [ata_aux]
+root      1637  0.0  0.0      0     0 ?        S<   Jun10   0:00 [usbhid_resumer]
+root      1771  0.0  0.2   2148   764 ?        S<s  Jun10   0:02 udevd --daemon
+root      2806  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kstriped]
+root      2851  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kjournald]
+root      3722  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kdmflush]
+root      3723  0.0  0.0      0     0 ?        S<   Jun10   0:00 [kcryptd_io]
+root      3724  0.0  0.0      0     0 ?        S<   Jun10  11:12 [kcryptd]
+root      3734  0.0  0.0      0     0 ?        S<   Jun10   0:04 [kjournald]
+root      3895  0.0  0.3   4300   996 ?        Ss   Jun10   2:45 /usr/sbin/hostapd -B /etc/hostapd/hostapd_ath0.conf
+daemon    4069  0.0  0.2   1760   520 ?        Ss   Jun10   0:00 /sbin/portmap
+root      4172  0.0  0.2   1876   716 ?        S    Jun10   1:11 /usr/sbin/syslogd --no-forward
+103       4185  0.0  0.3   2480   848 ?        Ss   Jun10   0:00 /usr/bin/dbus-daemon --system
+dnsmasq   4196  0.0  0.2   2200   652 ?        S    Jun10   4:22 /usr/sbin/dnsmasq -u dnsmasq -r /var/run/dnsmasq/resolv.conf
+root      4237  0.0  0.4   5204  1056 ?        Ss   Jun10   0:00 /usr/sbin/sshd
+root      4461  0.0  0.3   6024   808 ?        Ss   Jun10   0:03 /usr/sbin/olsrd -f /etc/olsrd.conf -delgw -d 0
+root      4464  0.0  0.2   1804   604 ?        Ss   Jun10   0:00 /usr/sbin/pptpd
+root      4471  0.0  0.4   3124  1260 ?        Ss   Jun10   0:00 /usr/sbin/hcid -x -s
+root      4479  0.0  0.0      0     0 ?        S<   Jun10   0:00 [bluetooth]
+root      4487  0.0  0.0      0     0 ?        S<   Jun10   0:00 [krfcommd]
+root      4520  0.0  0.3   3316   968 ?        Ss   Jun10   0:00 /usr/sbin/cron
+root      4584  0.0  0.6   1688  1688 ?        SLs  Jun10   0:52 /usr/sbin/watchdog
+root      4599  0.0  0.5  29016  1288 ?        Ssl  Jun10   0:04 /mnt/usr/thingworx/twems --config=/mnt/usr/thingworx/etc/config.lua --service
+root      4611  0.0  2.8  23096  7336 ?        Ss   Jun10   0:02 /usr/sbin/apache2 -k start
+root      4618  0.0  0.4   2712  1260 ?        S    Jun10   3:00 /bin/bash ./remountrwscript.sh
+root      4629  0.0  0.3   2788   892 ?        S    Jun10   0:00 ./xWatchDog
+root      4635  0.0  0.1  11120   400 ?        S    Jun10   0:00 iperf -sD
+www-data 12373  0.0  2.9  23832  7508 ?        S    Jun16   0:02 /usr/sbin/apache2 -k start
+www-data 13828  0.0  3.0  23832  7736 ?        S    Jun16   0:01 /usr/sbin/apache2 -k start
+www-data 13867  0.0  3.0  23832  7752 ?        S    Jun16   0:01 /usr/sbin/apache2 -k start
+www-data 15467  0.0  2.8  23704  7404 ?        S    Jun16   0:01 /usr/sbin/apache2 -k start
+root     15495  0.0  0.5   3780  1284 ?        S    Jun12   0:00 /bin/sh /usr/bin/mysqld_safe
+www-data 15600  0.0  2.8  23832  7416 ?        S    Jun16   0:00 /usr/sbin/apache2 -k start
+www-data 15601  0.0  2.9  23832  7504 ?        S    Jun16   0:00 /usr/sbin/apache2 -k start
+mysql    15604  0.7 13.0 143276 33312 ?        Sl   Jun12  73:43 /usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --user=mysql --pid-file=/var/run/my
+root     15605  0.0  0.2   2884   632 ?        S    Jun12   0:00 logger -t mysqld -p daemon.error
+www-data 15652  0.0  2.9  23832  7444 ?        S    Jun16   0:00 /usr/sbin/apache2 -k start
+www-data 15839  0.0  2.9  23832  7600 ?        S    Jun16   0:00 /usr/sbin/apache2 -k start
+www-data 16068  0.0  1.5  23096  3936 ?        S    Jun16   0:00 /usr/sbin/apache2 -k start
+www-data 25619  0.0  1.4  23096  3756 ?        S    13:47   0:00 /usr/sbin/apache2 -k start
+root     25789  1.1  8.9 248364 23008 ?        Sl   13:48   1:02 java -jar /bin/sensorParser.jar
+root     27302  0.0  1.0   8100  2664 ?        Ss   14:33   0:00 sshd: root@pts/0
+root     27306  0.0  1.0   5044  2704 pts/0    Ss   14:33   0:01 -bash
+root     29045  0.0  0.1   1640   416 ?        S    15:21   0:00 sleep 5
+root     29046  0.0  0.3   3580  1016 pts/0    R+   15:22   0:00 ps aux
+
+meshlium:~# dpkg --list
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Cfg-files/Unpacked/Failed-cfg/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Hold/Reinst-required/X=both-problems (Status,Err: uppercase=bad)
+||/ Name                            Version                       Description
++++-===============================-=============================-============================================
+ii  adduser                         3.110                         add and remove users and groups
+ii  aircrack-ng                     1:1.0-1                       wireless WEP/WPA cracking utilities
+ii  apache2                         2.2.9-10+lenny7               Apache HTTP Server metapackage
+ii  apache2-mpm-prefork             2.2.9-10+lenny7               Apache HTTP Server - traditional non-threade
+ii  apache2-utils                   2.2.9-10+lenny7               utility programs for webservers
+ii  apache2.2-common                2.2.9-10+lenny7               Apache HTTP Server common files
+ii  apt                             0.7.20.2+lenny1               Advanced front-end for dpkg
+ii  aptitude                        0.4.11.11-1~lenny1            terminal-based package manager
+ii  arptables                       0.0.3.3-1                     ARP table administration
+ii  aufs-modules-2.6.30-voyage      0+20090302-3+7.0-1            aufs modules for Linux (kernel 2.6.30-voyage
+...
+...
+...
+
+meshlium:~# tree /var/www/
+/var/www/
+|-- ManagerSystem -> /mnt/lib/var/www/ManagerSystem
+|-- clientaccesspolicy.xml
+|-- crossdomain.xml
+`-- meshlium -> /mnt/lib/var/www/arcgis
+
+
+meshlium:~# tree -L 2 /mnt/lib/var/www/
+/mnt/lib/var/www/
+|-- ManagerSystem
+|   |-- core
+|   |-- documentacion
+|   |-- index.php
+|   |-- interval
+|   |-- login.php
+|   |-- login_new.php
+|   |-- plugins
+|   |-- presets
+|   |-- tmp
+|   |-- upload
+|   |-- upload.php
+|   |-- version
+|   `-- wifiscaned
+`-- arcgis
+    |-- rest
+    `-- static
+
+10 directories, 7 files
+
+
+meshlium:~# tree -L 2 /mnt/lib/var/www/arcgis/
+/mnt/lib/var/www/arcgis/
+|-- rest
+|   |-- Rest.inc.php
+|   |-- api.php
+|   |-- defs.php
+|   |-- htaccess.txt
+|   |-- mesh.png
+|   |-- meshlium.png
+|   |-- psense.png
+|   |-- sensor.png
+|   `-- templates
+`-- static
+    `-- main.css
+
+3 directories, 9 files
+
+
+
