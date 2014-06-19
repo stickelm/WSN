@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>AJAX framework</title>
+</head><body>
+<h1>AJAX framework</h1>
+<h2>Introduction to the AJAX framework</h2>
+<p>
+The Meshlium Manager System AJAX framework is designed to provide a easy way to
+power Meshlium Manager System plugins with AJAX content. In order to archieve
+this, some functions and features has been created.<br>
+The AJAX framework is not a mandatory addon. It is just an improvement
+that can be used, replaced or ignored by plugins.<br>
+To use the AJAX framework, you have to think in server and client
+sides. Client javascript, has to request actions from the plugin on the
+server side, and then plugin will serve the result of the actions to
+the client javascript.<br>
+This document will explain both client and server AJAX API.
+</p>
+<h2>Client Javascript.</h2>
+<p>Client side has two files that provides a basic layer to manage AJAX
+request.
+</p>
+<h3>AJAX calls</h3>
+<p>
+To make easiest the AJAX calls, a function named ajax_call is provided
+within the plugin skeleton. The function submits form data with an
+action tag so server side plugin can use data and performs actions.<br>
+The code of the function is:
+</p>
+<code><pre>
+function ajax_call(form_id,action,section,plugin,output_id)
+{
+    // This script will serialize the form indicated by an id and submit it
+    // to the desired page.
+    // Once the response has arrived it display the response inside the id
+    // defined in output_id
+    var json_field=json_encode(form_id);
+
+    submit_data="section="+section+"&amp;plugin="+plugin+"&amp;action="+action+"&amp;type=complex&amp;"+"form_fields="+json_field;
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: submit_data,
+        success: function(datos){
+            // A JSON array is expected
+            var ret = eval('(' + datos + ')');
+            $.each(ret.item, function(i,item){
+                if (item['type']=="script")
+                {
+                    eval(item['value']);
+                }
+                else if (item['type']=="return")
+                {
+                    $('#'+output_id).html(item['value']);
+                }
+                else if (item['type']=="html")
+                {
+                    $('#'+item['id']).html(item['value']);
+                }
+                else if (item['type']=="value")
+                {
+                    $('#'+item['id']).val(item['value']);
+                }
+                else if (item['type']=="append")
+                {
+                    $('#'+item['id']).append(item['value']);
+                }
+            });
+        }
+    });
+}
+</pre></code>
+<p>This code is based on jquery that is default javascript
+framework for Meshlium Manager System, but can be modified for being use with
+prototype, mootools or your own ajax call.
+</p>
+<p>
+File location: plugin_base_folder/javascript/ajax.js
+</p>
+<h3>JSON data management</h3>
+<p>
+Ajax call uses JSON to serialize data from a form and send it to the
+server. This is done to reduce the data send to the server and to make
+more easy the management of data on the server side.<br>
+</p>
+<p>
+To make more easy the work with JSON objects a function that
+serializes data has been provided. The funcion will search for data on
+a form and serialize it.<br>
+The code of the function is:
+</p>
+<code><pre>
+function json_encode(form_id)
+{
+    var fields = new Object();
+    $("#"+form_id+" :input").each(function(){
+        if($(this).attr("type")=="checkbox")
+        {
+            if(this.checked)
+            {
+                fields[$(this).attr("name")]=$(this).val();
+            }
+        }
+        else if($(this).attr("type")=="radio")
+        {
+            if(this.checked)
+            {
+                fields[$(this).attr("name")]=$(this).val();
+            }
+        }
+        else
+        {
+            if($(this).val()!='')
+            {
+                fields[$(this).attr("name")]=$(this).val();
+            }
+        }
+    });
+    return $.toJSON(fields);
+}
+</pre></code>
+<p>
+File location: plugin_base_folder/javascript/json_encode.js
+</p>
+<h2>Server side AJAX framework.</h2>
+<h3>AJAX return functions</h3>
+<p>
+Server side of a plugin receives data from client and after
+procesing data and performing actions data has to be sent to the
+client. To archieve this the Meshlium Manager System framework provides a
+response constructor that stores data that has to be sent to the client
+and finally send the data.
+</p>
+<p>
+Each data stored, is a tuple that contains type, value and id and will be accesible by the client once submited.<br>
+</p>
+<code><pre>
+$response_array=Array();
+$response_iterator=0;
+function response_additem($type,$value,$id="")
+{
+    global $response_array;
+    global $response_iterator;
+    $response_array['item'][$response_iterator]['type']=$type;
+    $response_array['item'][$response_iterator]['value']=$value;
+    if(!empty($id))
+    {
+        $response_array['item'][$response_iterator]['id']=$id;
+    }
+    $response_iterator++;
+}
+function response_return()
+{
+    global $response_array;
+    echo json_encode($response_array);
+}
+</pre></code>
+<p>
+File location: API/complex_ajax_return_functions.js
+</p>
+<h3>Server JSON manipulation</h3>
+<p>
+Server will receive the data in JSON format from the client. Function jsondecode decode the JSON submited by the client json_encode function and store it on a PHP array.
+</p>
+
+<code><pre>
+function jsondecode ($json) {
+    $json = substr($json, strpos($json,'{')+1, strlen($json));
+    $json = substr($json, 0, strrpos($json,'}'));
+    $json =preg_replace('/(^|,)([\\s\\t]*)([^:]*) (([\\s\\t]*)):(([\\s\\t]*))/s','$1"$3"$4:', trim($json));
+    $json=str_replace('\\"','"',$json);
+    $json=str_replace('\\"','"',$json);
+    return json_decode('{'.$json.'}', true);
+}
+</pre></code>
+<p>
+File location: API/json_api.js
+</p>
+</body></html>

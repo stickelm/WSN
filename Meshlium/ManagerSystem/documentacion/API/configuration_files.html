@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Configuration files framework</title>
+</head><body>
+<h1>Configuration files framework</h1>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">Introduction</h2>
+<p>
+The Meshlium Manager System provides an easy way to write and load configuration files from and to arrays.
+</p>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">load_conf_file ($filepath)</h2>
+<p>
+This function will load configuration file provide by $filepath to an array and return it.
+</p>
+<p>
+File location: API/conf_file.php<br>
+</p>
+<p>
+Example of use:
+<code><pre class="devel">
+$config_data=load_config_file('/etc/myplugin.conf');
+</pre><br></code>
+</p>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">save_conf_file ($filepath, $data, $writepath='')</h2>
+<p>
+This function saves the array $data to the file provided on $filepath.<br />
+This function uses a temporal file, the path for the temporal file can be defined too using $writepath. If no $writepath is provided the plugin will use $base_plugin.'data/temp_config' as default temporal file.
+</p>
+<p>
+File location: API/conf_file.php<br>
+</p>
+<p>
+Example of use:
+<code><pre class="devel">
+save_conf_file('/etc/myplugin.conf',$config_data);
+</pre><br></code>
+</p>

@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>GPS manipulation</title></head><body>
+<h1>GPS manipulation</h1>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">parse_NMEA($input)</h2>
+<p>
+This function parses some of the NMEA strings and stores it's data on a more usable array.<br>
+The NMEA strings that can be parsed and it's array components that will be output are:<br>
+<ul class="devel">
+  <li>$GPGGA</li>
+  <ul class="devel">
+    <li>type: Message ID, GGA protocol header</li>
+    <li>utc: UTC time (hhmmss.sss)</li>
+    <li>lat: Latitude <span style="font-weight: bold;">(</span>ddmm.mmmm)</li>
+    <li>ns: North/South Indicator</li>
+    <li>lat-google: Latitude converted to a value that can be understanded by google maps (positive for north negative for south)<br>
+    </li>
+    <li>long: Longitude (dddmm.mmmm)</li>
+    <li>ew: East/West Indicator</li>
+    <li>long-google: Longitude converted to values that can be understanded by google maps (positive for east, negative for west)</li>
+    <li>gpsqual: Position Fix Indicator</li>
+    <li>numsat: Satellites used. A number between 0 and 12 represents the number of valid satellites in sight.</li>
+    <li>hdp: Horizontal dilution of precision.</li>
+    <li>alt: altitude.</li>
+    <li>un_alt: units of the altitude value.</li>
+    <li>geoidal: Geoid separation.</li>
+    <li>un_geoidal: Geoid value units.</li>
+    <li>dpgs: GPGS value.<br>
+    </li>
+  </ul>
+  <li>$GPVTG</li>
+  <ul class="devel">
+    <li>type: Message ID, VTG protocol header</li>
+    <li>trkdeg1:Measured heading</li>
+    <li>t: True<br>
+    </li>
+    <li>trkdeg2:Measured heading</li>
+    <li>m: Magnetic1</li>
+    <li>spdknots: Measured horizontal speed</li>
+    <li>knots: Knots</li>
+    <li>spdkmph: Measured horizontal speed</li>
+    <li>kph: Kilometers per hour</li>
+  </ul>
+  <li>$GPRMC</li>
+  <ul class="devel">
+    <li>type: Message ID, RMC protocol header</li>
+    <li>utc: UTC time (hhmmss.sss)</li>
+    <li>statusrmc: A=data valid or V=data not valid</li>
+    <li>lat: Latitude <span style="font-weight: bold;">(</span>ddmm.mmmm)</li>
+    <li>ns: North/South Indicator</li>
+    <li>long: Longitude (dddmm.mmmm)</li>
+    <li>ew: East/West Indicator</li>
+    <li>speed: Speed over ground<br>
+    </li>
+    <li>track: Course over ground<br>
+    </li>
+    <li>date: Date (ddmmyy)<br>
+    </li>
+    <li>magvar: Magnetic variation</li>
+    <li>mag_ew: E=east or W=west</li>
+  </ul>
+  <li>$GPGSA</li>
+  <ul class="devel">
+    <li>type: Message ID, GSA protocol header</li>
+    <li>selectmode: Manual or automatic.<br>
+    </li>
+    <li>mode: Fix not avaible, 2D or 3D<br>
+    </li>
+    <li>sat1: Sv on channel 1<br>
+    </li>
+    <li>sat2:  Sv on channel 2<br>
+ </li>
+    <li>sat3: Sv on channel 3  </li>
+    <li>sat4: Sv on channel 4  </li>
+    <li>sat5: Sv on channel 5  </li>
+    <li>sat6: Sv on channel 6  </li>
+    <li>sat7: Sv on channel 7  </li>
+    <li>sat8: Sv on channel 8  </li>
+    <li>sat9: Sv on channel 9  </li>
+    <li>sat10: Sv on channel 10  </li>
+    <li>sat11: Sv on channel 11  </li>
+    <li>sat12: Sv on channel 12 </li>
+    <li>pdop: Position dilution of precision.<br>
+    </li>
+    <li>hdop: Horizontal dilution of precision.  </li>
+    <li>vdop: Vertical dilution of precision.  </li>
+  </ul>
+  <li>$GPGSV</li>
+  <ul class="devel">
+    <li>type: Message ID, GSV protocol header</li>
+    <li>satmessages: 1 to 3.<br>
+    </li>
+    <li>messnum: message number.<br>
+  </li>
+    <li>satview: Satellites in view.<br>
+    </li>
+    <li>satnum_1: satellite ID.<br>
+  </li>
+    <li>elevdeg_1: Elevation.<br>
+    </li>
+    <li>azimuthdeg_1: Azimuth<br>
+  </li>
+    <li>SNR_1: Range 0 to 99, or null when not tracking.<br>
+  </li>
+    <li>satnum_2: satellite ID.</li>
+    <li>elevdeg_2: Elevation.</li>
+    <li>azimuthdeg_2: Azimuth </li>
+    <li>SNR_2: Range 0 to 99, or null when not tracking.</li>
+    <li>satnum_3: satellite ID.</li>
+    <li>elevdeg_3:Elevation. </li>
+    <li>azimuthdeg_3: Azimuth</li>
+    <li>SNR_3: Range 0 to 99, or null when not tracking.</li>
+    <li>satnum_4: satellite ID.</li>
+    <li>elevdeg_4: Elevation.</li>
+    <li>azimuthdeg_4: Azimuth</li>
+    <li>SNR_4: Range 0 to 99, or null when not tracking.</li>
+  </ul>
+</ul>
+</p>
+<p>
+File location: API/parser_NMEA.php<br>
+</p>
+<p>
+Example of use:<br />
+<code><pre class="devel">
+$response=parse_NMEA($line);
+if (!empty($response['type'])) // ONLY SHOW RECOGNIZED CHAINS
+{
+    switch ($response['type'])
+    {
+        case 'GPGGA':
+            if ($response['numsat']>=0)
+            {
+                echo "google's latitude ".$response['lat-google'];
+                echo "google's longitude ".$response['long-google'];
+                break 2;
+            }
+    }
+}
+</pre><br></code>
+</p></body></html>

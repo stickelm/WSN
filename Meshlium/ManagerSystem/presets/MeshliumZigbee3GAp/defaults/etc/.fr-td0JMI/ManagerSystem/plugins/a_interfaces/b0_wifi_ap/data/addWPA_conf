@@ -1,0 +1,1 @@
+        post-up /usr/sbin/hostapd -B /etc/hostapd/hostapd_ath0.conf

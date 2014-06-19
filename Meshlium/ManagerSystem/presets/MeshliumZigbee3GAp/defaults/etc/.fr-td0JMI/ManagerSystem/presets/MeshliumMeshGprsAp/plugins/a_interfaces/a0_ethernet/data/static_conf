@@ -1,0 +1,11 @@
+#dhcp no active 
+auto eth0 
+    iface eth0 inet static
+    address
+    netmask
+    gateway
+    dns-nameservers
+    broadcast
+
+
+

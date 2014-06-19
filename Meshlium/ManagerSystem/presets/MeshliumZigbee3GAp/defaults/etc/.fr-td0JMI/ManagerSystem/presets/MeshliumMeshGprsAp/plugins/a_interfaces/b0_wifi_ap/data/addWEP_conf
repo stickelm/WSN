@@ -1,0 +1,2 @@
+up iwpriv ath0 authmode 1
+pre-up iwconfig ath0 enc s:

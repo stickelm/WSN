@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>System check</title></head><body>
+<h1>System check</h1>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">parse_crypto ()</h2>
+<p>
+The function will return an array with the status of the ciphered partitions that can be on meshlium.
+</p>
+<p>
+File location: API/parser_crypto.php
+</p>
+<p>
+Example of use:<br />
+<code><pre class="devel">
+    echo print_r(parse_crypto(),true);
+</pre><br></code>
+</p>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">parse_hardware()</h2>
+<p>
+The function will return an array with information about hardware modules installed on meshlium.<br>
+This function can not recover information of modules connected over serial interface like zigbee.
+</p>
+<p>
+File location: API/parser_hardware.php
+</p>
+<p>
+Example of use:<br />
+<code><pre class="devel">
+    echo print_r(parse_hardware(),true);
+</pre><br></code>
+</p>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">parse_list_scan ( $interface )</h2>
+<p>
+The function will scan for wireless networks detected by a wifi interface.<br>
+The function will return an array with information about networks
+detected, the array contains the following information for each network:<br>
+<ul class="devel">
+  <li>id: Cell ID</li>
+  <li>mac: MAC of the AP.</li>
+  <li>essid: Essid of the network</li>
+  <li>mode: Network mode.</li>
+  <li>channel: Network channel.</li>
+  <li>quality: Quality of the link.</li>
+  <li>encr: Encription type of the network.</li>
+</ul>
+</p>
+<p>
+File location: API/parser_hardware.php<br>
+</p>
+<p>
+Example of use:<br />
+<code><pre class="devel">
+    $networks=parse_list_scan('ath0');
+    foreach ($networks as $network)
+    {
+        echo "Channel ".$network['channel']." for network ".$network['essid'];
+    }
+</pre><br></code>
+</p>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">proc_net_dev()</h2>
+<p>
+This function return information about the system interfaces parsed from /proc/net/dev.<br>
+The function will return an array with information of interfaces.<br>
+</p>
+<p>
+File location: API/parser_proc_net_dev.php
+</p>
+<p>
+Example of use:<br />
+<code><pre class="devel">
+    echo print_r(proc_net_dev(),true);
+    sleep(2);
+    echo print_r(proc_net_dev(),true);
+</pre><br></code>
+</p>
+</body></html>

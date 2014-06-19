@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>GPRS interface manipulation</title></head><body>
+<h1>GPRS interface manipulation</h1>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">parse_wvdial ( $filepath )</h2>
+<p>
+This function parses wvdial configuration files. The path to the file
+to parse should be specified with $filepath variable.<br>
+The function will return an array with wvdial configuration.
+</p>
+<p>
+File location: API/parser_wvdial.php
+</p>
+<p>
+Example of use:<br>
+</p>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">list_operators($readpath)</h2>
+<p>
+Libelium has merged information avaible on internet with the
+configuration parameters for different mobile companies in the world.
+list_operators loads on an array the avaible information needed to
+connect. The information about companies has been grouped by country,
+and contains operator name, APN, username, password and dns. Not all
+operators provide or need all the fields so some of them can be empty.<br>
+The function will return an array with the configuration of the
+operators file. The array will contain a list of the countries, the
+count of countries, and for each country a subarray with the count of
+operators, the name of the operators, and for each operator the apn,
+username, password and dns.<br>
+</p>
+<p>
+File location: API/list_operators.php
+</p>
+<p>
+Example of use:<br/>
+Just a call to the functions with the name of the file is needed.<br />
+<code>
+$data=list_operators($base_plugin.'data/operators.txt');<br>
+echo '&lt;pre&gt;'.print_r($data,true).'&lt;/pre&gt;';<br>
+</code>
+This code will produce the following output (Note that .. means that some data has been cut for display performance):<br>
+<code>
+</code>
+<pre class="devel">Array<br>(<br>    [list] =&gt; Australia//Austria//Belgium//Canada//..//Taiwan//Thailand//Turkey//UK//USA<br>    [count] =&gt; 36<br>    [Australia] =&gt; Array<br>        (<br>            [count] =&gt; 4<br>            [list] =&gt; Optus//Telstra//Three//Vodafone<br>            [Optus] =&gt; Array<br>                (<br>                    [apn] =&gt; internet<br>                    [username] =&gt; <br>                    [password] =&gt; <br>                    [dns] =&gt; 202.139.83.3, 192.65.91.129<br>                )<br><br>            [Telstra] =&gt; Array<br>                (<br>                    [apn] =&gt; telstra.internet<br>                    [username] =&gt; <br>                    [password] =&gt; <br>                    [dns] =&gt; 139.130.4.4, 203.50.170.2<br>                )<br><br>            ..<br><br>        )<br><br>    [Austria] =&gt; Array<br>        (<br>            [count] =&gt; 6<br>            [list] =&gt; Connect Austria//Max Online//Max Online Business//Max Online Metro//Mobilkom A1//Tele.Ring<br>            [Connect Austria] =&gt; Array<br>                (<br>                    [apn] =&gt; web.one.at<br>                    [username] =&gt; user specific<br>                    [password] =&gt; user specific<br>                    [dns] =&gt; 194.24.128.100, 194.24.128.102<br>                )<br><br>            [Max Online] =&gt; Array<br>                (<br>                    [apn] =&gt; gprsinternet<br>                    [username] =&gt; GPRS<br>                    [password] =&gt; <br>                    [dns] =&gt; 213.162.64.1, 213.162.64.2<br>                )<br>	..<br><br></pre><br>
+</p>
+<div class="cleaner"></div> <div class=" margin-onda_msystem">     <div style="background: #ededed; width: 90px; padding-right: 5px;"class="fright borde_simple borde_redondo_5">         <br>         <a  href="http://www.libelium.com/development/meshlium/msystem-index" class="fright" >             Back to top         </a>         <div class="engranaje_devel fright"></div>         <div class="cleaner"></div>         <br>     </div> </div> <div class="cleaner"></div> <div class="ondaSupp margin-onda_msystem2"></div> <h2 class="font_red grande">function save_gprs($post,$write_path='')</h2>
+<p>
+This function saves a wvdial configuration file with the content of an array. The array fields can be <br>
+
+Apache should be able to write on $save_file path or in the data folder
+within the plugin folder.<br>
+
+The does not have any return.<br>
+</p>
+<p>
+File location: API/save_gprs.php<br>
+</p>
+<p>
+Example of use:<br>
+<code>
+$data=jsondecode($_POST['form_fields']);<br>
+save_gprs($data);<br>
+</code>
+</p>
+</body></html>

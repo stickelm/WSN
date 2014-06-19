@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Input validation</title>
+</head><body>
+<h1>Input validation</h1>
+<h2>is_ip($ip)</h2>
+<p>
+This function check if the variable $ip contains a valid ip address.<br>
+The function will return true if $ip contains a valid ip address and
+false otherwise.
+</p>
+<p>
+File location: API/common_validators.php<br>
+</p>
+<p>
+Example of use:
+<code><pre>
+if(is_ip($ip))
+{
+    echo "IP address has been validated.";
+}
+else
+{
+    echo "IP address is not valid.";
+}
+</pre></code>
+</p>
+<h2>is_url($url)</h2>
+<p>
+This function check if $url contains a valid url address.<br>
+The function will return true if $url contains a valid url adress and
+false otherwise.<br>
+</p>
+<p>
+File location: API/common_validators.php<br>
+</p>
+<p>
+Example of use:
+<code><pre>
+if(is_url($url))
+{
+    echo "URL has been validated.";
+}
+else
+{
+    echo "URL is not valid.";
+}
+</pre></code>
+</p>
+<h2>is_mac($mac)</h2>
+<p>
+This function check if $mac contains a valid mac address.<br>
+The function will return true if $mac contains a valid mac adress and
+false otherwise.<br>
+</p>
+<p>
+File location: API/common_validators.php<br>
+</p>
+<p>
+Example of use:
+<code><pre>
+if(is_mac($mac))
+{
+    echo "MAC address has been validated.";
+}
+else
+{
+    echo "MAC address is not valid.";
+}
+</pre></code>
+</p>
+<h1>Server side form validation</h1>
+<p>To automatically validate forms, the file API/form_field_validators.php provide a set
+of functions that could be easily extended.</p>
+<h2>are_form_fields_valid ($post_data, $fields_check_types,$fileds_ms_ctes=Array())</h2>
+<p>This function will perform check actions provided on $fields_check_types over the form data received on $post_data.<br />
+As an option an array with information about the name of the error divs can be provided on the $fields_ms_ctes array.<br />
+This function will return true if all form fields pass the declared checks, false otherwise.</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+$fields_check_types = Array (
+          'username'  => Array ('ms_alnum','ms_mandatory'),
+          'password' => Array ('ms_mandatory'),
+          'cnf_password' => Array ('ms_mandatory')
+        );
+foreach (array_keys($fields_check_types) as $id)
+{
+    $fileds_ms_ctes[$id] = "error_field_$id";
+}
+return are_form_fields_valid ($post_data, $fields_check_types,$fields_ms_ctes);
+</pre></code>
+</p>
+<h2>is_filled ($field)</h2>
+<p>This function check if $field is not empty</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_filled($field))
+{
+    echo "Form field not empty.";
+}
+else
+{
+    echo "Form field empty.";
+}
+</pre></code>
+</p>
+<h2>is_numerical ($data)</h2>
+<p>This function check if $data only have numbers. No other character allowed.</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_numerical($data))
+{
+    echo "Form field is composed by numbers.";
+}
+else
+{
+    echo "Form field has not valid characters.";
+}
+</pre></code>
+</p>
+<h2>is_text ($data)</h2>
+<p>This function check if $data only contains letters</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_text($data))
+{
+    echo "Form field is composed by letters.";
+}
+else
+{
+    echo "Form field has not valid characters.";
+}
+</pre></code>
+</p>
+<h2>is_alnum ($data)</h2>
+<p>This function check if $data is only contains numbers and letters</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_alnum($data))
+{
+    echo "Form field is alphanumerical.";
+}
+else
+{
+    echo "Form field is not alphanumerical.";
+}
+</pre></code>
+</p>
+<h2>is_ip ($ip)</h2>
+<p>This function check if $ip is a valid ip address</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_ip($ip))
+{
+    echo "Form field is an ip address.";
+}
+else
+{
+    echo "Form field is not an ip address.";
+}
+</pre></code>
+</p>
+<h2>is_a_float($data)</h2>
+<p>This function check if $data is a float in decimal format.<br />
+For example, 10.2 or -2.2 will return true, but 10E-2 will return false.</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_a_float($data))
+{
+    echo "Form field is a float.";
+}
+else
+{
+    echo "Form field is not a float.";
+}
+</pre></code>
+</p>
+<h2>is_host ($host)</h2>
+<p>This function check if $host is a host.<br />A host can be a server name like www.libelium.com or an ip address, but not an url like http://www.libelium.com</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_host($host))
+{
+    echo "Form field is a host.";
+}
+else
+{
+    echo "Form field is not a host.";
+}
+</pre></code>
+</p>
+<h2>is_mac ($mac)</h2>
+<p>This function check if $mac is a MAC address</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_mac($mac))
+{
+    echo "Form field is a MAC address.";
+}
+else
+{
+    echo "Form field is not a MAC address.";
+}
+</pre></code>
+</p>
+<h2>is_subnet ($address)</h2>
+<p>This function check if $address is a ip address or a subnet.<br />Subnet should be in the format 192.168.1.0/24.</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_subnet($address))
+{
+    echo "Form field is valid.";
+}
+else
+{
+    echo "Form field is not valid.";
+}
+</pre></code>
+</p>
+<h2>is_url ($url)</h2>
+<p>This function check if $url is an URL address</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_url($url))
+{
+    echo "Form field contains an URL.";
+}
+else
+{
+    echo "Form field do not contain a valid URL.";
+}
+</pre></code>
+</p>
+<h2>is_email($email)</h2>
+<p>This function check if $email is an email address</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_email($email))
+{
+    echo "Form field is an email address.";
+}
+else
+{
+    echo "Form field is not an email address.";
+}
+</pre></code>
+</p>
+<h2>is_hex($data)</h2>
+<p>This function check if $data is a hexadecimal value</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_hex($data))
+{
+    echo "Form field is hexadecimal.";
+}
+else
+{
+    echo "Form field is not hexadecimal.";
+}
+</pre></code>
+</p>
+<h2>is_path($data)</h2>
+<p>This function check if $data is a path string. Note that only those characters are allowed:<br>
+Characters from 0 to 9, A to Z and a to z. And the symbols dot, underscore, minus, slash.
+</p>
+<p>File location:API/form_fields_check.php</p>
+<p>
+Example of use:
+<code><pre>
+if(is_path($data))
+{
+    echo "Form field is an allowed path.";
+}
+else
+{
+    echo "Form field is not an allowed path.";
+}
+</pre></code>
+</p>
+</body></html>

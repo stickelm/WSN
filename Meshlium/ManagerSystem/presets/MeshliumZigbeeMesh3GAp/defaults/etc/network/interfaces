@@ -1,0 +1,40 @@
+auto lo
+	iface lo inet loopback
+
+#dhcp active
+auto eth0
+iface eth0 inet dhcp
+
+auto ath0
+	iface ath0 inet static
+	address 10.10.10.1
+	netmask 255.255.255.0
+	dns-nameservers 8.8.8.8 8.8.4.4
+	broadcast 10.10.10.255
+	pre-up wlanconfig ath0 create wlandev wifi0 wlanmode ap
+	pre-up iwconfig ath0 essid meshlium
+	up iwpriv ath0 hide_ssid 0
+	pre-up iwconfig ath0 mode master
+	pre-up iwconfig ath0 channel 6
+	up iwpriv ath0 mode 11g
+	pre-up iwconfig ath0 txpower auto
+	pre-up iwconfig ath0 rate auto
+	up iwconfig ath0 txpower auto
+	up iwconfig ath0 rate auto
+
+auto ath1
+        iface ath1 inet static
+        address 10.10.11.1
+        netmask 255.255.255.0
+        dns-nameservers 8.8.8.8 8.8.4.4
+        broadcast 10.10.11.255
+        pre-up wlanconfig ath1 create wlandev wifi1 wlanmode adhoc
+        pre-up iwconfig ath1 essid meshlium-X
+        pre-up iwconfig ath1 ap AA:AA:AA:AA:AA:AA
+        up iwpriv ath1 hide_ssid 0
+        pre-up iwconfig ath1 mode ad-hoc
+        pre-up iwconfig ath1 channel 64
+        up iwpriv ath1 mode 11a
+        pre-up iwconfig ath1 txpower auto
+        pre-up iwconfig ath1 rate auto
+

@@ -1,0 +1,301 @@
+1º Descargar desde meshlium el fichero
+http://192.168.1.20/web/centro_instalacion/downloads/manager-system.tgz
+
+cd /tmp
+wget http://192.168.1.20/web/centro_instalacion/downloads/manager-system.tgz
+tar zxvf manager-system.tgz
+
+2º instalar el manager
+mkdir -p /mnt/lib/var/www
+cp -r /tmp/manager-system/meshlium/ /mnt/lib/var/www
+ln -s /mnt/lib/var/www/meshlium/ /var/www/meshlium
+chown -R www-data\: /mnt/lib/var/www/meshlium
+sed -i.bak 's/\$deactivated=true;/\$deactivated=false;/g' /mnt/lib/var/www/meshlium/plugins/system/format_encrypt/php/*.php
+rm /mnt/lib/var/www/meshlium/plugins/system/format_encrypt/php/*.bak
+
+3º Instalar los ficheros necesarios para que funcione el manager system:
+cd /tmp/manager-system/install
+chown root:root /tmp/manager-system/install/*
+cp crontab.load.sh gps_date.sh iperf.sh zigbee_log.sh ntpdate.sh wvdial.sh /etc/init.d
+cp usr_bin_wvdial.sh /usr/bin/wvdial.sh
+cp gps_parser.py /usr/bin
+cp lost_call_hilo pin_hilo sms-send /usr/bin
+cp etc_default_gpsd /etc/default/gpsd
+chmod 754 /etc/init.d/wvdial.sh
+
+4º Instalar las ejecuciones necesarias
+update-rc.d -f wvdial.sh remove
+update-rc.d wvdial.sh defaults 99
+update-rc.d gps_date.sh defaults 99
+update-rc.d ntpdate.sh defaults 99
+update-rc.d crontab.load.sh defaults 99
+update-rc.d iperf.sh defaults 99
+update-rc.d zigbee_log.sh defaults 99
+rm /etc/init.d/zigbee
+update-rc.d zigbee remove
+rm /etc/init.d/natd
+update-rc.d natd remove
+
+5º Instalar los modulos necesarios para que funcione el manager system
+a2enmod rewrite
+/etc/init.d/apache2 restart
+
+
+
+// NOTAS PARA NO USAR EL TGZ CON TODO INCLUIDO//
+
+copiar el manager system a /mnt/lib/var/www/meshlium
+
+ln -s /mnt/lib/var/www/meshlium meshlium
+
+chown -R www-data\: /mnt/lib/var/www/meshlium
+
+
+=== Importante tarjeta base ===
+
+1º copiar los ficheros sh del plugin apache a /etc/ssl/sh
+
+2º activar mod rewrite para ello:
+#> a2enmod rewrite
+Enabling module rewrite.
+Run '/etc/init.d/apache2 restart' to activate new configuration!
+#> /etc/init.d/apache2 stop
+Stopping web server: apache2 ... waiting .
+#> /etc/init.d/apache2 start
+Starting web server: apache2.
+
+
+== GPRS ==
+
+añadir el fichero wvdial.sh
+
+********
+#!/bin/bash
+
+/usr/bin/wvdial.sh 2>&1 >/dev/null &
+
+*************
+
+Crear el fichero /usr/bin/wvdial.sh
+
+#!/bin/bash
+. /etc/wvdial_pin.conf
+killall -s SIGTERM wvdial
+sleep 3
+/usr/bin/pin_hilo USB0 $pin 2>&1 >/dev/null
+sleep 3
+wvdial 2>&1 >/dev/null &
+
+********
+
+Si es necesario crear el fichero
+
+********
+meshLium-AX:~# chmod +x /usr/bin/wvdial.sh
+meshLium-AX:/etc/init.d# chmod +x wvdial.sh
+meshLium-AX:/etc/init.d# update-rc.d wvdial.sh defaults 99
+ Adding system startup for /etc/init.d/wvdial.sh ...
+   /etc/rc0.d/K99wvdial.sh -> ../init.d/wvdial.sh
+   /etc/rc1.d/K99wvdial.sh -> ../init.d/wvdial.sh
+   /etc/rc6.d/K99wvdial.sh -> ../init.d/wvdial.sh
+   /etc/rc2.d/S99wvdial.sh -> ../init.d/wvdial.sh
+   /etc/rc3.d/S99wvdial.sh -> ../init.d/wvdial.sh
+   /etc/rc4.d/S99wvdial.sh -> ../init.d/wvdial.sh
+   /etc/rc5.d/S99wvdial.sh -> ../init.d/wvdial.sh
+
+== GPSD Y GPS TIME ==
+
+Cambiar el fichero /etc/default/gpsd
+y poner esto:
+# Default settings for gpsd. This file is sourced from
+# /etc/init.d/gpsd.
+START_DAEMON="true"
+DAEMON_OPTS=""
+#DEVICES=`cat /var/www/meshlium/data/gps.usb`
+DEVICES="/dev/ttyUSB1"
+
+== Añadir al sistema ==
+==== Instalar ====
+octavio@saltamonte:~/php/pruebas_codigo/svn_pruebas_codigo/trunk/gps_parser_python$ scp date.sh root@instalacion:/etc/init.d/gps_date.sh
+
+octavio@saltamonte:~/php/pruebas_codigo/svn_pruebas_codigo/trunk/gps_parser_python$ scp gps_parser.py root@instalacion:/usr/bin
+gps_date.sh:
+****
+#!/bin/bash
+
+launch_gps_time=$(cat /etc/gps_time.conf |grep on|wc -l)
+if [ $launch_gps_time -gt 0 ] ; then
+    gpsd=$(ps -e |grep gpsd)
+    if [ -n "$gpsd" ] ; then
+        date=`gps_parser.py`
+        echo "date $date"
+    else
+        echo "gpsd not active"
+    fi
+else
+    echo "gps not configured to actualize date"
+fi
+****
+
+
+meshLium-AX:/etc/init.d# chmod +x /etc/init.d/gps_date.sh
+meshLium-AX:/etc/init.d# chmod +x /usr/bin/gps_parser.py
+meshLium-AX:/etc/init.d# update-rc.d gps_date.sh defaults 99
+ Adding system startup for /etc/init.d/gps_date.sh ...
+   /etc/rc0.d/K99gps_date.sh -> ../init.d/gps_date.sh
+   /etc/rc1.d/K99gps_date.sh -> ../init.d/gps_date.sh
+   /etc/rc6.d/K99gps_date.sh -> ../init.d/gps_date.sh
+   /etc/rc2.d/S99gps_date.sh -> ../init.d/gps_date.sh
+   /etc/rc3.d/S99gps_date.sh -> ../init.d/gps_date.sh
+   /etc/rc4.d/S99gps_date.sh -> ../init.d/gps_date.sh
+   /etc/rc5.d/S99gps_date.sh -> ../init.d/gps_date.sh
+
+
+
+==== NTPDATE ====
+****
+#!/bin/bash
+
+launch_ntp_time=$(cat /etc/ntp_time.conf |grep on|wc -l)
+if [ $launch_ntp_time -gt 0 ] ; then
+    ntpdate pool.ntp.org
+else
+    echo "ntpdate not configured to actualize date"
+fi
+****
+
+
+meshLium-AX:/etc/init.d# chmod +x /etc/init.d/ntpdate.sh
+meshLium-AX:/etc/init.d# update-rc.d ntpdate.sh defaults 99
+ Adding system startup for /etc/init.d/ntpdate.sh ...
+   /etc/rc0.d/K99ntpdate.sh -> ../init.d/ntpdate.sh
+   /etc/rc1.d/K99ntpdate.sh -> ../init.d/ntpdate.sh
+   /etc/rc6.d/K99ntpdate.sh -> ../init.d/ntpdate.sh
+   /etc/rc2.d/S99ntpdate.sh -> ../init.d/ntpdate.sh
+   /etc/rc3.d/S99ntpdate.sh -> ../init.d/ntpdate.sh
+   /etc/rc4.d/S99ntpdate.sh -> ../init.d/ntpdate.sh
+   /etc/rc5.d/S99ntpdate.sh -> ../init.d/ntpdate.sh
+
+
+==== Crontab ====
+********
+#!/bin/bash
+
+# load /etc/crontab.conf
+if [ -f /etc/crontab.conf ] ; then
+    crontab crontab.conf
+else
+    echo "No crontab.conf to load"
+    exit 1
+fi
+
+*****
+meshLium-AX:/etc/init.d# chmod +x crontab.load.sh
+meshLium-AX:/etc/init.d# ./crontab.load.sh
+No crontab.conf to load
+meshLium-AX:/etc/init.d# update-rc.d crontab.load.sh defaults 99
+ Adding system startup for /etc/init.d/crontab.load.sh ...
+   /etc/rc0.d/K99crontab.load.sh -> ../init.d/crontab.load.sh
+   /etc/rc1.d/K99crontab.load.sh -> ../init.d/crontab.load.sh
+   /etc/rc6.d/K99crontab.load.sh -> ../init.d/crontab.load.sh
+   /etc/rc2.d/S99crontab.load.sh -> ../init.d/crontab.load.sh
+   /etc/rc3.d/S99crontab.load.sh -> ../init.d/crontab.load.sh
+   /etc/rc4.d/S99crontab.load.sh -> ../init.d/crontab.load.sh
+   /etc/rc5.d/S99crontab.load.sh -> ../init.d/crontab.load.sh
+
+
+
+==== IPERF ====
+
+*************
+#!/bin/bash
+
+launch_iperf=$(cat /etc/iperf_server.conf |grep on|wc -l)
+if [ $launch_iperf -gt 0 ] ; then
+    iperf -s 2>&1 >/dev/null &
+else
+    killall -9 iperf
+fi
+
+*************
+
+meshLiumAX:/etc/init.d# chmod +x iperf.sh
+meshLiumAX:/etc/init.d# update-rc.d iperf.sh defaults 99
+ Adding system startup for /etc/init.d/iperf.sh ...
+   /etc/rc0.d/K99iperf.sh -> ../init.d/iperf.sh
+   /etc/rc1.d/K99iperf.sh -> ../init.d/iperf.sh
+   /etc/rc6.d/K99iperf.sh -> ../init.d/iperf.sh
+   /etc/rc2.d/S99iperf.sh -> ../init.d/iperf.sh
+   /etc/rc3.d/S99iperf.sh -> ../init.d/iperf.sh
+   /etc/rc4.d/S99iperf.sh -> ../init.d/iperf.sh
+   /etc/rc5.d/S99iperf.sh -> ../init.d/iperf.sh
+
+
+==== Zigbee_log ====
+
+*****
+#!/bin/bash
+if [ -f /etc/zigbee_log.conf ] ; then
+        . /etc/zigbee_log.conf
+        touch $path
+else
+        echo "Error configuration file not found"
+        exit 1
+fi
+
+if [ "x$exec" = "xtrue" ] ; then
+        squidBeeGW $port >> $path 2>&1 &
+else
+        echo "SquidBeeGW stopped"
+fi
+
+
+*****
+.conf
+********
+#!/bin/bash
+exec="true"
+port="S0"
+path="prueba/kk.345"
+********
+
+meshLiumAX:/var/www/ms2/plugins/services/zigbee_log/data# chmod +x /etc/init.d/zigbee_log.sh
+meshLiumAX:/var/www/ms2/plugins/services/zigbee_log/data# update-rc.d zigbee_log.sh defaults 99
+ Adding system startup for /etc/init.d/zigbee_log.sh ...
+   /etc/rc0.d/K99zigbee_log.sh -> ../init.d/zigbee_log.sh
+   /etc/rc1.d/K99zigbee_log.sh -> ../init.d/zigbee_log.sh
+   /etc/rc6.d/K99zigbee_log.sh -> ../init.d/zigbee_log.sh
+   /etc/rc2.d/S99zigbee_log.sh -> ../init.d/zigbee_log.sh
+   /etc/rc3.d/S99zigbee_log.sh -> ../init.d/zigbee_log.sh
+   /etc/rc4.d/S99zigbee_log.sh -> ../init.d/zigbee_log.sh
+   /etc/rc5.d/S99zigbee_log.sh -> ../init.d/zigbee_log.sh
+
+
+
+
+== Limpieza del sistema ==
+====Desinstalar los ficheros ====
+meshLiumAX:/var/www/ms2/plugins/services/zigbee_log/data# rm /etc/init.d/zigbee
+meshLiumAX:/var/www/ms2/plugins/services/zigbee_log/data# update-rc.d zigbee remove
+ Removing any system startup links for /etc/init.d/zigbee ...
+   /etc/rc0.d/K20zigbee
+   /etc/rc1.d/K20zigbee
+   /etc/rc2.d/S20zigbee
+   /etc/rc3.d/S20zigbee
+   /etc/rc4.d/S20zigbee
+   /etc/rc5.d/S20zigbee
+   /etc/rc6.d/K20zigbee
+
+
+
+
+meshLium-AX:/etc/init.d# rm natd
+meshLium-AX:/etc/init.d# update-rc.d natd remove
+ Removing any system startup links for /etc/init.d/natd ...
+   /etc/rc0.d/K20natd
+   /etc/rc1.d/K20natd
+   /etc/rc2.d/S20natd
+   /etc/rc3.d/S20natd
+   /etc/rc4.d/S20natd
+   /etc/rc5.d/S20natd
+   /etc/rc6.d/K20natd

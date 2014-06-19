@@ -1,0 +1,33 @@
+/* This file is part of the plugin skeleton for Meshlium manager system. */
+#plugin_main_div{
+    text-align:left;
+}
+#plugin_content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:15px;
+    padding:15px;
+    overflow:auto;
+    overflow: visible;
+}
+.title{
+    color:#FFFFFF;
+    background-color:#E35C50;
+    text-transform:uppercase;
+    padding:3px 15px;
+    font-size:13px;
+}
+.title2{
+    color:#E35C50;
+    margin-top:15px;
+    margin-left:35px;
+    font-weight:bold;
+}
+#evolution_graph{
+   /* background-color:#ACADAF;*/
+}
+#labels_div{
+    width:600px;
+    margin:30px;
+    min-height:100px;
+}

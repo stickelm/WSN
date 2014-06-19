@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Meshlium Manager System 2.0 instalation</title>
+</head><body>
+<h1>Meshlium Manager System 2.0 instalation</h1>
+<h2>Introduction</h2>
+<p>The following document describes how to download, install or delete
+Meshlium Manager System 2.0. Our aim is to provide a portable Open
+Source Manager System so we hope to complete this guide with
+information for installing on several architectures and distributions,
+but right now this document references to Meshlium architecture and
+Debian distribution, but as usual on linux distributions this
+instalation can be ported to any linux distribution without much work.<br>
+</p>
+<h2>How to get Meshlium Manager System 2.0</h2>
+<p>Meshlium manager system can be dowloaded as a tar.gz file with all
+the contents needed, or as a .deb package for debian systems.
+</p>
+<h3>Download source code</h3>
+<p>Click here to download Meshlium Manager System as a .tar.gz file.</p>
+<h3>Download .deb package</h3>
+<p>Click here to download Meshlium Manager System as a .deb package.</p>
+<h3>License</h3>
+<p>Rellenar cuando lo hable con alicia.</p>
+<h2>How to install Meshlium Manager System 2.0</h2>
+<p>This program is free software: you can redistribute it and/or
+modify&nbsp; it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 2 of the
+License, or&nbsp; (at your option) any later version. <br>
+This program is distributed in the hope that it will be useful,&nbsp;
+but WITHOUT ANY WARRANTY; without even the implied warranty of&nbsp;
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&nbsp; See
+the&nbsp; GNU General Public License for more details.<br>
+You should have received a copy of the GNU General Public License along
+with this program.&nbsp; If not, see
+<a href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>
+</p>
+<h3>Hardware dependencies.</h3>
+<p>As told before, Meshlium Manager System 2.0 has been developed and
+tested on <a href="http://www.meshlium.com">Meshlium</a> architecture.
+Meshlium architecture is x86 based. So Meshlium Manager System should
+work on any x86 32bit Debian.
+</p>
+<p>Some of the base plugins are developed to work with some of the
+Meshlium components and it's particularities, if your install on a non
+Mehslium machine some plugins may not work propertly. Fortunatly you
+can modify plugins to work with your hardware and contribute to
+community with plugins adapted to different hardware. The plugin
+structure of Meshlium Manager System make it easy to add, modify or
+study plugins.</p>
+<h3>Minimum requirements.</h3>
+<p>The instalation of Meshlium Manager system requires Apache and PHP5
+mod installed and running. Probably Meshlium Manager System should
+works on other web servers that support PHP5 like Lighttpd.
+</p>
+<h3>Decompress and instalation.</h3>
+<p>Once the tar.gz file has been downloaded, those are the steps needed
+to install Meshlium Manager System:</p>
+<ul>
+  <li>Open a terminal and navigate to the path that contains the
+Meshlium Manager System 2.0 tar.gz file.</li>
+  <li>To decompress the file execute:</li>
+  <code>tar zxvf filename.tar.gz</code>
+  <li>Move the uncompressed data to a path that can be read by apache
+daemon. For example to /var/www</li>
+  <code>sudo mv path_to_the_folder /var/ww</code>
+  <li>Change ownership to www-data</li>
+  <code>sudo chown -R www-data:www-data /var/www/folder_name</code>
+  <li>Open firefox and point web browser to load the folder.</li>
+  <code>http://localhost/folder_name</code>
+</ul>
+<h3>Tunning sytem to work with Meshlium Manager System 2.0</h3>
+<p>Meshlium Manager System 2.0 usually has to change system files. To
+make it possible you can add www-data to sudoers and configure it for
+no password need. This can be a security hole. So be sure web
+application on server are secure before doing it.</p>
+<h3>How to download a virtual machine that works with Manager System 2.0</h3>
+<p>A Debian Lenny virtual machine will be released with Meshlium
+Manager System 2.0 installed on it, so any user may try the Meshlium
+Manager System 2.0 and develop over it.
+</p>
+<h2>How to delete Meshlium Manager System 2.0 from a machine</h2>
+<p>To delete Meshlium Manager System 2.0 from the system the folder
+containing Meshlium Manager System 2.0 should be removed and any change
+made to system files should be reverted.
+</p>
+<h3>Folder's to remove</h3>
+<p>Remove folder containing Meshlium Manager System 2.0. If you have
+changed ownership to www-data you may need to remove folder as root. So
+the user that will remove the folder should be on sudoers list.</p>
+<code>sudo rm -rf /var/www/folder_name</code>
+<h3>Remove system modifications after instalation.</h3>
+<p>Revert changes made to sudoers file if needed. (We recomend the use
+of visudo for this)</p>
+<code>Remove following line:<br />
+%www-data ALL=NOPASSWD: /var/www/meshlium/bin/</code>
+<h2>How to contribute to Open Source Router Web Manager proyect.</h2>
+<p>Meshlium Manager System 2.0 has been configured and tested to work on Meshlium, No se muy bien que poner aqui....</p>
+<h3>How to contribute with ports to other architectures</h3>
+<p>Open Source Router Web Manager has been tested to work with <a href="http://www.meshlium.com/">Meshlium</a> but can be ported to other
+architectures. Modifications needed to make Open Source Router Web Manager works on
+other systems can be submited and will be avaible for download with Meshlium Manager System.</p>
+<h3>How to contribute with new plugins</h3>
+<p>
+Router services management is usually hardware dependent. That makes that each router and distribution needs it's own plugins, or need to make modifications to plugins to work with different hardware vendors.
+</p>
+<p>
+I you develop or modify a plugin you can submit it to share it with the community.
+</p>
+<p>
+Plugins will be avaible in diferent stages (stable and testing) and will be sorted by architecture or distribution too.
+</p>
+<h3>How to contribute with code improvements</h3>
+<p>
+Open Source Router Web Manager code is avaible for download.
+Probably you will find code improvemnts or security patches. You can
+report/submit all the stuff you find to improveOpen Source Router Web Manager stability and performance. <br>
+</p>
+<h3>How to contribute with translations</h3>
+<p>
+English is the defaul language for Open Source Router Web Manager. You can help community with tranlations to other languages. <br>
+</p>
+</body></html>

@@ -1,0 +1,16 @@
+auto ath1
+        iface ath1 inet static
+        address
+        netmask
+        dns-nameservers
+        broadcast
+        pre-up wlanconfig ath1 create wlandev wifi1 wlanmode adhoc
+        pre-up iwconfig ath1 essid
+        pre-up iwconfig ath1 ap
+        up iwpriv ath1 hide_ssid 0
+        pre-up iwconfig ath1 mode ad-hoc
+        pre-up iwconfig ath1 channel
+        up iwpriv ath1 mode
+        pre-up iwconfig ath1 txpower
+        pre-up iwconfig ath1 rate
+

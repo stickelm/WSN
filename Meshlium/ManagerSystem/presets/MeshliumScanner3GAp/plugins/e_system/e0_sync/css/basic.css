@@ -1,0 +1,132 @@
+/* This file is part of the plugin skeleton for Meshlium manager system. */
+.click
+{
+    cursor:pointer;
+}
+#plugin_main_div{
+    text-align:left;
+}
+#plugin_main_div h2{
+    color:#E35C50;
+    font-weight:bold;
+}
+#plugin_main_div h3{
+    color:#444444;
+    font-weight:bold;
+    text-transform:capitalize;
+}
+.advice{
+    color:#AAAAAA;
+    font-family:Arial,Verdana,sans-serif;
+    font-size:9px;
+}
+.plugin_content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:15px;
+    padding:15px;
+    overflow:auto;
+    color:#444444;
+}
+.plugin_content label{
+    color:#444444;
+}
+.first_row{
+    width:180px;
+}
+.table_label{
+    width:240px;
+}
+.title{
+    color:#FFFFFF;
+    background-color:#E35C50;
+    text-transform:uppercase;
+    padding:3px 15px;
+    font-size:13px;
+}
+.title2{
+    color:#E35C50 !important;
+}
+.pl1{
+    font-size:14px;
+    margin-left:5px;
+}
+.pl{
+    font-size:14px;
+    margin-top:20px;
+    margin-left:5px;
+}
+.ss{
+    padding-top:20px;
+}
+.nl{
+    padding-left:25px;
+}
+.right_align{
+    float:right;
+    margin-right:15px;
+}
+
+.btext{
+    color:#444444;
+}
+
+select
+{
+    width: 122px;
+}
+
+input[type='text']
+{
+    width: 122px;
+}
+
+input[type='button'] {
+-moz-border-radius-bottomleft:4px;
+-moz-border-radius-bottomright:4px;
+-moz-border-radius-topleft:4px;
+-moz-border-radius-topright:4px;
+background:#dedede;
+border: 1.5px solid #898989;
+color:#343434;
+cursor:pointer;
+/*height:20px;
+width:90px;*/
+padding: 1px 3px;
+    }
+
+input[type='button'].bsave{
+background:#555555;
+color: white;
+}
+input[type='button']:hover{
+    color:#FFFFFF;
+    background-color:#777777;
+}
+
+#plugin_main_div select {
+background-color:#FFFFFF;
+border:2px solid #AAAAAA;
+font-family:Arial,Verdana,sans-serif;
+font-size:11px;
+font-size-adjust:none;
+font-stretch:normal;
+font-style:normal;
+font-variant:normal;
+font-weight:normal;
+line-height:normal;
+margin:3px;
+padding:3px;
+}
+
+.error
+{
+    border-color: #E2594D !important;
+    border-width:2px !important;
+    background:#F49A92 !important;
+}
+
+.disabled
+{
+    background: #cdcdcd !important;
+}

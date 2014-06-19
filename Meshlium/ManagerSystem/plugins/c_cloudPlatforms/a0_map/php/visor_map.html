@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Waspmote Properties Editor</title>
+	<link rel="stylesheet" href="styles.css">
+
+	<!--
+	<link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/nihilo/nihilo.css">
+	-->
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css">	
+</head>
+<body>
+	<div id="container">
+	<div id="containerl">
+		<!--<form action="" id="waspmote-properties">
+			<h2>Waspmote Properties</h2>
+			<fieldset>
+				<label for="wasp_id">Waspmote Id:</label><input type="text" name="wasp_id"><br />
+				<label for="name">Name:</label><input type="text" name="name"><br />
+				<label for="description">Description:</label><input type="text" name="description"><br />
+				<label for="x">Longitude:</label><input type="text" id="waspmote_x" name="x">
+				<label for="y">Latitude:</label><input type="text" id="waspmote_y" name="y"><br />
+			</fieldset>		
+		</form>-->
+		<div id="map-info">(info)</div>
+		<div id="map-container">
+		<div id="map-target"></div>
+		<div id="controls">
+			<ul>
+				<li id="topo">Topographic</li>
+				<li id="streets" class="selected">StreetMap</li>
+				<li id="hybrid">Images</li>
+			</ul>
+			<div id="search"></div>
+			<div class="clear"></div>
+		</div>
+		<div id="map">
+		</div>
+		</div>
+	</div></div>
+	<script>var dojoConfig = { parseOnLoad: true, locale:"en" };</script>
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/"></script>
+    <script>
+    	var config = 
+    	{
+    		center: [-3.9552, 40.3035],
+    		zoom: 5,
+    		meshliumUrl: 'http://2.139.174.70:11111/meshlium/rest/services/Libelium/FeatureServer'
+    	}
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+s=`cat /mnt/lib/.info/restarts`
+total=`expr 1 + $s`
+echo $total > /mnt/lib/.info/restarts
+remountro
+shutdown -r 0
+

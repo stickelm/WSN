@@ -1,0 +1,81 @@
+/* This file is part of the plugin skeleton for Meshlium manager system. */
+#plugin_main_div{
+    text-align:left;
+}
+#plugin_content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:15px;
+    padding:15px;
+    overflow:auto;
+    overflow: visible;
+}
+.title{
+    color:#FFFFFF;
+    background-color:#E35C50;
+    text-transform:uppercase;
+    padding:3px 15px;
+    font-size:13px;
+}
+.title2{
+    color:#E35C50;
+    margin-top:15px;
+    margin-left:35px;
+    font-weight:bold;
+}
+#evolution_graph{
+    background-color:#ACADAF;
+}
+#labels_div{
+    width:600px;
+    margin:30px;
+    min-height:100px;
+}
+input[type="button"]{
+    cursor:pointer;
+}
+
+.information{color:#444444;margin-top:20px}
+
+.main_table{width:700px;}
+
+.fleft{float: left;}
+.cleaner{clear: both;}
+
+.bar_graph{border: 1px solid black; width: 100px; height: 20px; padding: 0px;}
+.bar_graph_inner{margin: 0px; height: 20px; padding: 0px;}
+
+td.limited{width:150px}
+
+.bg_red {background: red;}
+.bg_yellow {background: orange;}
+.bg_green {background: green;}
+
+.mleft10{margin-left: 10px;}
+.mright10{margin-right: 10px;}
+
+
+
+.percent_bar {
+background:#CDCDCD none repeat scroll 0 0;
+border:1px solid #454545;
+height:18px;
+width:100px;
+}
+
+.small_font {
+font-size:9px;
+}
+
+.percent_progres {
+color:black;
+font-weight:bold;
+height:18px;
+}
+
+.glass_bar {
+background:transparent url(../images/glass_bar.png) repeat scroll 0 -1px;
+height:17px;
+
+position:absolute;
+}

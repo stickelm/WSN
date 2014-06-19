@@ -1,0 +1,281 @@
+.data_check_failed{
+    background-color:#EE8779 !important;
+}
+.ms_cte{
+    color:#E35C50;
+}
+.click
+{
+    cursor:pointer;
+}
+#plugin_main_div{
+    text-align:left;
+}
+#plugin_main_div h2{
+    color:#E35C50;
+    font-weight:bold;
+}
+#plugin_main_div h3{
+    color:#444444;
+    font-weight:bold;
+    text-transform:capitalize;
+}
+.advice{
+    color:#AAAAAA;
+}
+
+.plugin_content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:15px;
+    padding:15px;
+    overflow:auto;
+    color:#444444;
+}
+.plugin_content label{
+    color:#444444;
+    padding-right:10px;
+}
+.first_row{
+    width:180px;
+}
+
+.plugin_content label{
+    color:#444444;
+    padding-right:10px;
+}
+.plugin_content input[type="text"]{
+    width:120px;
+    text-align:right;
+}
+.plugin_content select{
+    width:120px;
+    text-align:right;
+}
+.title{
+    color:#FFFFFF;
+    background-color:#E35C50;
+    text-transform:uppercase;
+    padding:3px 15px;
+    font-size:13px;
+}
+.title2{
+    color:#E35C50;
+    margin-top:15px;
+    margin-left:35px;
+    font-weight:bold;
+}
+.pl1{
+    font-size:14px;
+    margin-left:5px;
+}
+.pl{
+    font-size:14px;
+    margin-top:20px;
+    margin-left:5px;
+}
+.ss{
+    padding-top:20px;
+}
+.nl{
+    padding-left:25px;
+}
+.right_align{
+    float:right;
+    margin-right:15px;
+}
+.bsave{
+    cursor:pointer;
+    margin:5px;
+    color:#FFFFFF;
+    background-color:#555555;
+    border-top-style:solid;
+    border-top-color:#999999;
+    border-bottom-style:solid;
+    border-bottom-color:#444444;
+    border-left-style:solid;
+    border-left-color:#999999;
+    border-right-style:solid;
+    border-right-color:#444444;
+}
+.bsave:hover{
+    color:#FFFFFF;
+    background-color:#777777;
+}
+.btext{
+    color:#444444;
+}
+
+#zigbee_log_content{
+    min-height:50px;
+    background-color:#FFFFFF;
+    border:#AAAAAA 1px solid;
+    margin-top:25px;
+}
+
+
+/* ------------------- */
+
+
+h3.alarm{color: #D21929 !important; text-decoration: blink; font-size: 14px; text-align: center;}
+
+select
+{
+    width: 122px;
+}
+
+input[type='text']
+{
+    width: 122px;
+}
+
+.file
+{
+    background: url(../images/file.png);
+    display:inline-block;
+    height:25px;
+    width:23px;
+}
+
+.fileEdit
+{
+    background: url(../images/fileEdit.png);
+    display:inline-block;
+    height:25px;
+    width:23px;
+}
+
+.itemSelected
+{
+    background: #E66557;
+    cursor: pointer;
+}
+
+.item
+{
+    padding: 3px;
+    margin: 0 0 1px 0;
+    -moz-border-radius: 3px;
+    cursor: pointer;
+}
+
+button.disabled
+{
+    cursor: default;
+}
+
+button.disabled:hover
+{
+    cursor: default;color:#343434;background:#DEDEDE;
+}
+
+.fileListSM
+{
+    width: 200px; height: 300px; overflow: auto; background: white; border: 1px solid #787878; -moz-border-radius: 3px;padding: 5px;float: left;
+}
+
+
+.fileListBG
+{
+    width: 200px; height: 430px; overflow: auto; background: white; border: 1px solid #787878; -moz-border-radius: 3px;padding: 5px;float: left;
+}
+
+.DBConnection
+{
+    width: 200px; height: 395px; overflow: auto; background: white; border: 1px solid #787878; -moz-border-radius: 3px;padding: 5px;float: left;
+}
+
+.tab
+{
+    cursor: pointer;
+    color:#343434;
+    background:#DEDEDE;
+    border: 1px solid #898989;
+    border-bottom: 0px;
+    -moz-border-radius-topleft:8px;
+    -moz-border-radius-topright:8px;
+    padding: 4px 8px;
+    margin-right: 1px;
+    float: left;
+}
+
+.selectedTab
+{
+    background:#eeeeee;
+
+}
+
+iframe
+{
+    border:0 none;
+    height:100%;
+    margin:0;
+    padding:0;
+    width:100%;
+    font-size: 13px;
+}
+
+.running
+{
+    background: url(../images/running.png);
+    float:left;
+    height:20px;
+    width:24px;
+}
+
+input[type="password"] {
+width:122px;
+}
+
+#plugin_main_div input[type="password"] {
+background-color:#FFFFFF;
+border:1px solid #AAAAAA;
+font-family:Arial,Verdana,sans-serif;
+font-size:11px;
+margin:3px;
+padding:3px;
+}
+
+
+#plugin_content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:15px;
+    padding:15px;
+    overflow:auto;
+}
+#tab1content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:0 15px 15px 15px;
+    padding:15px;
+    overflow:auto;
+}
+#tab2content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:0 15px 15px 15px;
+    padding:15px;
+    overflow:auto;
+}
+#tab3content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:0 15px 15px 15px;
+    padding:15px;
+    overflow:auto;
+}
+#tab4content{
+    background-color:#EEEEEE;
+    border:#AAAAAA 1px solid;
+    margin:0 15px 15px 15px;
+    padding:15px;
+    overflow:auto;
+}
+
+
+#dRunning {width: 15px; height: 15px; background: url(../images/drunning.png);float: left; margin-right: 6px;}
+#dStopped {width: 15px; height: 15px; background: url(../images/dstopped.png);float: left; margin-right: 6px;}
+#daemonStatus{padding: 3px 10px; margin-right: 15px; background: #eeeeee; float: right;border: 1px solid #898989; -moz-border-radius: 4px;}
+#changeDaemonStatus {cursor: pointer; }
+#changeDaemonStatus:hover {text-decoration: underline;}
