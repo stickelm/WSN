@@ -17,6 +17,12 @@ Lastly, we need to write the changed configuration into Xbee memory
 
     ATWR
 
+## Running Program At Background
+
+For example, the below command will run the java program `sensorParser.jar` at the background without displaying any error messages or output to the terminal screen even after user logout the terminal.
+
+    nohup java -jar /bin/sensorParser.jar >/dev/null 2>&1 &
+
 # Problem and Solution
 
 The meshlium router software has some bugs and we need to rectify those bugs by using the below solutions.
