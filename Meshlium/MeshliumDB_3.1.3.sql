@@ -124,6 +124,16 @@ CREATE TABLE `meshlium` (
 SET character_set_client = @saved_cs_client;
 
 --
+-- Dumping data for table `meshlium`
+--
+
+LOCK TABLES `meshlium` WRITE;
+/*!40000 ALTER TABLE `meshlium` DISABLE KEYS */;
+INSERT INTO `meshlium` VALUES (1,'meshlium-a','Meshlium at Section A',103.771750156521,1.2988867609735,4326,'2014-06-16 07:23:40');
+/*!40000 ALTER TABLE `meshlium` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sensorParser`
 --
 
