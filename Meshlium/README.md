@@ -48,9 +48,9 @@ For example, the below command will run the java program `sensorParser.jar` at t
 
 The meshlium router software has some bugs (such as display Spanish words instead of English in the API call, wrong regular expression in the php code etc). 
 
-The updated/corrected (ESRI API code](https://github.com/xianlin/WSN/tree/master/Meshlium/ESRI-ArcGIS-API)
+The updated/corrected [ESRI API code](https://github.com/xianlin/WSN/tree/master/Meshlium/ESRI-ArcGIS-API)
 
-The updated/corrected (Manager Web GUI code]()
+The updated/corrected [Manager Web GUI code]()
 
 
 There are some other minor problems we need to fix by using the below solutions.
