@@ -83,6 +83,7 @@ Due to huge amount of sensor measurement data, the database of `MeshliumDB` shou
     vim /etc/mysql/debian.cnf
     # start mysql server
     /etc/init.d/mysql start
+    # create / copy necessary user name and password
 
 Moving DB is a bit tricky if you encoutered other issues. Just Goolge to find those solutions.
 
