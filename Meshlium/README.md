@@ -64,3 +64,26 @@ Some of the meshlium router may experience time drift after running OS for a whi
     */10 * * * * /usr/sbin/ntpdate -s ntp.comp.nus.edu.sg
 
 
+#### Move MySQL Database Directory (datadir)
+
+Due to huge amount of sensor measurement data, the database of `MeshliumDB` should be located to a larget disk or directory. If you want to move it on the fly, we should follow this guide:
+
+    /etc/init.d/mysql stop
+    mkdir /mnt/user/mysql
+    # or
+    rm  /mnt/user/mysql/* -rf
+    # copy database files
+    cp -pr /var/lib/mysql/mysql /mnt/user/mysql
+    cp -pr /var/lib/mysql/MeshliumDB /mnt/user/mysql/
+    cp -pr /var/lib/mysql/macaddress /mnt/user/mysql/
+    # change datadir parameter    
+    vim /etc/mysql/my.cnf
+    datadir         = /mnt/user/mysql
+    # update debian-sys-maint password at the new dir
+    vim /etc/mysql/debian.cnf
+    # start mysql server
+    /etc/init.d/mysql start
+
+Moving DB is a bit tricky if you encoutered other issues. Just Goolge to find those solutions.
+
+
