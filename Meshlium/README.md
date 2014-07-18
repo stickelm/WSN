@@ -64,6 +64,43 @@ Some of the meshlium router may experience time drift after running OS for a whi
     */10 * * * * /usr/sbin/ntpdate -s ntp.comp.nus.edu.sg
 
 
+#### Upgrade MySQL from 5.0 to 5.1 in Debian 5.0
+
+[Reference Website 1](http://www.monkeedev.co.uk/blog/2009/03/23/installing-mysql-51-on-debian-and-ubuntu-using-apt/)
+
+[Reference Website 2](https://forum.linode.com/viewtopic.php?t=6530%3E)
+
+    # You need to disable the read-only file system by issuing the below command
+    mount -n -o remount /
+    # Stop Mysql
+    /etc/init.d/mysql stop
+    
+    vi /etc/apt/sources.list 
+    # change to the below format
+    deb http://archive.debian.org/debian/ lenny main contrib non-free
+    deb http://security.debian.org/ testing/updates main contrib non-free
+    deb http://archive.debian.org/debian-archive/backports.org lenny-backports main
+    # Custom repositories
+    deb http://www.voyage.hk/dists/0.6 ./
+    
+    #save the file 
+    apt-get update 
+    apt-get -t lenny-backports install mysql-server-5.1
+    
+    # Add the package information so you get updates: 
+     nano /etc/apt/preferences 
+     
+     Add: 
+     Package: * 
+     Pin: release a=lenny-backports 
+     Pin-Priority: 200 
+     
+    # Then you can edit /etc/mysql/my.cnf to disable "skip-bdb"
+    vi /etc/mysql/my.cnf
+    # put a # in front of skip-bdb
+    # Start Mysql
+    /etc/init.d/mysql start
+
 #### Move MySQL Database Directory (datadir)
 
 Due to huge amount of sensor measurement data, the database of `MeshliumDB` should be located to a larget disk or directory. If you want to move it on the fly, we should follow this guide:
