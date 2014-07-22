@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>NUS Testing Map</title>
+    <style>
+      #map-canvas {
+	width: 1200px;
+	height: 520px;   
+      }
+
+      #lat_lng_display{
+	padding-top: 25px;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+// This example uses a GroundOverlay to place an image on the map
+// showing some building floors in the NUS, Singapore.
+
+  var customIcons = {
+      waspmote: {
+        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png'
+      },
+      gateway: {
+        icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png'
+      }
+    };
+
+function initialize() {
+
+  var nus_center = new google.maps.LatLng(1.298796, 103.772143);
+  var imageBounds_I3_02 = new google.maps.LatLngBounds(
+      new google.maps.LatLng(1.291936, 103.775114),
+      new google.maps.LatLng(1.292843, 103.776310));
+  var imageBounds_E4_06 = new google.maps.LatLngBounds(
+      new google.maps.LatLng(1.2982600, 103.7714118),
+      new google.maps.LatLng(1.2992000, 103.7726933));
+  var mapOptions = {
+    zoom: 19,
+    center: nus_center,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  var overlayOpts = {
+	opacity:0.3
+  };
+  var location_Marker = new google.maps.Marker({
+    position: nus_center,
+    draggable: true
+  });
+  
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  var infoWindow = new google.maps.InfoWindow;
+
+  google.maps.event.addListener(location_Marker, 'dragend', function(evt){
+    document.getElementById('lat_lng_display').innerHTML = '<p>Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(6) + ' Current Lng: ' + evt.latLng.lng().toFixed(6) + '</p>';
+  });
+  
+  google.maps.event.addListener(location_Marker, 'dragstart', function(evt){
+    document.getElementById('lat_lng_display').innerHTML = '<p>Currently dragging marker...</p>';
+  });
+
+      downloadUrl("meshliuma.ami-lab.org/sensor/",function(data) {
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        for (var i = 0; i < markers.length; i++) {
+          var name = markers[i].getAttribute("name");
+          var type = "waspmote";
+          var point = new google.maps.LatLng(1.298987,103.771727);
+              //parseFloat(markers[i].getAttribute("lat")),
+              //parseFloat(markers[i].getAttribute("lng")));
+          var html = "<b>" + name + "</b> <br/>" + type;
+          var icon = customIcons[type] || {};
+          var marker = new google.maps.Marker({
+            map: map,
+            position: point,
+            icon: icon.icon
+          });
+          bindInfoWindow(marker, map, infoWindow, html);
+        }
+      });
+
+      function bindInfoWindow(marker, map, infoWindow, html) {
+      google.maps.event.addListener(marker, 'click', function() {
+        infoWindow.setContent(html);
+        infoWindow.open(map, marker);
+      });
+      }
+
+      function downloadUrl(url, callback) {
+      var request = window.ActiveXObject ?
+          new ActiveXObject('Microsoft.XMLHTTP') :
+          new XMLHttpRequest;
+
+      request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+          request.onreadystatechange = doNothing;
+          callback(request, request.status);
+        }
+      };
+
+    request.open('GET', url, true);
+      request.send(null);
+    }
+
+    function doNothing() {}
+
+  i3_02_Overlay = new google.maps.GroundOverlay(
+      'I3-02.png',
+      imageBounds_I3_02, overlayOpts);
+  i3_02_Overlay.setMap(map);
+
+  E4_06_Overlay = new google.maps.GroundOverlay(
+      'E4-06.png',
+     imageBounds_E4_06, overlayOpts);
+  E4_06_Overlay.setMap(map);
+
+  location_Marker.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+    <div id="lat_lng_display">Nothing yet...</div>
+  </body>
+</html>
