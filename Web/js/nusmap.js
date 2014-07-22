@@ -1,41 +1,33 @@
-// This example uses a GroundOverlay to place an image on the map
-// showing some building floors in the NUS, Singapore.
+$(document).ready(function() {
+var nus_center = new google.maps.LatLng(1.298796, 103.772143); //Google map Coordinates
+var map;
+map_initialize(); // load map
 
-/*
-    var customIcons = {
-      waspmote: {
-        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png'
-      },
-      gateway: {
-        icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png'
-      }
-    };
-*/
+function map_initialize() {
 
-  function initialize() {
-
-  var nus_center = new google.maps.LatLng(1.298796, 103.772143);
-  var imageBounds_I3_02 = new google.maps.LatLngBounds(
-      new google.maps.LatLng(1.291936, 103.775114),
-      new google.maps.LatLng(1.292843, 103.776310));
-  var imageBounds_E4_06 = new google.maps.LatLngBounds(
-      new google.maps.LatLng(1.2982600-200/10000000, 103.7714118-200/10000000),
-      new google.maps.LatLng(1.2992000-200/10000000, 103.7726933-200/10000000));
-  var mapOptions = {
+ var mapOptions = {
     zoom: 20,
     center: nus_center,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    panControl: true,
+    zoomControl: true, //enable zoom control
+    zoomControlOptions: {
+    style: google.maps.ZoomControlStyle.SMALL //zoom control size
+    },
+    scaleControl: true, // enable scale control
+    mapTypeId: google.maps.MapTypeId.ROADMAP // google map type
   };
   var overlayOpts = {
     opacity:0.3
   };
-  var location_Marker = new google.maps.Marker({
+
+  map = new google.maps.Map(document.getElementById('nus_map'), mapOptions);
+
+
+  location_Marker = new google.maps.Marker({
     position: nus_center,
     draggable: true
   });
-
-  var map = new google.maps.Map(document.getElementById('nus_map'),
-      mapOptions);
+  location_Marker.setMap(map);
 
   google.maps.event.addListener(location_Marker, 'dragend', function(evt){
     document.getElementById('lat_lng_display').innerHTML = '<p>Marker dropped:<br/>Current Lat: ' + evt.latLng.lat().toFixed(6) + '<br/>Current Lng: ' + evt.latLng.lng().toFixed(6) + '</p>';
@@ -45,75 +37,94 @@
     document.getElementById('lat_lng_display').innerHTML = '<p>Currently dragging marker...</p>';
   });
 
-  var infoWindow = new google.maps.InfoWindow;
-  // icon url details: https://developers.google.com/chart/image/docs/gallery/dynamic_icons#scalable_pins
-  // var iconBase = 'http://chart.apis.google.com/chart?chst=d_map_spin&chld=0.7|0|D9D61A|11.5|_|';
-  var iconBase = 'http://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld=';
+  var imageBounds_I3_02 = new google.maps.LatLngBounds(
+      new google.maps.LatLng(1.291936, 103.775114),
+      new google.maps.LatLng(1.292843, 103.776310));
+  var imageBounds_E4_06 = new google.maps.LatLngBounds(
+      new google.maps.LatLng(1.2982600-200/10000000, 103.7714118-200/10000000),
+      new google.maps.LatLng(1.2992000-200/10000000, 103.7726933-200/10000000));
   
-  downloadUrl("proxy.php",function(data) {
-        var xml = data.responseXML;
-        var markers = xml.documentElement.getElementsByTagName("marker");
-        for (var i = 0; i < markers.length; i++) {
-          var name = markers[i].getAttribute("name");
-          var point = new google.maps.LatLng(
-              parseFloat(markers[i].getAttribute("lat")),
-              parseFloat(markers[i].getAttribute("lng")));
-          var bat = markers[i].getAttribute("BAT");
-          var huma = markers[i].getAttribute("HUMA");
-          var lum = markers[i].getAttribute("LUM");
-          var mcp = markers[i].getAttribute("MCP");
-          var dust = markers[i].getAttribute("DUST");
-          var tca = markers[i].getAttribute("TCA");
-          var time = markers[i].getAttribute("time");
-          var marker = new google.maps.Marker({
-            map: map,
-            position: point,
-            icon: iconBase + name + '|16|DD0606|flag|16|DD0606|CBC9C9'
-          });
-          var html = "<b>" + name + "</b> <br/>Battery: " + bat + "%" 
-                    + "<br/>Humidity: " + huma + "%" + "<br/>Luminosity: " + lum + "%" 
-                    + "<br/>Noise: " + mcp + "dBm" + "<br/>Dust: " + dust + "ppB" 
-                    + "<br/>Temperature: " + tca + "&degC" + "<br/>Time: " + time;
-          bindInfoWindow(marker, map, infoWindow, html);
-        }
-  });
-   
-    function bindInfoWindow(marker, map, infoWindow, html) {
-      google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.setContent(html);
-        infoWindow.open(map, marker);
-      });
-    }
-
-    function downloadUrl(url, callback) {
-      var request = window.ActiveXObject ?
-          new ActiveXObject('Microsoft.XMLHTTP') :
-          new XMLHttpRequest;
-
-      request.onreadystatechange = function() {
-        if (request.readyState == 4) {
-          request.onreadystatechange = doNothing;
-          callback(request, request.status);
-        }
-      };
-
-      request.open('GET', url, true);
-      request.send(null);
-    }
-
-    function doNothing() {}
-
-  i3_02_Overlay = new google.maps.GroundOverlay(
+  var i3_02_Overlay = new google.maps.GroundOverlay(
       '/img/I3-02.png',
       imageBounds_I3_02, overlayOpts);
   i3_02_Overlay.setMap(map);
 
-  E4_06_Overlay = new google.maps.GroundOverlay(
+  var E4_06_Overlay = new google.maps.GroundOverlay(
       '/img/E4-06.png',
      imageBounds_E4_06, overlayOpts);
   E4_06_Overlay.setMap(map);
 
-  location_Marker.setMap(map);
+
+ //Load Markers from the XML File
+    $.get("proxy.php", function (data) {
+        $(data).find("marker").each(function () {
+            //Get user input values for the marker from the form
+            var name = $(this).attr('name');
+            var point = new google.maps.LatLng(parseFloat($(this).attr('lat')),parseFloat($(this).attr('lng')));
+            var bat = $(this).attr('BAT');
+            var huma = $(this).attr('HUMA');
+            var lum = $(this).attr('LUM');
+            var mcp = $(this).attr('MCP');
+            var dust = $(this).attr('DUST');
+            var tca = $(this).attr('TCA');
+            var time = $(this).attr('time');
+
+            //call create_marker() function for xml loaded maker
+            create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, false, false, false, "/img/pin_green.png");
+        });
+    });
+ 
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+
+//############### Create Marker Function ##############
+function create_marker(MapPos, MapTitle, Bat, Huma, Lum, Mcp, Dust, Tca, Time, InfoOpenDefault, DragAble, Removable, iconPath)
+{
+    //new marker
+    var marker = new google.maps.Marker({
+        position: MapPos,
+        map: map,
+        draggable:DragAble,
+        animation: google.maps.Animation.DROP,
+        title:MapTitle,
+        icon: iconPath
+    });
+
+    //Content structure of info Window for the Markers
+    var contentString = $('<div class="marker-info-win">'+
+    '<div class="marker-inner-win"><span class="info-content">'+
+    '<h1 class="marker-heading">'+MapTitle+'</h1>'+
+    'Battery: ' + Bat + '%<br/>' + 'Humidity: ' + Huma + '%<br/>' +
+    '</span><button name="daily-marker" class="daily-marker" title="Daily Reading">Daily Reading</button>'+
+    '</div></div>');
+
+    //Create an infoWindow
+    var infowindow = new google.maps.InfoWindow();
+    //set the content of infoWindow
+    infowindow.setContent(contentString[0]);
+
+    //Find daily button in infoWindow
+    var dailyBtn   = contentString.find('button.daily-marker')[0];
+
+   //Find weekly button in infoWindow
+    var weeklyBtn     = contentString.find('button.weekly-marker')[0];
+
+    //add click listner to daily marker button
+    google.maps.event.addListener(dailyBtn, "click", function() {
+        //call daily_marker function to display the daily sensor reading
+        daily_marker(marker);
+    });
+
+    //add click listner to save marker button
+    google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker); // click on marker opens info window
+    });
+
+    if(InfoOpenDefault) //whether info window should be open by default
+    {
+      infowindow.open(map,marker);
+    }
+}
+
+
+});
