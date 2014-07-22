@@ -5,21 +5,23 @@
     <meta charset="utf-8">
     <title>NUS Testing Map</title>
     <style>
-      #map-canvas {
-	width: 1200px;
-	height: 520px;   
-      }
+    #map-canvas {
+        width: 1200px;
+        height: 520px;
+    }
 
-      #lat_lng_display{
-	padding-top: 25px;
-      }
+    #lat_lng_display{
+        padding-top: 25px;
+    }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    
     <script>
 // This example uses a GroundOverlay to place an image on the map
 // showing some building floors in the NUS, Singapore.
 
-  var customIcons = {
+/*
+    var customIcons = {
       waspmote: {
         icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png'
       },
@@ -27,70 +29,82 @@
         icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png'
       }
     };
+*/
 
-function initialize() {
+  function initialize() {
 
   var nus_center = new google.maps.LatLng(1.298796, 103.772143);
   var imageBounds_I3_02 = new google.maps.LatLngBounds(
       new google.maps.LatLng(1.291936, 103.775114),
       new google.maps.LatLng(1.292843, 103.776310));
   var imageBounds_E4_06 = new google.maps.LatLngBounds(
-      new google.maps.LatLng(1.2982600, 103.7714118),
-      new google.maps.LatLng(1.2992000, 103.7726933));
+      new google.maps.LatLng(1.2982600-200/10000000, 103.7714118-200/10000000),
+      new google.maps.LatLng(1.2992000-200/10000000, 103.7726933-200/10000000));
   var mapOptions = {
-    zoom: 19,
+    zoom: 20,
     center: nus_center,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var overlayOpts = {
-	opacity:0.3
+    opacity:0.3
   };
   var location_Marker = new google.maps.Marker({
     position: nus_center,
     draggable: true
   });
-  
+
   var map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
-
-  var infoWindow = new google.maps.InfoWindow;
 
   google.maps.event.addListener(location_Marker, 'dragend', function(evt){
     document.getElementById('lat_lng_display').innerHTML = '<p>Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(6) + ' Current Lng: ' + evt.latLng.lng().toFixed(6) + '</p>';
   });
-  
+
   google.maps.event.addListener(location_Marker, 'dragstart', function(evt){
     document.getElementById('lat_lng_display').innerHTML = '<p>Currently dragging marker...</p>';
   });
 
-      downloadUrl("meshliuma.ami-lab.org/sensor/",function(data) {
+  var infoWindow = new google.maps.InfoWindow;
+  // icon url details: https://developers.google.com/chart/image/docs/gallery/dynamic_icons#scalable_pins
+  // var iconBase = 'http://chart.apis.google.com/chart?chst=d_map_spin&chld=0.7|0|D9D61A|11.5|_|';
+  var iconBase = 'http://chart.googleapis.com/chart?chst=d_simple_text_icon_above&chld=';
+  
+  downloadUrl("proxy.php",function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
         for (var i = 0; i < markers.length; i++) {
           var name = markers[i].getAttribute("name");
-          var type = "waspmote";
-          var point = new google.maps.LatLng(1.298987,103.771727);
-              //parseFloat(markers[i].getAttribute("lat")),
-              //parseFloat(markers[i].getAttribute("lng")));
-          var html = "<b>" + name + "</b> <br/>" + type;
-          var icon = customIcons[type] || {};
+          var point = new google.maps.LatLng(
+              parseFloat(markers[i].getAttribute("lat")),
+              parseFloat(markers[i].getAttribute("lng")));
+          var bat = markers[i].getAttribute("BAT");
+          var huma = markers[i].getAttribute("HUMA");
+          var lum = markers[i].getAttribute("LUM");
+          var mcp = markers[i].getAttribute("MCP");
+          var dust = markers[i].getAttribute("DUST");
+          var tca = markers[i].getAttribute("TCA");
+          var time = markers[i].getAttribute("time");
           var marker = new google.maps.Marker({
             map: map,
             position: point,
-            icon: icon.icon
+            icon: iconBase + name + '|16|DD0606|flag|16|DD0606|CBC9C9'
           });
+          var html = "<b>" + name + "</b> <br/>Battery: " + bat + "%" 
+                    + "<br/>Humidity: " + huma + "%" + "<br/>Luminosity: " + lum + "%" 
+                    + "<br/>Noise: " + mcp + "dBm" + "<br/>Dust: " + dust + "ppB" 
+                    + "<br/>Temperature: " + tca + "&degC" + "<br/>Time: " + time;
           bindInfoWindow(marker, map, infoWindow, html);
         }
-      });
-
-      function bindInfoWindow(marker, map, infoWindow, html) {
+  });
+   
+    function bindInfoWindow(marker, map, infoWindow, html) {
       google.maps.event.addListener(marker, 'click', function() {
         infoWindow.setContent(html);
         infoWindow.open(map, marker);
       });
-      }
+    }
 
-      function downloadUrl(url, callback) {
+    function downloadUrl(url, callback) {
       var request = window.ActiveXObject ?
           new ActiveXObject('Microsoft.XMLHTTP') :
           new XMLHttpRequest;
@@ -102,19 +116,19 @@ function initialize() {
         }
       };
 
-    request.open('GET', url, true);
+      request.open('GET', url, true);
       request.send(null);
     }
 
     function doNothing() {}
 
   i3_02_Overlay = new google.maps.GroundOverlay(
-      'I3-02.png',
+      '/img/I3-02.png',
       imageBounds_I3_02, overlayOpts);
   i3_02_Overlay.setMap(map);
 
   E4_06_Overlay = new google.maps.GroundOverlay(
-      'E4-06.png',
+      '/img/E4-06.png',
      imageBounds_E4_06, overlayOpts);
   E4_06_Overlay.setMap(map);
 
@@ -123,10 +137,13 @@ function initialize() {
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
-    </script>
+ </script>
+  
   </head>
+  
   <body>
     <div id="map-canvas"></div>
     <div id="lat_lng_display">Nothing yet...</div>
   </body>
+  
 </html>
