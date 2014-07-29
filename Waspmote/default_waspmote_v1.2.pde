@@ -1,10 +1,9 @@
 /*  
  *  ------ Wireless Sensor Network Test Bed  -------- 
  *  
- *  This program is used to get measurement data by using Smart City board sensors 
- *  and send the data to a Meshlium gateway via XBee 802.15.4 module.
- *  It also supports Libelium Over The Air Programming (OTA) features.
- *  The time interval is set to about 1 minute including 59 seconds listening to OTAP request
+ *  Explanation: This program is used to get data using Smart City board sensors 
+ *               and send the data to a meshlium via XBee module.
+ *               It also supports Over The Air Programming (OTA) using XBee modules
  *   
  *  Version:           0.1 
  */
@@ -18,7 +17,7 @@
 packetXBee* packet; 
 
 // Destination MAC address, change it to the XBee MAC_ADDRESS on the Meshlium Gateway
-char* MAC_ADDRESS="0013A200413H4932";
+char* MAC_ADDRESS="0013A450403756F4";
 
 // Initialize sensor variables
 float temperature = 0.0;
@@ -29,7 +28,7 @@ float humidity = 0;
 
 // define Authentication Key and Mote ID for OTAP Purpose
 #define key_access "LIBELIUM"
-#define id_mote "WASPMOTE00000A02"
+#define id_mote "WASPMOTE00000A09"
 
 void setup()
 {
@@ -83,10 +82,10 @@ void loop()
   ////////////////////////////////////////////////
 
   // 3.1 Create new frame
-  frame.createFrame(ASCII, "A02");
+  frame.createFrame(ASCII, "A09");
   
   // 3.2 Add frame fields
-  frame.addSensor(SENSOR_STR, "sensor reading");  
+  frame.addSensor(SENSOR_STR, "#NID:A09");  
 
   frame.addSensor(SENSOR_TCA, temperature);
   frame.addSensor(SENSOR_DUST, dust);
@@ -124,8 +123,7 @@ void loop()
   xbee802.sendXBee(packet);
 
   // 4.4 Check TX flag
-  // if the frame sent successfully, it will print "OK" on serial monitor and turn on the yellow LED for 1s 
-  // Or it will print "error" and no LED turns on
+  // if the frame sent successfully, it will print "OK" on serial monitor and turn on the yellow LED for 1s // Or it will print "error" and no LED turns on
   if( xbee802.error_TX == 0 ) 
   {
     USB.println(F("ok"));
@@ -146,9 +144,9 @@ void loop()
   // 5 time control and check OTAP
   ////////////////////////////////////////////////
   
-  // OTAP window for 59 times (about 50 seconds) with LED blinking for 500ms
+  // OTAP window for 250 times (about 5 minutes) with LED blinking for 500ms
   int i=0;
-  for(i=0; i<59; i++)
+  for(i=0; i<250; i++)
   {
       // Check if new data is available
   if( xbee802.available() )
