@@ -2,6 +2,7 @@ $(document).ready(function() {
 var nus_center = new google.maps.LatLng(1.298796, 103.772143); //Google map Coordinates
 var map;
 var infowindow;
+var heatmap;
 map_initialize(); // load map
 
 function map_initialize() {
@@ -22,7 +23,22 @@ function map_initialize() {
   };
 
   map = new google.maps.Map(document.getElementById('nus_map'), mapOptions);
+  
+  heatmap = new HeatmapOverlay(map, {
+        "radius":20,
+        "visible":true, 
+        "opacity":60
+  });
 
+  var tcaData={
+        max: 100,
+        data: [{lat: 1.298978, lng:103.771715, count: 95},{lat: 1.298952, lng:103.771671, count: 70},{lat: 1.298921, lng:103.771692, count: 65},{lat: 1.298921, lng:103.771738, count: 55}]
+    };
+ 
+  google.maps.event.addListenerOnce(map, "idle", function(){
+    // this is important, because if you set the data set too early, the latlng/pixel projection doesn't work
+        heatmap.setDataSet(tcaData);
+  });
 
   location_Marker = new google.maps.Marker({
     position: nus_center,
@@ -46,18 +62,18 @@ function map_initialize() {
       new google.maps.LatLng(1.2992000-200/10000000, 103.7726933-200/10000000));
 
  var i3_02_Overlay = new google.maps.GroundOverlay(
-      '/img/I3-02.png',
+      '/wsn/img/I3-02.png',
       imageBounds_I3_02, overlayOpts);
   i3_02_Overlay.setMap(map);
 
   var E4_06_Overlay = new google.maps.GroundOverlay(
-      '/img/E4-06.png',
+      '/wsn/img/E4-06.png',
      imageBounds_E4_06, overlayOpts);
   E4_06_Overlay.setMap(map);
 
 
  //Load Markers from the XML File
-    $.get("proxy.php?url=meshliuma.ami-lab.org/sensors/", function (data) {
+    $.get("http://meshliuma.ami-lab.org/sensors/", function (data) {
         $(data).find("sensor").each(function () {
             //Get user input values for the marker from the form
             var name = $(this).attr('name');
@@ -71,7 +87,7 @@ function map_initialize() {
             var time = $(this).attr('time');
 
             //call create_marker() function for xml loaded maker
-            create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, false, false, false, "/img/pin_green.png");
+            create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, false, false, false, "/wsn/img/pin_green.png");
         });
     });
 
@@ -112,10 +128,25 @@ function create_marker(MapPos, MapTitle, Bat, Huma, Lum, Mcp, Dust, Tca, Time, I
     var drawMcpBtn = contentString.find('button.draw-mcp')[0];
     var drawDustBtn = contentString.find('button.draw-dust')[0];
     
-    google.maps.event.addDomListener(drawTcaBtn, 'click', function(event) {
-       ajaxChart(marker,'hour','tca');
+    google.maps.event.addDomListener(drawBatBtn, 'click', function(event) {
+       ajaxChart(marker,'hour','bat');
     });
-          
+    google.maps.event.addDomListener(drawHumaBtn, 'click', function(event) {
+       ajaxChart(marker,'hour','huma');
+    });
+     google.maps.event.addDomListener(drawTcaBtn, 'click', function(event) {
+       ajaxChart(marker,'hour','tca');
+    });    
+    google.maps.event.addDomListener(drawLumBtn, 'click', function(event) {
+       ajaxChart(marker,'hour','lum');
+    });
+    google.maps.event.addDomListener(drawMcpBtn, 'click', function(event) {
+       ajaxChart(marker,'hour','mcp');
+    });
+    google.maps.event.addDomListener(drawDustBtn, 'click', function(event) {
+       ajaxChart(marker,'hour','dust');
+    });
+    
     /*
     var updateBtn   = contentString.find('button.update-marker')[0];
    
@@ -167,7 +198,7 @@ function update_marker(Marker)
 
 function ajaxChart(Marker,freq,type) {
     var sname = Marker.getTitle();
-    var qUrl = "http://xianlin.ami-lab.org/proxy.php?url=meshliuma.ami-lab.org/sensors/" + sname + "/" + freq + "/" + type + "/";
+    var qUrl = "http://meshliuma.ami-lab.org/sensors/" + sname + "/" + freq + "/" + type + "/";
     $.ajax({
         url: qUrl,
         dataType: "xml",
@@ -248,7 +279,8 @@ var options = {
 };
 
 var ctx = $("#chart").get(0).getContext("2d"); 
-new Chart(ctx).Line(data, options);
+var myLineChart = new Chart(ctx).Line(data, options);
+console.dir(myLineChart);
 
 }
 

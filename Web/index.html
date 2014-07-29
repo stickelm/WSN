@@ -4,9 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    <link href="/css/nusmap.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="/js/nusmap.js"></script>
-        <title>NUS Testing Map</title>
+    <link href="/wsn/css/nusmap.css" rel="stylesheet" type="text/css">
+    <title>NUS Testing Map</title>
   </head>
   
   <body>
@@ -14,6 +13,12 @@
     <div align="center">Click to Show The Sensor Data</div>
     <div id="nus_map"></div>
     <div id="lat_lng_display">Nothing yet...</div>
+    <div ><canvas id="chart" width="1000" height="400"></canvas></div>
+    <script type="text/javascript" src="/wsn/js/Chart.js"></script>
+    <script type="text/javascript" src="/wsn/js/heatmap.js"></script>
+    <script type="text/javascript" src="/wsn/js/heatmap-gmaps.js"></script>
+    <script type="text/javascript" src="/wsn/js/test.js"></script>
+
   </body>
   
 </html>

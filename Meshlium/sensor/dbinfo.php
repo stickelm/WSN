@@ -1,5 +1,6 @@
 <?php
 $username="username";
-$password="password";
-$database="dbname";
+$passwd="password";
+$dbname="database";
+$dbhost="meshliuma.ami-lab.org";
 ?>
