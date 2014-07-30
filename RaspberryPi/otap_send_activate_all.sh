@@ -18,7 +18,7 @@ done
 NOTES
 
 # scan all available nodes and loop doing tasks
-./otap -scan_nodes --mode BROADCAST |  grep "Node" | awk -F "-" '{print $2,$3,$4;}' | awk '{print $2,$3;}' | \
+./otap -scan_nodes --mode BROADCAST --time 30 |  grep "Node" | awk -F "-" '{print $2,$3,$4;}' | awk '{print $2,$3;}' | \
 while read i
 do
     mac=$(echo $i | awk '{print $1;}') # e.g. 0013a200408bcec5
