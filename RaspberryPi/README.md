@@ -1,10 +1,12 @@
 # Setup Guide
 
-# optional install
-# dyndns ddclient installed and configured
-# sudo apt-get install vim
 
 sudo apt-get install python-mysqldb
+
+### other optional install
+
+* install dyndns ddclient and configurartion
+* install vim
 
 sudo apt-get install librxtx-java
 # This command will install the raspberry pi compatible librxtxSerial.so inside /usr/lib/jni and a RXTXcomm.jar inside /usr/share/java/RXTXcomm.jar
