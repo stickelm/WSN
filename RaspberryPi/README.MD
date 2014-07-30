@@ -58,7 +58,10 @@ for(i=0; i<250; i++)
 ./otap -send --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name" --file "file_name.hex"
 ./otap -delete_program --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name"
 
-# Scripts Automat Get_boot_list and delete all program
+# Scripts automate broadcast scan nodes and list mac address and waspmote id, pid
+./otap -scan_nodes --mode BROADCAST |  grep "Node" | awk -F "-" '{print $2,$3,$4;}' | awk '{print $2,$3,$4;}'
+
+# Scripts Automate Get_boot_list and delete all program
 ./otap -get_boot_list --mode UNICAST --mac "remote_sensor_mac" | grep "PID" | sed -e "s/.*PID:\([A-Za-z0-9]\{7\}\).*/\1/" | \
 while read i
 do
