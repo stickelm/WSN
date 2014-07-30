@@ -8,78 +8,86 @@ sudo apt-get install python-mysqldb
 * install dyndns ddclient and configurartion
 * install vim
 
-sudo apt-get install librxtx-java
-# This command will install the raspberry pi compatible librxtxSerial.so inside /usr/lib/jni and a RXTXcomm.jar inside /usr/share/java/RXTXcomm.jar
-# When you run your application you need to tell java that it needs to use /usr/lib/jni as the java.library.path by passing the java command line option -Djava.library.path=/usr/lib/jni
+    
+This command will install the raspberry pi compatible librxtxSerial.so inside /usr/lib/jni and a RXTXcomm.jar inside /usr/share/java/RXTXcomm.jar
 
+When you run your application you need to tell java that it needs to use /usr/lib/jni as the java.library.path by passing the java command line option -Djava.library.path=/usr/lib/jni
+
+    sudo apt-get install librxtx-java
 
 ### OTAP SETUP
 
-# copy OTAP program zip file over and unzip
+Copy OTAP program zip file over and unzip
 
-# xbee.conf file in the OTAP directory
-port = /dev/ttyUSB0
-auth_key = LIBELIUM
-panID = 0x3332
-xbeeModel = 802.15.4
-channel = 0x0C
-encryption = off
-encryptionKey = 1234567890123456
-# name of the file where discarded data goes
-#discardedDataFile = data.txt
-# Waspmote version
-WaspmoteVersion = 12
+xbee.conf file in the OTAP directory
 
-vim otap # change to the below code
-java -Djava.library.path=/usr/lib/jni/ -jar otap.jar $@
+    port = /dev/ttyUSB0
+    auth_key = LIBELIUM
+    panID = 0x3332
+    xbeeModel = 802.15.4
+    channel = 0x0C
+    encryption = off
+    encryptionKey = 1234567890123456
+    # name of the file where discarded data goes
+    #discardedDataFile = data.txt
+    # Waspmote version
+    WaspmoteVersion = 12
 
-chmod a+x otap
-./otap -scan_nodes --mode BROADCAST
+
+Change OTAP script to the below code
+ 
+    vim otap
+    java -Djava.library.path=/usr/lib/jni/ -jar otap.jar $@
+    chmod a+x otap
+    ./otap -scan_nodes --mode BROADCAST
 
 
 ### Waspmote Code
 
-# Change below lines for each sensor ID
-define id_mote "WASPMOTE00000A09"
-...
-frame.createFrame(ASCII, "A09");
-...
-frame.addSensor(SENSOR_STR, "#NID:A09");
-...
+Change below lines for each sensor ID
 
-# Optional: Change OTAP window time slot, change the number
-for(i=0; i<250; i++)
+    define id_mote "WASPMOTE00000A09"
+    ...
+    frame.createFrame(ASCII, "A09");
+    ...
+    frame.addSensor(SENSOR_STR, "#NID:A09");
+    ...
+    # Optional: Change OTAP window time slot, change the number
+    for(i=0; i<250; i++)
 
-# Compile the code and find hex file at 'C:\Users\user\Documents\Waspmote\OTA-FILES' directory (you can change the Hex file name), copy to otap directory on the pi.
-.\pscp.exe file.hex pi@domain.com:/home/pi/otap/
-
-
-# Get boot list from remote sensor, first scan for the available sensor and mac address
-./otap -scan_nodes --mode BROADCAST
-./otap -get_boot_list --mode UNICAST --mac "remote_sensor_mac"
-
-# Send File & Delete File
-./otap -send --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name" --file "file_name.hex"
-./otap -delete_program --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name"
-
-# Scripts automate broadcast scan nodes and list mac address and waspmote id, pid
-./otap -scan_nodes --mode BROADCAST |  grep "Node" | awk -F "-" '{print $2,$3,$4;}' | awk '{print $2,$3,$4;}'
-
-# Scripts Automate Get_boot_list and delete all program
-./otap -get_boot_list --mode UNICAST --mac "remote_sensor_mac" | grep "PID" | sed -e "s/.*PID:\([A-Za-z0-9]\{7\}\).*/\1/" | \
-while read i
-do
-./otap -delete_program --mode UNICAST --mac "remote_sensor_mac" --pid $i
-done
+Compile the code and find hex file at 'C:\Users\user\Documents\Waspmote\OTA-FILES' directory (you can change the Hex file name), copy to otap directory on the pi.
+    
+    .\pscp.exe file.hex pi@domain.com:/home/pi/otap/
 
 
+Get boot list from remote sensor, first scan for the available sensor and mac address
+
+    ./otap -scan_nodes --mode BROADCAST
+    ./otap -get_boot_list --mode UNICAST --mac "remote_sensor_mac"
+
+Send File & Delete File
+
+    ./otap -send --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name" --file "file_name.hex"
+    ./otap -delete_program --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name"
+
+Scripts automate broadcast scan nodes and list mac address and waspmote id, pid
+
+    ./otap -scan_nodes --mode BROADCAST |  grep "Node" | awk -F "-" '{print $2,$3,$4;}' | awk '{print $2,$3,$4;}'
+
+Scripts Automate Get_boot_list and delete all program
+
+    ./otap -get_boot_list --mode UNICAST --mac "remote_sensor_mac" | grep "PID" | sed -e "s/.*PID:\([A-Za-z0-9]\{7\}\).*/\1/" | \
+    while read i
+    do
+    ./otap -delete_program --mode UNICAST --mac "remote_sensor_mac" --pid $i
+    done
 
 ### Python Parse and Update to MySQL DB
 
-vim python_parse
+    vim python_parse
 
-#!/bin/bash
-#
-nohup python /mnt/user/sensorparser_python/main.py >/dev/null 2>&1 &
+    #!/bin/bash
+    #
+    nohup python /mnt/user/sensorparser_python/main.py >/dev/null 2>&1 &
 
-chmod a+x python_parse
+    chmod a+x python_parse
