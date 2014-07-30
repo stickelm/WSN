@@ -28,6 +28,6 @@ do
     # echo "$mac, $pid, $file" # debugging
     ./otap -send --mode UNICAST --mac $mac --pid $pid -file $file
     ./otap -get_boot_list --mode UNICAST --mac $mac
-    ./otap -start_new_program --mode UNICAST --mac $mac --pid $file
+    ./otap -start_new_program --mode UNICAST --mac $mac --pid $pid
     #Loop to the next wasmpte
 done
