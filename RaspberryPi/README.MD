@@ -51,11 +51,12 @@ for(i=0; i<250; i++)
 
 
 # Get boot list from remote sensor, first scan for the available sensor and mac address
-./otap -scan_node --mode BROACAST
+./otap -scan_node --mode BROADCAST
 ./otap -get_boot_list --mode UNICAST --mac "remote_sensor_mac"
 
-# Send File
+# Send File & Delete File
 ./otap -send --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name" --file "file_name.hex"
+./otap -delete_program --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name"
 
 # Run File
 
