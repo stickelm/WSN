@@ -1,9 +1,9 @@
 ## Package Installation On Raspberry Pi
 
-* install python mysql module `sudo apt-get install python-mysqldb`
-* install minicom serial port tool `sudo apt-get install minicom`
-* install serial port python module `sudo apt-get install librxtx-java`
-
+* install python mysql module `sudo apt-get install python-mysqldb`.
+* install minicom serial port tool `sudo apt-get install minicom`.
+* install serial port python module `sudo apt-get install librxtx-java`.
+    
     This command will install the raspberry pi compatible `librxtxSerial.so` inside `/usr/lib/jni` and a `RXTXcomm.jar` inside `/usr/share/java/RXTXcomm.jar`.
 
     When you run your application you need to tell java that it needs to use `/usr/lib/jni` as the `java.library.path` by passing the java command line option `-Djava.library.path=/usr/lib/jni`.
@@ -62,7 +62,8 @@ Send File & Delete File:
 
 Change the [waspmote example code](https://github.com/xianlin/WSN/blob/master/Waspmote/default_waspmote_v1.2.pde) as per your waspmote ID and OTAP window length:
 
-    
+    char* MAC_ADDRESS="0015B201409236EA";
+    ...
     define id_mote "WASPMOTE00000A09"
     ...
     frame.createFrame(ASCII, "A09");
