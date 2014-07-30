@@ -1,6 +1,7 @@
 ## Package Installation On Raspberry Pi
 
 * install python mysql module `sudo apt-get install python-mysqldb`
+* install minicom serial port tool `sudo apt-get install minicom`
 * install serial port python module `sudo apt-get install librxtx-java`
 
     This command will install the raspberry pi compatible `librxtxSerial.so` inside `/usr/lib/jni` and a `RXTXcomm.jar` inside `/usr/share/java/RXTXcomm.jar`.
@@ -61,6 +62,7 @@ Send File & Delete File:
 
 Change the [waspmote example code](https://github.com/xianlin/WSN/blob/master/Waspmote/default_waspmote_v1.2.pde) as per your waspmote ID and OTAP window length:
 
+    
     define id_mote "WASPMOTE00000A09"
     ...
     frame.createFrame(ASCII, "A09");
@@ -69,6 +71,13 @@ Change the [waspmote example code](https://github.com/xianlin/WSN/blob/master/Wa
     ...
     # Optional: Change OTAP window time slot, change the number
     for(i=0; i<250; i++)
+
+In case you want to check the serial number of the XBee connnected to the pi, you can use `minicom` program to enter the [XBee command mode](http://www.digi.com/support/kbase/kbaseresultdetl?id=2205) and issue [AT commands](http://examples.digi.com/wp-content/uploads/2012/07/XBee_ZB_ZigBee_AT_Commands.pdf):
+
+    ATSH
+    15A300
+    ATSL
+    579256E9
 
 Compile the code and find the compiled HEX file at `C:\Users\user\Documents\Waspmote\OTA-FILES` directory (you can change the Hex file name), copy to otap directory on the pi using `pscp.exe`:
     
