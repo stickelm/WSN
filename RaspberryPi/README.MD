@@ -58,7 +58,13 @@ for(i=0; i<250; i++)
 ./otap -send --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name" --file "file_name.hex"
 ./otap -delete_program --mode UNICAST --mac "remote_sensor_mac" --pid "7_digit_pid_name"
 
-# Run File
+# Scripts Automat Get_boot_list and delete all program
+./otap -get_boot_list --mode UNICAST --mac "remote_sensor_mac" | grep "PID" | sed -e "s/.*PID:\([A-Za-z0-9]\{7\}\).*/\1/" | \
+while read i
+do
+./otap -delete_program --mode UNICAST --mac "remote_sensor_mac" --pid $i
+done
+
 
 
 ### Python Parse and Update to MySQL DB
