@@ -3,9 +3,9 @@
 * install python mysql module `sudo apt-get install python-mysqldb`
 * install serial port python module `sudo apt-get install librxtx-java`
 
-This command will install the raspberry pi compatible `librxtxSerial.so` inside `/usr/lib/jni` and a `RXTXcomm.jar` inside `/usr/share/java/RXTXcomm.jar`.
+    This command will install the raspberry pi compatible `librxtxSerial.so` inside `/usr/lib/jni` and a `RXTXcomm.jar` inside `/usr/share/java/RXTXcomm.jar`.
 
-When you run your application you need to tell java that it needs to use `/usr/lib/jni` as the `java.library.path` by passing the java command line option `-Djava.library.path=/usr/lib/jni`.
+    When you run your application you need to tell java that it needs to use `/usr/lib/jni` as the `java.library.path` by passing the java command line option `-Djava.library.path=/usr/lib/jni`.
 
 Other optional package installation on pi:
 
