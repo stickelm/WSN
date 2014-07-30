@@ -17,7 +17,7 @@ mv $i $(echo $i | sed -e "s/\(WSNA0\)\([0-9]\.\)\.\(hex\)/wsn_a0\2\3/")
 done
 NOTES
 
-# scan all available nodes and 
+# scan all available nodes and loop doing tasks
 ./otap -scan_nodes --mode BROADCAST |  grep "Node" | awk -F "-" '{print $2,$3,$4;}' | awk '{print $2,$3;}' | \
 while read i
 do
