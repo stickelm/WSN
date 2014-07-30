@@ -3,7 +3,7 @@
 # Delete all program (PIDs) on all scanned nodes (MAC) in one command
 
 # scan all nodes in broadcast mode
-./otap -scan_nodes --mode BROADCAST |  grep "Node" | awk -F "-" '{print $2,$3,$4;}' | awk '{print $2;}' | \
+./otap -scan_nodes --mode BROADCAST --time 30 |  grep "Node" | awk -F "-" '{print $2,$3,$4;}' | awk '{print $2;}' | \
 while read i
 do
     mac=$i;
