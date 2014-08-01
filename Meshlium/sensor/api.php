@@ -1,20 +1,21 @@
 <?php
 
-if (isset($_REQUEST['rquest'])) {
+if (isset($_GET['rquest'])) {
     $words = explode("/",$_REQUEST['rquest']);
     $sensorID = strtoupper(trim(str_replace("/","",$words[0])));
-    $freq = strtolower(trim(str_replace("/","",$words[1])));
+    $method = strtolower(trim(str_replace("/","",$words[1])));
     $sensorType = strtoupper(trim(str_replace("/","",$words[2])));
 
     $sensor_array = array("A01","A02","A03","A04","A05","A06","A07","A08","A09");
-    $freq_array = array("hour","week","month");
+    $method_array = array("hour","week","month");
     $sensorType_array = array("TCA","BAT","LUM","MCP","HUMA","DUST");
     
 	if (in_array($sensorID,$sensor_array) 
-        && in_array($freq,$freq_array) 
+        && in_array($method,$method_array) 
         && in_array($sensorType,$sensorType_array)) {
         $result = db("select id_wasp,sensor,avg(value) as value,hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and date(timestamp)=curdate() group by hour(timestamp);");
-
+		
+		/* XML Format 
         header('Access-Control-Allow-Origin: *');
         header("Content-type: text/xml");
 
@@ -34,18 +35,28 @@ if (isset($_REQUEST['rquest'])) {
             $newnode->setAttribute("value",$row['value']);
         }
 
-        echo $dom->saveXML();
+        echo $dom->saveXML();	*/
 
-    } elseif ($sensorID == "ALL") {
+	/* JSON output */ 
+	header('Access-Control-Allow-Origin: *');
+    header("Content-type: text/javascript");
+
+    $waspmote = array();
+    while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+    	$waspmote[] = array("waspmote" => $row);
+    }
+
+    echo json_encode(array("waspmotes" => $waspmote));  /* */
 
     } else {
-		//echo $sensorID.",".$freq.",".$sensorType;
+		//echo $sensorID.",".$method.",".$sensorType;
 		notFound404();
 	}
     
 } else {
     $result = db('CALL sensorReading()');
 
+	/* XML output 
     header('Access-Control-Allow-Origin: *');
     header("Content-type: text/xml");
 
@@ -71,23 +82,31 @@ if (isset($_REQUEST['rquest'])) {
         $newnode->setAttribute("time",$row['timestamp']);
     }
 
-    echo $dom->saveXML();
+    echo $dom->saveXML();/*	*/
 
-    /* JSON output
+    /* JSON output */ 
+	header('Access-Control-Allow-Origin: *');
+    header("Content-type: text/javascript");
+
     $waspmote = array();
     while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
-    $waspmote[] = array('post'=>$row);
+    $waspmote[] = array(
+		"waspmote" => array(
+	 		"name" => $row["id_wasp"],
+			"BAT" => $row["BAT"],"HUMA" => $row["HUMA"],"LUM" => $row["LUM"],
+    		"MCP" => $row["MCP"],"DUST" => $row["DUST"],"TCA" => $row["TCA"],
+    		"time" => $row["timestamp"],"lat" => $row["y"],"lng" => $row["x"]
+		)
+	);
     }
 
-    echo json_encode(array('posts' => $waspmote));
-    */
+    echo json_encode(array("waspmotes" => $waspmote));  /* */
 
     /* Debug mysql query row
     while($row = $result->fetch_assoc())
     {
     debug($row);
-    }
-    */
+    }    */
 }
 
 function db($qstr) {
