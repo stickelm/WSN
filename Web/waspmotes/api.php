@@ -10,47 +10,73 @@ if (isset($_GET['rquest'])) {
     $method_array = array("hour","day","month");
     $sensorType_array = array("TCA","BAT","LUM","MCP","HUMA","DUST");
     
-	if (in_array($sensorID,$sensor_array) 
-        && in_array($method,$method_array) 
+	if (in_array($sensorID,$sensor_array) && in_array($method,$method_array) 
         && in_array($sensorType,$sensorType_array)) {
-        $result = db("select id_wasp,sensor,avg(value) as value,hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and date(timestamp)=curdate() group by hour(timestamp);");
-		
-		/* XML Format 
-        header('Access-Control-Allow-Origin: *');
-        header("Content-type: text/xml");
+        if ($method == "hour") { //select id_wasp,sensor,round(avg(value),2),date(timestamp) as date,hour(timestamp) as hour from sensorParser where id_wasp = 'a01' and sensor = 'tca' group by date, hour order by date DESC, hour DESC limit 24;
+			$result = db("select id_wasp,sensor,avg(value) as value,hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and date(timestamp)=curdate() group by hour(timestamp);");
+			
+			/* XML Format 
+			header('Access-Control-Allow-Origin: *');
+			header("Content-type: text/xml");
 
-        // Start XML file, create parent node
-        $dom = new DOMDocument("1.0");
-        $node = $dom->createElement("waspmotes");
-        $parnode = $dom->appendChild($node);
+			// Start XML file, create parent node
+			$dom = new DOMDocument("1.0");
+			$node = $dom->createElement("waspmotes");
+			$parnode = $dom->appendChild($node);
 
-        // Iterate through the rows, adding XML nodes for each
-        while ($row = $result->fetch_assoc()){
-            // ADD TO XML DOCUMENT NODE
-            $node = $dom->createElement("waspmote");
-            $newnode = $parnode->appendChild($node);
-            $newnode->setAttribute("name",$row['id_wasp']);
-            $newnode->setAttribute("type",$row['sensor']);
-            $newnode->setAttribute("hour",$row['hour']);
-            $newnode->setAttribute("value",$row['value']);
-        }
+			// Iterate through the rows, adding XML nodes for each
+			while ($row = $result->fetch_assoc()){
+				// ADD TO XML DOCUMENT NODE
+				$node = $dom->createElement("waspmote");
+				$newnode = $parnode->appendChild($node);
+				$newnode->setAttribute("name",$row['id_wasp']);
+				$newnode->setAttribute("type",$row['sensor']);
+				$newnode->setAttribute("hour",$row['hour']);
+				$newnode->setAttribute("value",$row['value']);
+			}
 
-        echo $dom->saveXML();	*/
+			echo $dom->saveXML();	*/
 
-	/* JSON output */ 
-	header('Access-Control-Allow-Origin: *');
-    header("Content-type: text/javascript");
+			/* JSON output */ 
+			header('Access-Control-Allow-Origin: *');
+			header("Content-type: text/javascript");
 
-    $waspmote = array();
-    while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
-    	$waspmote[] = array("waspmote" => $row);
-    }
+			$waspmote = array();
+			while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+				$waspmote[] = array("waspmote" => $row);
+			}
 
-    echo json_encode(array("waspmotes" => $waspmote));  /* */
+			echo json_encode(array("waspmotes" => $waspmote));  /* */
+		} elseif ($method == "day") { // select id_wasp,sensor,round(avg(value),2),date(timestamp) as date,hour(timestamp) as hour from sensorParser where id_wasp = 'a01' and sensor = 'tca' and hour(timestamp) = hour(curtime()) group by date, hour;
+			$result = db("select id_wasp,sensor,round(avg(value),2) as value,date(timestamp) as date,hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and hour(timestamp) = hour(curtime()) group by date, hour;");
+			
+			/* JSON output */ 
+			header('Access-Control-Allow-Origin: *');
+			header("Content-type: text/javascript");
 
-    } else {
+			$waspmote = array();
+			while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+				$waspmote[] = array("waspmote" => $row);
+			}
+
+			echo json_encode(array("waspmotes" => $waspmote));  /* */
+		} elseif ($method == "month") { //select id_wasp,sensor,round(avg(value),2), monthname(timestamp) as month, hour(timestamp) as hour from sensorParser where id_wasp = 'B12' and sensor = 'tca' and hour(timestamp) = hour(curtime()) group by month, hour;
+			$result = db("select id_wasp,sensor,round(avg(value),2) as value,monthname(timestamp) as month, hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and hour(timestamp) = hour(curtime()) group by month, hour;");
+			
+			/* JSON output */ 
+			header('Access-Control-Allow-Origin: *');
+			header("Content-type: text/javascript");
+
+			$waspmote = array();
+			while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+				$waspmote[] = array("waspmote" => $row);
+			}
+
+			echo json_encode(array("waspmotes" => $waspmote));  /* */
+		} else {
 		//echo $sensorID.",".$method.",".$sensorType;
 		notFound404();
+		}
 	}
     
 } else {
