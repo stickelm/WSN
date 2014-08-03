@@ -16,7 +16,7 @@ BEGIN
 DROP TEMPORARY TABLE IF EXISTS temp;
 -- default group concatation length is 1024, increase to longer length
 -- to accommodate longer string as the below
-SET SESSION group_concat_max_len = 8888;
+SET SESSION group_concat_max_len = 88888;
 SET @resultQuery = NULL;
 
 SELECT
