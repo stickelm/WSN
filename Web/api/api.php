@@ -7,7 +7,7 @@ if (isset($_GET['rquest'])) {
     $sensorType = strtoupper(trim(str_replace("/","",$words[2])));
 
     $sensor_array = array("A01","A02","A03","A04","A05","A06","A07","A08","A09");
-    $method_array = array("hour","week","month");
+    $method_array = array("hour","day","month");
     $sensorType_array = array("TCA","BAT","LUM","MCP","HUMA","DUST");
     
 	if (in_array($sensorID,$sensor_array) 
