@@ -60,7 +60,7 @@ $(document).ready(function() {
 					var time = this.waspmote.time;
 
 					//call create_marker() function for json loaded maker
-					create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, false, false, false, "/wsn/img/pin_green.png");
+					create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, false, true, false, "/wsn/img/pin_green.png");
 				});
 			}
 		});
@@ -138,8 +138,8 @@ $(document).ready(function() {
 		});
 		
 	}
-
-	/* ############### Update Marker Function ##############
+	
+	/* Update Marker Function
 	function update_marker(Marker)
 	{
 		//Save new marker using jQuery Ajax
@@ -148,10 +148,10 @@ $(document).ready(function() {
 		var myData = {name : mName, latlang : mLatLang}; //post variables
 		
 		$.ajax({
-		  type: "POST",
-		  url: "sensor_process.php",
-		  data: myData,
-		  success:function(data){
+			type: "POST",
+			url: "http://libelium-wsn.ami-lab.org/waspmotes/" + mName + "/update/",
+			data: myData,
+			success:function(data){
 			  infowindow.close();
 			  Marker.setAnimation(google.maps.Animation.BOUNCE);
 			  Marker.setAnimation(null);
