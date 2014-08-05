@@ -1,117 +1,98 @@
 <?php
+// Allowed HTTP Headers
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST');
+header("Access-Control-Allow-Headers: origin, x-requested-with, content-type");
 
-if (isset($_GET['rquest'])) {
-    $words = explode("/",$_REQUEST['rquest']);
-    $sensorID = strtoupper(trim(str_replace("/","",$words[0])));
-    $method = strtolower(trim(str_replace("/","",$words[1])));
-    $sensorType = strtoupper(trim(str_replace("/","",$words[2])));
+$words = explode("/",$_REQUEST['rquest']);
+$sensorID = strtoupper(trim(str_replace("/","",$words[0])));
+$method = strtolower(trim(str_replace("/","",$words[1])));
+$sensorType = strtoupper(trim(str_replace("/","",$words[2])));
 
-    $sensor_array = array("A01","A02","A03","A04","A05","A06","A07","A08","A09");
-    $method_array = array("hour","day","month");
-    $sensorType_array = array("TCA","BAT","LUM","MCP","HUMA","DUST");
-    
-	if (in_array($sensorID,$sensor_array) && in_array($method,$method_array) 
+$sensor_array = array("A01","A02","A03","A04","A05","A06","A07","A08","A09",
+                    "B10","B11","B12","B13","B14E","B15","B16","B17","B18",
+                    "C19","C20","C21","C22","C23","C24","C25","C26","C27",
+                    "D28","D29","D30","D31","D32","D33","D34","D35");
+//$method_array = array("hour","day","month","update");
+$method_array = array("hour","day","month");
+$sensorType_array = array("TCA","BAT","LUM","MCP","HUMA","DUST");
+
+if (($_SERVER['REQUEST_METHOD']) == "GET" && isset($_GET['rquest']) && strlen($_GET['rquest'])) {
+    if (in_array($sensorID,$sensor_array) && in_array($method,$method_array) 
         && in_array($sensorType,$sensorType_array)) {
         if ($method == "hour") { //select id_wasp,sensor,round(avg(value),2),date(timestamp) as date,hour(timestamp) as hour from sensorParser where id_wasp = 'a01' and sensor = 'tca' group by date, hour order by date DESC, hour DESC limit 24;
-			$result = db("select id_wasp,sensor,avg(value) as value,hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and date(timestamp)=curdate() group by hour(timestamp);");
+			$result = db("select id_wasp,sensor,round(avg(value),2) as value,hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and date(timestamp)=curdate() group by hour(timestamp);");
 			
-			/* XML Format 
-			header('Access-Control-Allow-Origin: *');
-			header("Content-type: text/xml");
-
-			// Start XML file, create parent node
-			$dom = new DOMDocument("1.0");
-			$node = $dom->createElement("waspmotes");
-			$parnode = $dom->appendChild($node);
-
-			// Iterate through the rows, adding XML nodes for each
-			while ($row = $result->fetch_assoc()){
-				// ADD TO XML DOCUMENT NODE
-				$node = $dom->createElement("waspmote");
-				$newnode = $parnode->appendChild($node);
-				$newnode->setAttribute("name",$row['id_wasp']);
-				$newnode->setAttribute("type",$row['sensor']);
-				$newnode->setAttribute("hour",$row['hour']);
-				$newnode->setAttribute("value",$row['value']);
-			}
-
-			echo $dom->saveXML();	*/
-
 			/* JSON output */ 
-			header('Access-Control-Allow-Origin: *');
 			header("Content-type: text/javascript");
 
 			$waspmote = array();
-			while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 				$waspmote[] = array("waspmote" => $row);
 			}
 
-			echo json_encode(array("waspmotes" => $waspmote));  /* */
+			echo json_encode(array("waspmotes" => $waspmote));
 		} elseif ($method == "day") { // select id_wasp,sensor,round(avg(value),2),date(timestamp) as date,hour(timestamp) as hour from sensorParser where id_wasp = 'a01' and sensor = 'tca' and hour(timestamp) = hour(curtime()) group by date, hour;
 			$result = db("select id_wasp,sensor,round(avg(value),2) as value,date(timestamp) as date,hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and hour(timestamp) = hour(curtime()) group by date, hour;");
 			
 			/* JSON output */ 
-			header('Access-Control-Allow-Origin: *');
 			header("Content-type: text/javascript");
 
 			$waspmote = array();
-			while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 				$waspmote[] = array("waspmote" => $row);
 			}
 
-			echo json_encode(array("waspmotes" => $waspmote));  /* */
+			echo json_encode(array("waspmotes" => $waspmote));
 		} elseif ($method == "month") { //select id_wasp,sensor,round(avg(value),2), monthname(timestamp) as month, hour(timestamp) as hour from sensorParser where id_wasp = 'B12' and sensor = 'tca' and hour(timestamp) = hour(curtime()) group by month, hour;
 			$result = db("select id_wasp,sensor,round(avg(value),2) as value,monthname(timestamp) as month, hour(timestamp) as hour from sensorParser where id_wasp = '".$sensorID."' and sensor = '".$sensorType."' and hour(timestamp) = hour(curtime()) group by month, hour;");
 			
 			/* JSON output */ 
-			header('Access-Control-Allow-Origin: *');
 			header("Content-type: text/javascript");
 
 			$waspmote = array();
-			while($row = mysqli_fetch_array($result, MYSQL_ASSOC)) {
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 				$waspmote[] = array("waspmote" => $row);
 			}
 
-			echo json_encode(array("waspmotes" => $waspmote));  /* */
+			echo json_encode(array("waspmotes" => $waspmote));
 		} else {
-		//echo $sensorID.",".$method.",".$sensorType;
-		notFound404();
+			notFound404();
 		}
 	}
     
+} elseif (($_SERVER['REQUEST_METHOD']) == "POST" && in_array($method,$method_array)) {
+		if ($method == "update") {
+			// make sure request is coming from Ajax
+			header($_SERVER['HTTP_X_REQUESTED_WITH']);
+			$xhr = $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+			if (!$xhr){ 
+				header('HTTP/1.1 500 Error: Request must come from Ajax!'); 
+				exit(); 
+			} 
+			
+			// get marker position and split it for database
+			$mLatLang   = explode(',',$_POST["latlang"]);
+			$mLat       = filter_var($mLatLang[0], FILTER_VALIDATE_FLOAT);
+			$mLng       = filter_var($mLatLang[1], FILTER_VALIDATE_FLOAT);
+			$mName      = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
+		
+			$result = db("UPDATE waspmote SET y = $mLat, x = $mLng WHERE name = '$mName'");
+			if (!$result) {  
+				  header('HTTP/1.1 500 Error: Could not update marker!');  
+				  exit();
+			} 
+			
+			$output = '<h1 class="marker-heading">'.$mName.'</h1><p>'.$mLat.'<br/>'.$mLng.'</p>';
+			exit($output);
+		} else {
+			notFound404();
+		}
+		
 } else {
     $result = db('CALL sensorReading()');
 
-	/* XML output 
-    header('Access-Control-Allow-Origin: *');
-    header("Content-type: text/xml");
-
-    // Start XML file, create parent node
-    $dom = new DOMDocument("1.0");
-    $node = $dom->createElement("waspmotes");
-    $parnode = $dom->appendChild($node);
-
-    // Iterate through the rows, adding XML nodes for each
-    while ($row = $result->fetch_assoc()){
-        // ADD TO XML DOCUMENT NODE
-        $node = $dom->createElement("waspmote");
-        $newnode = $parnode->appendChild($node);
-        $newnode->setAttribute("name",$row['id_wasp']);
-        $newnode->setAttribute("lat", $row['y']);
-        $newnode->setAttribute("lng", $row['x']);
-        $newnode->setAttribute("BAT",$row['BAT']);
-        $newnode->setAttribute("HUMA",$row['HUMA']);
-        $newnode->setAttribute("LUM",$row['LUM']);
-        $newnode->setAttribute("MCP",$row['MCP']);
-        $newnode->setAttribute("DUST",$row['DUST']);
-        $newnode->setAttribute("TCA",$row['TCA']);
-        $newnode->setAttribute("time",$row['timestamp']);
-    }
-
-    echo $dom->saveXML();/*	*/
-
     /* JSON output */ 
-	header('Access-Control-Allow-Origin: *');
     header("Content-type: text/javascript");
 
     $waspmote = array();
@@ -126,13 +107,8 @@ if (isset($_GET['rquest'])) {
 	);
     }
 
-    echo json_encode(array("waspmotes" => $waspmote));  /* */
+    echo json_encode(array("waspmotes" => $waspmote));
 
-    /* Debug mysql query row
-    while($row = $result->fetch_assoc())
-    {
-    debug($row);
-    }    */
 }
 
 function db($qstr) {
@@ -155,7 +131,6 @@ function debug($o) {
 }
 
 function notFound404() {
-    header('Access-Control-Allow-Origin: *');
 	header('HTTP/1.0 404 Not Found');
 	echo('NOT FOUND');
 }

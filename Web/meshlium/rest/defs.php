@@ -114,6 +114,7 @@ function getTemplatesWasp () {
 	return $fields;
 }
 function getTimeInfoWasp () {
+	date_default_timezone_set('Asia/Singapore');
 	$fields = array();
 	$fields['startTimeField'] = "TimeStamp";
 	$fields['endTimeField'] = null;
@@ -191,6 +192,7 @@ function getTemplatesSens () {
 	return $fields;
 }
 function getTimeInfoSens () {
+	date_default_timezone_set('Asia/Singapore');
 	$fields = array();
 	$fields['startTimeField'] = "TimeStamp";
 	$fields['endTimeField'] = null;
@@ -209,6 +211,7 @@ function getTimeInfoSens () {
 	$fields["hasLiveData"] = true;
 	return $fields;
 }
+
 $defs[2]["id"]=2;
 $defs[2]["name"]="Sensor";
 $defs[2]["url"]="sensor";
