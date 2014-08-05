@@ -1,16 +1,49 @@
 $(document).ready(function() {
 	var nus_center = new google.maps.LatLng(1.298796, 103.772143); //Google map Coordinates
-	var map;
+    var map;
 	var infowindow;
-    var waspID;
+    var waspID = "";
     var sensor;
-	var heatmap;
+    var heatmap;
+	
 	map_initialize(); // load map
     
     $(window).resize(function(){
-        drawCharts(waspID,sensor);
+        if (!waspID == "") {
+            drawCharts(waspID,sensor);
+        }
     });
-
+    
+    //drawHeatmap("tca");
+    
+    $('button').click(function(){
+        $(this).toggleClass("down");
+        var button_id = this.id;
+        console.log(button_id);
+        switch(button_id){
+            case "toggleTca":
+                //heatmap.setMap(heatmap.getMap() ? null : map);
+                drawHeatmap("tca");
+                break;
+            case "toggleHuma":
+                drawHeatmap("huma");
+                break;
+            case "toggleLum":
+                drawHeatmap("lum");
+                break;
+            case "toggleMcp":
+                drawHeatmap("mcp");
+                break;
+            case "toggleDust":
+                drawHeatmap("dust");
+                break;
+            case "toggleBat":
+                drawHeatmap("bat");
+                break;
+        }
+    });
+    
+    
 	function map_initialize() {
 
 		var mapOptions = {
@@ -78,7 +111,7 @@ $(document).ready(function() {
 	//############### Create Marker Function ##############
 	function create_marker(MapPos, MapTitle, Bat, Huma, Lum, Mcp, Dust, Tca, Time, DragAble, Removable, iconPath)
 	{
-		//new marker
+		//draw new marker
 		var marker = new google.maps.Marker({
 			position: MapPos,
 			map: map,
@@ -223,4 +256,38 @@ $(document).ready(function() {
 			} 
 		}
 	}
+
+    function drawHeatmap(heatmap_sensor) {
+        // heatmap layer
+        var heatmap = new HeatmapOverlay(map, 
+        {
+            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+            "radius": 0.00005,
+            "maxOpacity": 1, 
+            // scales the radius based on map zoom
+            "scaleRadius": true, 
+            // if set to false the heatmap uses the global maximum for colorization
+            // if activated: uses the data maximum within the current map boundaries 
+            //   (there will always be a red spot with useLocalExtremas true)
+            "useLocalExtrema": true,
+            // which field name in your data represents the latitude - default "lat"
+            latField: 'lat',
+            // which field name in your data represents the longitude - default "lng"
+            lngField: 'lng',
+            // which field name in your data represents the data value - default "value"
+            valueField: 'count'
+        });
+
+        var testData = {
+            max: 8,
+            data: [
+            {lat: 1.298568, lng:103.772210, count: 30},
+            {lat: 1.298581, lng:103.772103, count: 27},
+            {lat: 1.298671, lng:103.772099, count: 24},
+            ]
+        };
+
+        heatmap.setData(testData);
+    }
+    
 });

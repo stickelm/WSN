@@ -10,11 +10,12 @@
     <h1 class="heading">NUS WSN TestBed</h1>
     <div align="center">Wireless Sensor Network Test Bed</div>
 	<div id="panel">
-      <button onclick="toggleTca()">Temperature</button>
-      <button onclick="toggleHuma()">Humidity</button>
-      <button onclick="toggleLum()">Luminosity</button>
-      <button onclick="toggleMcp()">Noise</button>
-      <button onclick="toggleDust()">Dust</button>
+      <button id="toggleTca" title="button">Temperature</a>
+      <button id="toggleHuma" title="button">Humidity</button>
+      <button id="toggleLum" title="button">Luminosity</button>
+      <button id="toggleMcp" title="button">Noise</button>
+      <button id="toggleDust" title="button">Dust</button>
+      <button id="toggleBat" title="button">Battery</button>
     </div>
     <div id="nus_map"></div>
     <div id="hour_chart"></div>
@@ -23,6 +24,8 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="/js/heatmap.js"></script>
+    <script src="/js/gmaps-heatmap.js"></script>    
     <script type="text/javascript" src="/js/nusmap_test.js"></script>
 
   </body>

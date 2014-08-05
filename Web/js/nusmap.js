@@ -1,16 +1,45 @@
 $(document).ready(function() {
 	var nus_center = new google.maps.LatLng(1.298796, 103.772143); //Google map Coordinates
-	var map;
+    var map;
 	var infowindow;
-    var waspID;
+    var waspID = "";
     var sensor;
-	var heatmap;
+	
 	map_initialize(); // load map
     
     $(window).resize(function(){
-        drawCharts(waspID,sensor);
+        if (!waspID == "") {
+            drawCharts(waspID,sensor);
+        }
     });
-
+ 
+    $('button').click(function(){
+        $(this).toggleClass("down");
+        var button_id = this.id;
+        console.log(button_id);
+        switch(button_id){
+            case "toggleTca":
+                //heatmap.setMap(heatmap.getMap() ? null : map);
+                
+                break;
+            case "toggleHuma":
+                
+                break;
+            case "toggleLum":
+                
+                break;
+            case "toggleMcp":
+                
+                break;
+            case "toggleDust":
+                
+                break;
+            case "toggleBat":
+                
+                break;
+        }
+    });
+    
 	function map_initialize() {
 
 		var mapOptions = {
@@ -78,7 +107,7 @@ $(document).ready(function() {
 	//############### Create Marker Function ##############
 	function create_marker(MapPos, MapTitle, Bat, Huma, Lum, Mcp, Dust, Tca, Time, DragAble, Removable, iconPath)
 	{
-		//new marker
+		//draw new marker
 		var marker = new google.maps.Marker({
 			position: MapPos,
 			map: map,
@@ -223,4 +252,5 @@ $(document).ready(function() {
 			} 
 		}
 	}
+    
 });
