@@ -38,12 +38,12 @@ $(document).ready(function() {
 		  new google.maps.LatLng(1.2992000-200/10000000, 103.7726933-200/10000000));
 
 		var i3_02_Overlay = new google.maps.GroundOverlay(
-		  '/wsn/img/I3-02.png',
+		  '/img/I3-02.png',
 		  imageBounds_I3_02, overlayOpts);
 		i3_02_Overlay.setMap(map);
 
 		var E4_06_Overlay = new google.maps.GroundOverlay(
-		  '/wsn/img/E4-06.png',
+		  '/img/E4-06.png',
 		 imageBounds_E4_06, overlayOpts);
 		E4_06_Overlay.setMap(map);
 
@@ -68,7 +68,7 @@ $(document).ready(function() {
 
 					//call create_marker() function for json loaded maker
 					create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, 
-                        false, false, "/wsn/img/numbers/number_" + number + ".png");
+                        false, false, "/img/numbers/number_" + number + ".png");
 				});
 			}
 		});

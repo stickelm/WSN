@@ -2,8 +2,14 @@ $(document).ready(function() {
 	var nus_center = new google.maps.LatLng(1.298796, 103.772143); //Google map Coordinates
 	var map;
 	var infowindow;
+    var waspID;
+    var sensor;
 	var heatmap;
 	map_initialize(); // load map
+    
+    $(window).resize(function(){
+        drawCharts(waspID,sensor);
+    });
 
 	function map_initialize() {
 
@@ -32,12 +38,12 @@ $(document).ready(function() {
 		  new google.maps.LatLng(1.2992000-200/10000000, 103.7726933-200/10000000));
 
 		var i3_02_Overlay = new google.maps.GroundOverlay(
-		  '/wsn/img/I3-02.png',
+		  '/img/I3-02.png',
 		  imageBounds_I3_02, overlayOpts);
 		i3_02_Overlay.setMap(map);
 
 		var E4_06_Overlay = new google.maps.GroundOverlay(
-		  '/wsn/img/E4-06.png',
+		  '/img/E4-06.png',
 		 imageBounds_E4_06, overlayOpts);
 		E4_06_Overlay.setMap(map);
 
@@ -50,6 +56,7 @@ $(document).ready(function() {
 			success: function(data){
 				$(data.waspmotes).each(function () {
 					var name = this.waspmote.name;
+                    var number = name.match(/\d+/)*1;
 					var point = new google.maps.LatLng(parseFloat(this.waspmote.lat),parseFloat(this.waspmote.lng));
 					var bat = this.waspmote.BAT;
 					var huma = this.waspmote.HUMA;
@@ -60,7 +67,8 @@ $(document).ready(function() {
 					var time = this.waspmote.time;
 
 					//call create_marker() function for json loaded maker
-					create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, false, true, false, "/wsn/img/pin_green.png");
+					create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, 
+                        false, false, "/img/numbers/number_" + number + ".png");
 				});
 			}
 		});
@@ -68,7 +76,7 @@ $(document).ready(function() {
 	}
 
 	//############### Create Marker Function ##############
-	function create_marker(MapPos, MapTitle, Bat, Huma, Lum, Mcp, Dust, Tca, Time, InfoOpenDefault, DragAble, Removable, iconPath)
+	function create_marker(MapPos, MapTitle, Bat, Huma, Lum, Mcp, Dust, Tca, Time, DragAble, Removable, iconPath)
 	{
 		//new marker
 		var marker = new google.maps.Marker({
@@ -103,22 +111,34 @@ $(document).ready(function() {
 		var drawDustBtn = contentString.find('button.draw-dust')[0];
 		
 		google.maps.event.addDomListener(drawBatBtn, 'click', function(event) {
-		   drawCharts(marker, 'bat');
+            waspID = MapTitle;
+            sensor = "bat";
+            drawCharts(MapTitle, sensor);
 		});
 		google.maps.event.addDomListener(drawHumaBtn, 'click', function(event) {
-		   drawCharts(marker, 'huma');
+		   waspID = MapTitle;
+            sensor = "huma";
+            drawCharts(MapTitle, sensor);
 		});
 		 google.maps.event.addDomListener(drawTcaBtn, 'click', function(event) {
-		   drawCharts(marker, 'tca');
+		   waspID = MapTitle;
+            sensor = "tca";
+            drawCharts(MapTitle, sensor);
 		});    
 		google.maps.event.addDomListener(drawLumBtn, 'click', function(event) {
-		   drawCharts(marker, 'lum');
+		   waspID = MapTitle;
+            sensor = "lum";
+            drawCharts(MapTitle, sensor);
 		});
 		google.maps.event.addDomListener(drawMcpBtn, 'click', function(event) {
-		   drawCharts(marker, 'mcp');
+            waspID = MapTitle;
+            sensor = "mcp";
+            drawCharts(MapTitle, sensor);
 		});
 		google.maps.event.addDomListener(drawDustBtn, 'click', function(event) {
-		   drawCharts(marker, 'dust');
+            waspID = MapTitle;
+            sensor = "dust";
+            drawCharts(MapTitle, sensor);
 		});
 		
 		/* update marker position 
@@ -162,19 +182,18 @@ $(document).ready(function() {
 		});
 	}	*/
 	
-	function drawCharts(Marker, type)
+	function drawCharts(waspID, sensor)
 	{
 		google.load("visualization", "1", {packages:["corechart"], callback:draw_3_Charts});
 		
 		function draw_3_Charts() {
-			var waspID = Marker.getTitle();
 			var freqArray = ["Hour","Day","Month"];
 			var chartDivArray =["hour_chart","day_chart","month_chart"];
 			var i = 0;
 			
 			while (freqArray[i]) {
 				var apiUrl = "http://libelium-wsn.ami-lab.org/waspmotes/" 
-					+ waspID + "/" + freqArray[i].toLowerCase() + "/" + type + "/";
+					+ waspID + "/" + freqArray[i].toLowerCase() + "/" + sensor + "/";
 				var data = new google.visualization.DataTable();
 				data.addColumn('string', freqArray[i]);
 				data.addColumn('number', 'Value');
@@ -195,7 +214,7 @@ $(document).ready(function() {
 				});
 		 
 				var options = {
-					title: Marker.getTitle() + " " + type + "-" + freqArray[i] + " Line Chart"
+					title: waspID + " " + sensor + "-" + freqArray[i] + " Line Chart"
 				};
 		 
 				var chart = new google.visualization.LineChart(document.getElementById(chartDivArray[i]));
