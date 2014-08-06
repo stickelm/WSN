@@ -5,7 +5,14 @@ $(document).ready(function() {
     var waspID = "";
     var sensor;
     var heatmap;
-	
+    var tcaArray = [];
+    var humaArray = [];
+    var lumArray = [];
+    var mcpArray = [];
+    var dustArray = [];
+    var batArray = [];
+	var buttonIdPressed;
+    
 	map_initialize(); // load map
     
     $(window).resize(function(){
@@ -14,32 +21,48 @@ $(document).ready(function() {
         }
     });
     
-    //drawHeatmap("tca");
-    
     $('button').click(function(){
+        if ($('button').hasClass('down') && !$(this).hasClass("down")) {
+            $('button').removeClass('down');
+            heatmap.setMap(null);
+        }
         $(this).toggleClass("down");
+        
         var button_id = this.id;
-        console.log(button_id);
         switch(button_id){
             case "toggleTca":
-                //heatmap.setMap(heatmap.getMap() ? null : map);
-                drawHeatmap("tca");
+                var heatMapData = tcaArray;
                 break;
             case "toggleHuma":
-                drawHeatmap("huma");
+                var heatMapData = humaArray;
                 break;
             case "toggleLum":
-                drawHeatmap("lum");
+                var heatMapData = lumArray;
                 break;
             case "toggleMcp":
-                drawHeatmap("mcp");
+                var heatMapData = mcpArray;
                 break;
             case "toggleDust":
-                drawHeatmap("dust");
+                var heatMapData = dustArray;
                 break;
             case "toggleBat":
-                drawHeatmap("bat");
+                var heatMapData = batArray;
                 break;
+        }
+        
+        if (!heatmap || !heatmap.map) {
+            heatmap = new google.maps.visualization.HeatmapLayer({
+            radius: 50,
+            data: heatMapData
+        });
+        }
+        
+        if ($(this).hasClass('down')) {
+            heatmap.setMap(map);
+            //This way its working, the heatmap is deleted after 3 sec:
+            //setTimeout(function () { heatmap.setMap(null); console.log(heatmap); }, 3000);
+        } else {
+            heatmap.setMap(null);
         }
     });
     
@@ -98,10 +121,11 @@ $(document).ready(function() {
 					var dust = this.waspmote.DUST;
 					var tca = this.waspmote.TCA;
 					var time = this.waspmote.time;
-
+                       
+                    saveHeatData(point, bat, huma, lum, mcp, dust, tca);
 					//call create_marker() function for json loaded maker
 					create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, 
-                        false, false, "/img/numbers/number_" + number + ".png");
+                        true, false, "/img/numbers/number_" + number + ".png");
 				});
 			}
 		});
@@ -132,7 +156,7 @@ $(document).ready(function() {
 		'</span><button name="draw-mcp" class="draw-mcp" title="Draw Chart">Noise</button>' + ': ' + Mcp + 'dBm<br/>' + 
 		'</span><button name="draw-dust" class="draw-dust" title="Draw Chart">Dust</button>' + ': ' + Dust + 'ppB<br/>' +
 		/*'</span><button name="update-marker" class="update-marker" title="Update Location">Update Location</button>'+
-		'</span><button name="daily-marker" class="daily-marker" title="Daily Reading">Daily Reading</button>'+*/
+		'</span><button name="daily-marker" class="daily-marker" title="Daily Reading">Daily Reading</button>'+ /* */
 		'</div></div>');
 
 		// Find draw chart button in infoWindow
@@ -192,7 +216,7 @@ $(document).ready(function() {
 		
 	}
 	
-	/* Update Marker Function
+	/* Update Marker Function 
 	function update_marker(Marker)
 	{
 		//Save new marker using jQuery Ajax
@@ -213,7 +237,7 @@ $(document).ready(function() {
 				alert(thrownError); //throw any errors
 			}
 		});
-	}	*/
+	} /* */	
 	
 	function drawCharts(waspID, sensor)
 	{
@@ -257,37 +281,20 @@ $(document).ready(function() {
 		}
 	}
 
-    function drawHeatmap(heatmap_sensor) {
-        // heatmap layer
-        var heatmap = new HeatmapOverlay(map, 
-        {
-            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-            "radius": 0.00005,
-            "maxOpacity": 1, 
-            // scales the radius based on map zoom
-            "scaleRadius": true, 
-            // if set to false the heatmap uses the global maximum for colorization
-            // if activated: uses the data maximum within the current map boundaries 
-            //   (there will always be a red spot with useLocalExtremas true)
-            "useLocalExtrema": true,
-            // which field name in your data represents the latitude - default "lat"
-            latField: 'lat',
-            // which field name in your data represents the longitude - default "lng"
-            lngField: 'lng',
-            // which field name in your data represents the data value - default "value"
-            valueField: 'count'
-        });
-
-        var testData = {
-            max: 8,
-            data: [
-            {lat: 1.298568, lng:103.772210, count: 30},
-            {lat: 1.298581, lng:103.772103, count: 27},
-            {lat: 1.298671, lng:103.772099, count: 24},
-            ]
-        };
-
-        heatmap.setData(testData);
+    function saveHeatData(point, bat, huma, lum, mcp, dust, tca) {
+        
+        tcaItem = {location: point, weight: tca};
+        tcaArray.push(tcaItem);
+        humaItem = {location: point, weight: huma};
+        humaArray.push(humaItem);
+        lumItem = {location: point, weight: lum};
+        lumArray.push(lumItem);
+        mcpItem = {location: point, weight: mcp};
+        mcpArray.push(mcpItem);
+        dustItem = {location: point, weight: dust*10};
+        dustArray.push(dustItem);
+        batItem = {location: point, weight: bat};
+        batArray.push(batItem);
     }
     
 });

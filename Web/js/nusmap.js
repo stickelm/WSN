@@ -4,7 +4,15 @@ $(document).ready(function() {
 	var infowindow;
     var waspID = "";
     var sensor;
-	
+    var heatmap;
+    var tcaArray = [];
+    var humaArray = [];
+    var lumArray = [];
+    var mcpArray = [];
+    var dustArray = [];
+    var batArray = [];
+	var buttonIdPressed;
+    
 	map_initialize(); // load map
     
     $(window).resize(function(){
@@ -12,33 +20,52 @@ $(document).ready(function() {
             drawCharts(waspID,sensor);
         }
     });
- 
+    
     $('button').click(function(){
+        if ($('button').hasClass('down') && !$(this).hasClass("down")) {
+            $('button').removeClass('down');
+            heatmap.setMap(null);
+        }
         $(this).toggleClass("down");
+        
         var button_id = this.id;
-        console.log(button_id);
         switch(button_id){
             case "toggleTca":
-                //heatmap.setMap(heatmap.getMap() ? null : map);
-                
+                var heatMapData = tcaArray;
                 break;
             case "toggleHuma":
-                
+                var heatMapData = humaArray;
                 break;
             case "toggleLum":
-                
+                var heatMapData = lumArray;
                 break;
             case "toggleMcp":
-                
+                var heatMapData = mcpArray;
                 break;
             case "toggleDust":
-                
+                var heatMapData = dustArray;
                 break;
             case "toggleBat":
-                
+                var heatMapData = batArray;
                 break;
         }
+        
+        if (!heatmap || !heatmap.map) {
+            heatmap = new google.maps.visualization.HeatmapLayer({
+            radius: 50,
+            data: heatMapData
+        });
+        }
+        
+        if ($(this).hasClass('down')) {
+            heatmap.setMap(map);
+            //This way its working, the heatmap is deleted after 3 sec:
+            //setTimeout(function () { heatmap.setMap(null); console.log(heatmap); }, 3000);
+        } else {
+            heatmap.setMap(null);
+        }
     });
+    
     
 	function map_initialize() {
 
@@ -94,10 +121,11 @@ $(document).ready(function() {
 					var dust = this.waspmote.DUST;
 					var tca = this.waspmote.TCA;
 					var time = this.waspmote.time;
-
+                       
+                    saveHeatData(point, bat, huma, lum, mcp, dust, tca);
 					//call create_marker() function for json loaded maker
 					create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, 
-                        false, false, "/img/numbers/number_" + number + ".png");
+                        true, false, "/img/numbers/number_" + number + ".png");
 				});
 			}
 		});
@@ -128,7 +156,7 @@ $(document).ready(function() {
 		'</span><button name="draw-mcp" class="draw-mcp" title="Draw Chart">Noise</button>' + ': ' + Mcp + 'dBm<br/>' + 
 		'</span><button name="draw-dust" class="draw-dust" title="Draw Chart">Dust</button>' + ': ' + Dust + 'ppB<br/>' +
 		/*'</span><button name="update-marker" class="update-marker" title="Update Location">Update Location</button>'+
-		'</span><button name="daily-marker" class="daily-marker" title="Daily Reading">Daily Reading</button>'+*/
+		'</span><button name="daily-marker" class="daily-marker" title="Daily Reading">Daily Reading</button>'+ /* */
 		'</div></div>');
 
 		// Find draw chart button in infoWindow
@@ -188,7 +216,7 @@ $(document).ready(function() {
 		
 	}
 	
-	/* Update Marker Function
+	/* Update Marker Function 
 	function update_marker(Marker)
 	{
 		//Save new marker using jQuery Ajax
@@ -209,7 +237,7 @@ $(document).ready(function() {
 				alert(thrownError); //throw any errors
 			}
 		});
-	}	*/
+	} /* */	
 	
 	function drawCharts(waspID, sensor)
 	{
@@ -252,5 +280,21 @@ $(document).ready(function() {
 			} 
 		}
 	}
+
+    function saveHeatData(point, bat, huma, lum, mcp, dust, tca) {
+        
+        tcaItem = {location: point, weight: tca};
+        tcaArray.push(tcaItem);
+        humaItem = {location: point, weight: huma};
+        humaArray.push(humaItem);
+        lumItem = {location: point, weight: lum};
+        lumArray.push(lumItem);
+        mcpItem = {location: point, weight: mcp};
+        mcpArray.push(mcpItem);
+        dustItem = {location: point, weight: dust*10};
+        dustArray.push(dustItem);
+        batItem = {location: point, weight: bat};
+        batArray.push(batItem);
+    }
     
 });
