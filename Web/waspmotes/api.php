@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: origin, x-requested-with, content-type");
 
-$words = explode("/",$_REQUEST['rquest']);
+$words = (isset($_REQUEST['rquest']) ? explode("/",$_REQUEST['rquest']) : null);
 $sensorID = strtoupper(trim(str_replace("/","",$words[0])));
 $method = strtolower(trim(str_replace("/","",$words[1])));
 $sensorType = strtoupper(trim(str_replace("/","",$words[2])));
