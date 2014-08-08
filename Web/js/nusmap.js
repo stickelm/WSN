@@ -106,7 +106,7 @@ $(document).ready(function() {
 		//Load Markers from the JSON API Call
 		$.ajax({
 			type: "GET",
-			url: "http://libelium-wsn.ami-lab.org/waspmotes/",
+			url: "http://wsn.ami-lab.org/waspmotes/",
 			async: false,
 			dataType: "json",
 			success: function(data){
@@ -125,7 +125,7 @@ $(document).ready(function() {
                     saveHeatData(point, bat, huma, lum, mcp, dust, tca);
 					//call create_marker() function for json loaded maker
 					create_marker(point, name, bat, huma, lum, mcp, dust, tca, time, 
-                        true, false, "/img/numbers/number_" + number + ".png");
+                        false, false, "/img/numbers/number_" + number + ".png");
 				});
 			}
 		});
@@ -226,7 +226,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			type: "POST",
-			url: "http://libelium-wsn.ami-lab.org/waspmotes/" + mName + "/update/",
+			url: "http://wsn.ami-lab.org/waspmotes/" + mName + "/update/",
 			data: myData,
 			success:function(data){
 			  infowindow.close();
@@ -249,7 +249,7 @@ $(document).ready(function() {
 			var i = 0;
 			
 			while (freqArray[i]) {
-				var apiUrl = "http://libelium-wsn.ami-lab.org/waspmotes/" 
+				var apiUrl = "http://wsn.ami-lab.org/waspmotes/" 
 					+ waspID + "/" + freqArray[i].toLowerCase() + "/" + sensor + "/";
 				var data = new google.visualization.DataTable();
 				data.addColumn('string', freqArray[i]);
