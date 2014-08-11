@@ -4,11 +4,6 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: origin, x-requested-with, content-type");
 
-$words = (isset($_REQUEST['rquest']) ? explode("/",$_REQUEST['rquest']) : null);
-$sensorID = strtoupper(trim(str_replace("/","",$words[0])));
-$method = strtolower(trim(str_replace("/","",$words[1])));
-$sensorType = strtoupper(trim(str_replace("/","",$words[2])));
-
 $sensor_array = array("A01","A02","A03","A04","A05","A06","A07","A08","A09",
                     "B10","B11","B12","B13","B14E","B15","B16","B17","B18",
                     "C19","C20","C21","C22","C23","C24","C25","C26","C27",
@@ -16,6 +11,14 @@ $sensor_array = array("A01","A02","A03","A04","A05","A06","A07","A08","A09",
 //$method_array = array("hour","day","month","update");
 $method_array = array("hour","day","month");
 $sensorType_array = array("TCA","BAT","LUM","MCP","HUMA","DUST");
+$sensorID = "";
+$method = "";
+$sensorType = "";
+
+$words = (isset($_REQUEST['rquest']) ? explode("/",$_REQUEST['rquest']) : null);
+if (isset($words[0])) { $sensorID = strtoupper(trim(str_replace("/","",$words[0]))); }
+if (isset($words[1])) { $method = strtolower(trim(str_replace("/","",$words[1]))); }
+if (isset($words[2])) { $sensorType = strtoupper(trim(str_replace("/","",$words[2]))); }	
 
 if (($_SERVER['REQUEST_METHOD']) == "GET" && isset($_GET['rquest']) && strlen($_GET['rquest'])) {
     if (in_array($sensorID,$sensor_array) && in_array($method,$method_array) 
@@ -59,6 +62,8 @@ if (($_SERVER['REQUEST_METHOD']) == "GET" && isset($_GET['rquest']) && strlen($_
 		} else {
 			notFound404();
 		}
+	} else {
+			notFound404();
 	}
     
 } elseif (($_SERVER['REQUEST_METHOD']) == "POST" && in_array($method,$method_array)) {
