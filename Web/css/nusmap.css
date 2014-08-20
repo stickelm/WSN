@@ -199,35 +199,73 @@ pre{
 h1.heading{padding:0px;margin: 0px 0px 10px 0px;text-align:center;font: 18px Georgia, "Times New Roman", Times, serif;}
 
 /* width and height of nus map */
-#nus_map {width: 85%;height: 500px;margin-top: 10px;margin-left: auto;margin-right: auto;border: 6px solid #C4B2FF;border-radius: 5px;}
+#nus_map {width: 85%;height: 500px;margin-top: 10px;margin-left: auto;margin-right: auto;border: 6px solid #C4B2FF;border-radius: 5px;position: relative;}
 
 /* button panel inside #nus_map */
 #panel {
         position: absolute;
         top: 75px;
-        right: 10%;
-        #margin-right: 180px;
+        right: 0px;
+        margin-right: 10%;
         z-index: 5;
         padding: 1px;
       }
 	  
 button {
-    background: #ccc;
-    cursor: pointer;
-    border-top: solid 2px #eaeaea;
-    border-left: solid 2px #eaeaea;
-    border-bottom: solid 2px #777;
-    border-right: solid 2px #777;
-    padding: 5px 5px;   	
+	-moz-box-shadow:inset 0px 1px 0px 0px #a4e271;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #a4e271;
+	box-shadow:inset 0px 1px 0px 0px #a4e271;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #89c403), color-stop(1, #77a809));
+	background:-moz-linear-gradient(top, #89c403 5%, #77a809 100%);
+	background:-webkit-linear-gradient(top, #89c403 5%, #77a809 100%);
+	background:-o-linear-gradient(top, #89c403 5%, #77a809 100%);
+	background:-ms-linear-gradient(top, #89c403 5%, #77a809 100%);
+	background:linear-gradient(to bottom, #89c403 5%, #77a809 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#89c403', endColorstr='#77a809',GradientType=0);
+	background-color:#89c403;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #74b807;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:13px;
+	font-weight:bold;
+	padding:4px 10px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #528009;  	
     }
 
-button.down {
-    background: #bbb;
-    border-top: solid 2px #777;
-    border-left: solid 2px #777;
-    border-bottom:solid 2px  #eaeaea;
-    border-right: solid 2px #eaeaea;
-    }
+button:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #77a809), color-stop(1, #89c403));
+	background:-moz-linear-gradient(top, #77a809 5%, #89c403 100%);
+	background:-webkit-linear-gradient(top, #77a809 5%, #89c403 100%);
+	background:-o-linear-gradient(top, #77a809 5%, #89c403 100%);
+	background:-ms-linear-gradient(top, #77a809 5%, #89c403 100%);
+	background:linear-gradient(to bottom, #77a809 5%, #89c403 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#77a809', endColorstr='#89c403',GradientType=0);
+	background-color:#77a809;
+}
+
+button:down {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fb9e25), color-stop(1, #ffc477));
+	background:-moz-linear-gradient(top, #fb9e25 5%, #ffc477 100%);
+	background:-webkit-linear-gradient(top, #fb9e25 5%, #ffc477 100%);
+	background:-o-linear-gradient(top, #fb9e25 5%, #ffc477 100%);
+	background:-ms-linear-gradient(top, #fb9e25 5%, #ffc477 100%);
+	background:linear-gradient(to bottom, #fb9e25 5%, #ffc477 100%);
+	
+	background-color:#bbb;
+}
+
+button:active {
+	position:relative;
+	top:5px;
+}
+
+
 
 /* Marker Edit form */
 .marker-edit label{display:block;margin-bottom: 5px;}
