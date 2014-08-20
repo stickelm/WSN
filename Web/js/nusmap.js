@@ -72,15 +72,20 @@ $(document).ready(function() {
 		var mapOptions = {
 		zoom: 20,
 		center: nus_center,
-		panControl: true,
+		panControl: false,
 		zoomControl: true, //enable zoom control
+        streetViewControl: false,
+        mapTypeControlOptions: { 
+            mapTypeIds: [] 
+        },
 		zoomControlOptions: {
-		style: google.maps.ZoomControlStyle.SMALL //zoom control size
+            style: google.maps.ZoomControlStyle.SMALL //zoom control size
 		},
 		scaleControl: true, // enable scale control
-		mapTypeId: google.maps.MapTypeId.ROADMAP // google map type
+        mapTypeId: google.maps.MapTypeId.ROADMAP // google map type
 		};
-		var overlayOpts = {
+		
+        var overlayOpts = {
 		opacity:0.5
 		};
 
@@ -271,7 +276,8 @@ $(document).ready(function() {
 				});
 		 
 				var options = {
-					title: waspID + " " + sensor + "-" + freqArray[i] + " Line Chart"
+					title: "Sensor " + waspID + " " + sensorName(sensor) + " (Every " + freqArray[i] +")",
+                    curveType: 'function'
 				};
 		 
 				var chart = new google.visualization.LineChart(document.getElementById(chartDivArray[i]));
@@ -295,6 +301,39 @@ $(document).ready(function() {
         dustArray.push(dustItem);
         batItem = {location: point, weight: bat};
         batArray.push(batItem);
+    }
+    
+    function sensorName(sensorType) {
+        var sensorName = "";
+        switch(sensorType.toLowerCase()){
+            case "tca":
+                sensorName = "Temperature";
+                return sensorName;
+                break;
+            case "huma":
+                sensorName = "Humidity";
+                return sensorName;
+                break;
+            case "lum":
+                sensorName = "Luminosity";
+                return sensorName;
+                break;
+            case "mcp":
+                sensorName = "Noise";
+                return sensorName;
+                break;
+            case "dust":
+                sensorName = "Dust";
+                return sensorName;
+                break;
+            case "bat":
+                sensorName = "Battery";
+                return sensorName;
+                break;
+            default:
+                sensorName = "";
+                return sensorName;
+        }
     }
     
 });
