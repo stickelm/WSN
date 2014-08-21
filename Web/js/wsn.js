@@ -89,7 +89,7 @@ $(document).ready(function() {
 		opacity:0.5
 		};
 
-		map = new google.maps.Map(document.getElementById('nus_map'), mapOptions);
+		map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
 		var imageBounds_I3_02 = new google.maps.LatLngBounds(
 		  new google.maps.LatLng(1.291936, 103.775114),
@@ -152,42 +152,37 @@ $(document).ready(function() {
 
 		//Content structure of info Window for the Markers
 		var contentString = $(
-            '<div class="marker-info-win"><table><tbody>' + 
-            '<tr><td><h1 class="marker-heading">'+MapTitle+'</h1></td></tr>' + 
-            '<tr><td><p name="draw-tca" class="infowindowbutton" title="Draw Chart">Temperature</p></td>' + '<td><p> : ' + Tca + '&degC</p></td></tr>' + 
-            '<tr><td><p name="draw-huma" class="infowindowbutton" title="Draw Chart">Humidity</p></td>' + '<td><p> : ' + Huma + '%</p></td></tr>' + 
-            '<tr><td><p name="draw-lum" class="infowindowbutton" title="Draw Chart">Luminosity</p></td>' + '<td><p> : ' + Lum + '%</p></td></tr>' + 
-            '<tr><td><p name="draw-mcp" class="infowindowbutton" title="Draw Chart">Noise</p></td>' + '<td><p> : ' + Mcp + 'dBm</p></td></tr>' + 
-            '<tr><td><p name="draw-dust" class="infowindowbutton" title="Draw Chart">Dust</p></td>' + '<td><p> : ' + Dust + 'ppB</p></td></tr>' + 
-            '<tr><td><p name="draw-bat" class="infowindowbutton" title="Draw Chart">Battery</p></td>' + '<td><p> : ' + Bat + '%</p></td></tr>' + 
+            '<div><table><tbody>' + 
+            '<tr><td colspan="2"><h3>Sensor '+MapTitle+'</h3></td></tr>' + 
+            '<tr><td><div name="draw-tca" class="infowindowbutton" title="Draw Chart">Temperature</div></td>' + '<td> : ' + Tca + '&degC</td></tr>' + 
+            '<tr><td><div name="draw-huma" class="infowindowbutton" title="Draw Chart">Humidity</div></td>' + '<td> : ' + Huma + '%</td></tr>' + 
+            '<tr><td><div name="draw-lum" class="infowindowbutton" title="Draw Chart">Luminosity</div></td>' + '<td> : ' + Lum + '%</td></tr>' + 
+            '<tr><td><div name="draw-mcp" class="infowindowbutton" title="Draw Chart">Noise</div></td>' + '<td> : ' + Mcp + 'dBm</td></tr>' + 
+            '<tr><td><div name="draw-dust" class="infowindowbutton" title="Draw Chart">Dust</div></td>' + '<td> : ' + Dust + 'ppB</td></tr>' + 
+            '<tr><td><div name="draw-bat" class="infowindowbutton" title="Draw Chart">Battery</div></td>' + '<td> : ' + Bat + '%</td></tr>' + 
             '</tbody></table>' + 
             //'<div name="update-marker" class="infowindowbutton" title="Update Location">Update Location</div>' + 
             '</div>'
         );
 
 		// Find draw chart button in infoWindow
-		var drawBatBtn = contentString.find("p[name=draw-bat]")[0];
-		var drawHumaBtn = contentString.find("p[name=draw-huma]")[0];
-		var drawTcaBtn = contentString.find("p[name=draw-tca]")[0];
-		var drawLumBtn = contentString.find("p[name=draw-lum]")[0];
-		var drawMcpBtn = contentString.find("p[name=draw-mcp]")[0];
-		var drawDustBtn = contentString.find("p[name=draw-dust]")[0];
+		var drawTcaBtn = contentString.find("div[name=draw-tca]")[0];
+		var drawHumaBtn = contentString.find("div[name=draw-huma]")[0];
+		var drawLumBtn = contentString.find("div[name=draw-lum]")[0];
+		var drawMcpBtn = contentString.find("div[name=draw-mcp]")[0];
+		var drawDustBtn = contentString.find("div[name=draw-dust]")[0];
+        var drawBatBtn = contentString.find("div[name=draw-bat]")[0];
 		
-		google.maps.event.addDomListener(drawBatBtn, 'click', function(event) {
-            waspID = MapTitle;
-            sensor = "bat";
-            drawCharts(MapTitle, sensor);
-		});
-		google.maps.event.addDomListener(drawHumaBtn, 'click', function(event) {
-		   waspID = MapTitle;
-            sensor = "huma";
-            drawCharts(MapTitle, sensor);
-		});
-		 google.maps.event.addDomListener(drawTcaBtn, 'click', function(event) {
+		google.maps.event.addDomListener(drawTcaBtn, 'click', function(event) {
 		   waspID = MapTitle;
             sensor = "tca";
             drawCharts(MapTitle, sensor);
-		});    
+		}); 
+        google.maps.event.addDomListener(drawHumaBtn, 'click', function(event) {
+		   waspID = MapTitle;
+            sensor = "huma";
+            drawCharts(MapTitle, sensor);
+		});   
 		google.maps.event.addDomListener(drawLumBtn, 'click', function(event) {
 		   waspID = MapTitle;
             sensor = "lum";
@@ -201,6 +196,11 @@ $(document).ready(function() {
 		google.maps.event.addDomListener(drawDustBtn, 'click', function(event) {
             waspID = MapTitle;
             sensor = "dust";
+            drawCharts(MapTitle, sensor);
+		});
+        google.maps.event.addDomListener(drawBatBtn, 'click', function(event) {
+            waspID = MapTitle;
+            sensor = "bat";
             drawCharts(MapTitle, sensor);
 		});
 		
