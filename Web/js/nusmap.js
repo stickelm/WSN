@@ -151,26 +151,27 @@ $(document).ready(function() {
 		});
 
 		//Content structure of info Window for the Markers
-		var contentString = $('<div class="marker-info-win">'+
-		'<div class="marker-inner-win"><span class="info-content">'+
-		'<h1 class="marker-heading">'+MapTitle+'</h1>'+
-		'</span><button name="draw-bat" class="draw-bat" title="Draw Chart">Battery</button>' + ': ' + Bat + '%<br/>' + 
-		'</span><button name="draw-huma" class="draw-huma" title="Draw Chart">Humidity</button>' + ': ' + Huma + '%<br/>' +
-		'</span><button name="draw-tca" class="draw-tca" title="Draw Chart">Temperature</button>' + ': ' + Tca + '&degC<br/>' + 
-		'</span><button name="draw-lum" class="draw-lum" title="Draw Chart">Luminosity</button>' + ': ' + Lum + '%<br/>' +
-		'</span><button name="draw-mcp" class="draw-mcp" title="Draw Chart">Noise</button>' + ': ' + Mcp + 'dBm<br/>' + 
-		'</span><button name="draw-dust" class="draw-dust" title="Draw Chart">Dust</button>' + ': ' + Dust + 'ppB<br/>' +
-		/*'</span><button name="update-marker" class="update-marker" title="Update Location">Update Location</button>'+
-		'</span><button name="daily-marker" class="daily-marker" title="Daily Reading">Daily Reading</button>'+ /* */
-		'</div></div>');
+		var contentString = $(
+            '<div class="marker-info-win"><table><tbody>' + 
+            '<tr><td><h1 class="marker-heading">'+MapTitle+'</h1></td></tr>' + 
+            '<tr><td><p name="draw-tca" class="infowindowbutton" title="Draw Chart">Temperature</p></td>' + '<td><p> : ' + Tca + '&degC</p></td></tr>' + 
+            '<tr><td><p name="draw-huma" class="infowindowbutton" title="Draw Chart">Humidity</p></td>' + '<td><p> : ' + Huma + '%</p></td></tr>' + 
+            '<tr><td><p name="draw-lum" class="infowindowbutton" title="Draw Chart">Luminosity</p></td>' + '<td><p> : ' + Lum + '%</p></td></tr>' + 
+            '<tr><td><p name="draw-mcp" class="infowindowbutton" title="Draw Chart">Noise</p></td>' + '<td><p> : ' + Mcp + 'dBm</p></td></tr>' + 
+            '<tr><td><p name="draw-dust" class="infowindowbutton" title="Draw Chart">Dust</p></td>' + '<td><p> : ' + Dust + 'ppB</p></td></tr>' + 
+            '<tr><td><p name="draw-bat" class="infowindowbutton" title="Draw Chart">Battery</p></td>' + '<td><p> : ' + Bat + '%</p></td></tr>' + 
+            '</tbody></table>' + 
+            //'<div name="update-marker" class="infowindowbutton" title="Update Location">Update Location</div>' + 
+            '</div>'
+        );
 
 		// Find draw chart button in infoWindow
-		var drawBatBtn = contentString.find('button.draw-bat')[0];
-		var drawHumaBtn = contentString.find('button.draw-huma')[0];
-		var drawTcaBtn = contentString.find('button.draw-tca')[0];
-		var drawLumBtn = contentString.find('button.draw-lum')[0];
-		var drawMcpBtn = contentString.find('button.draw-mcp')[0];
-		var drawDustBtn = contentString.find('button.draw-dust')[0];
+		var drawBatBtn = contentString.find("p[name=draw-bat]")[0];
+		var drawHumaBtn = contentString.find("p[name=draw-huma]")[0];
+		var drawTcaBtn = contentString.find("p[name=draw-tca]")[0];
+		var drawLumBtn = contentString.find("p[name=draw-lum]")[0];
+		var drawMcpBtn = contentString.find("p[name=draw-mcp]")[0];
+		var drawDustBtn = contentString.find("p[name=draw-dust]")[0];
 		
 		google.maps.event.addDomListener(drawBatBtn, 'click', function(event) {
             waspID = MapTitle;
@@ -204,7 +205,7 @@ $(document).ready(function() {
 		});
 		
 		/* update marker position 
-		var updateBtn   = contentString.find('button.update-marker')[0];
+		var updateBtn   = contentString.find("p[name=update-marker]")[0];
 	   
 		//add click listener to update marker button
 		google.maps.event.addDomListener(updateBtn, 'click', function(event) {
@@ -214,7 +215,7 @@ $(document).ready(function() {
 		//add click listener to marker
 		google.maps.event.addListener(marker, 'click', function() {
 			if (infowindow) infowindow.close();
-			map.panTo(marker.getPosition());
+			//map.panTo(marker.getPosition());
 			infowindow = new google.maps.InfoWindow({content: contentString[0]});
 			infowindow.open(map,marker);
 		});
