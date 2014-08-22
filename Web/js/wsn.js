@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	var nus_center = new google.maps.LatLng(1.298796, 103.772143); //Google map Coordinates
+	var nus_center = new google.maps.LatLng(1.298796-100/1000000, 103.772143-100/1000000); //Google map Coordinates
     var map;
 	var infowindow;
     var waspID = "";
@@ -91,17 +91,21 @@ $(document).ready(function() {
 
 		map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
-		var imageBounds_I3_02 = new google.maps.LatLngBounds(
+		/*
+        var imageBounds_I3_02 = new google.maps.LatLngBounds(
 		  new google.maps.LatLng(1.291936, 103.775114),
 		  new google.maps.LatLng(1.292843, 103.776310));
+        */
 		var imageBounds_E4_06 = new google.maps.LatLngBounds(
 		  new google.maps.LatLng(1.2982600-200/10000000, 103.7714118-200/10000000),
 		  new google.maps.LatLng(1.2992000-200/10000000, 103.7726933-200/10000000));
 
-		var i3_02_Overlay = new google.maps.GroundOverlay(
+		/*
+        var i3_02_Overlay = new google.maps.GroundOverlay(
 		  '/img/I3-02.png',
 		  imageBounds_I3_02, overlayOpts);
 		i3_02_Overlay.setMap(map);
+        */
 
 		var E4_06_Overlay = new google.maps.GroundOverlay(
 		  '/img/E4-06.png',
