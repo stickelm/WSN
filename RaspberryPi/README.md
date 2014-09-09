@@ -46,6 +46,17 @@ Get boot list from remote waspmote, first scan for the available waspmote and ob
 
     ./otap -scan_nodes --mode BROADCAST
     
+    ----------------------------------------------------------------
+    Total Nodes: 7 - Time elapsed: 14s
+    0   - Node 0013a200123bcece - WASPMOTE00000A08 - testa08 - READY
+    1   - Node 0013a200123bced0 - WASPMOTE00000A01 - wsn_a01 - READY
+    2   - Node 0013a200123bcec5 - WASPMOTE00000A04 - wsn_a04 - READY
+    3   - Node 0013a200123bceca - WASPMOTE00000A06 - wsn_a06 - READY
+    4   - Node 0013a200123bcecd - WASPMOTE00000A03 - wsn_a03 - READY
+    5   - Node 0013a200123bcec9 - WASPMOTE00000A07 - wsn_a07 - READY
+    6   - Node 0013a200123bced2 - WASPMOTE00000A09 - wsn_a09 - READY
+    ----------------------------------------------------------------
+    
 Then obtain the program list on that waspmote:
 
     ./otap -get_boot_list --mode UNICAST --mac "remote_sensor_mac"
