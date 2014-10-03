@@ -1,4 +1,6 @@
+### Begin
 
+The default message printed by waspmote via the USB to Serial console
 
     Current ASCII Frame: 
     Length:  57
