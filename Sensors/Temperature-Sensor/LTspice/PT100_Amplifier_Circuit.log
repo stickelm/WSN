@@ -1,0 +1,51 @@
+Circuit: * C:\Users\idmsx\Documents\LTspice\PT100_Amplifier_Circuit.asc
+
+Direct Newton iteration for .op point succeeded.
+Semiconductor Device Operating Points:
+                        --- Diodes ---
+Name:    d:u1:p      d:u1:ln     d:u1:lp     d:u1:e      d:u1:c
+Model:    u1:dx       u1:dx       u1:dx       u1:dx       u1:dx
+Id:     -5.00e-12   -4.00e-11   -4.00e-11   -3.91e-13   -1.91e-12
+Vd:     -5.00e+00   -4.00e+01   -4.00e+01   -3.90e-01   -1.91e+00
+Req:     1.00e+12    1.00e+12    1.00e+12    1.00e+12    1.00e+12
+CAP:     0.00e+00    0.00e+00    0.00e+00    0.00e+00    0.00e+00
+
+                        --- Bipolar Transistors ---
+Name:     q:u1:2      q:u1:1
+Model:     u1:qx       u1:qx
+Ib:      -2.02e-08   -2.01e-08
+Ic:      -5.05e-06   -5.03e-06
+Vbe:     -5.84e-01   -5.84e-01
+Vbc:      2.23e-01    2.24e-01
+Vce:     -8.07e-01   -8.07e-01
+BetaDC:   2.50e+02    2.50e+02
+Gm:       1.95e-04    1.95e-04
+Rpi:      1.28e+06    1.28e+06
+Rx:       0.00e+00    0.00e+00
+Ro:       1.83e+17    1.84e+17
+Cbe:      0.00e+00    0.00e+00
+Cbc:      0.00e+00    0.00e+00
+Cjs:      0.00e+00    0.00e+00
+BetaAC:   2.50e+02    2.50e+02
+Cbx:      0.00e+00    0.00e+00
+Ft:       0.00e+00    0.00e+00
+
+
+
+Date: Mon Dec 01 15:40:20 2014
+Total elapsed time: 0.515 seconds.
+
+tnom = 27
+temp = 27
+method = trap
+totiter = 13
+traniter = 0
+tranpoints = 0
+accept = 0
+rejected = 0
+matrix size = 29
+fillins = 37
+solver = Normal
+Matrix Compiler1: 3.18 KB object code size
+Matrix Compiler2: 2.98 KB object code size
+

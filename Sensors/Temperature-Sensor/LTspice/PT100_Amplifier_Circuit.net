@@ -1,0 +1,15 @@
+* C:\Users\idmsx\Documents\LTspice\PT100_Amplifier_Circuit.asc
+XU1 N002 N001 V+ 0 Vout LM324
+R1 Vout N001 15K pwr=0.1
+R3 N002 Vin 22k pwr=0.1
+R4 N001 0 1K pwr=0.1
+R5 V+ N001 22k pwr=0.1
+R6 V+ Vin 1.8k pwr=0.1
+RTD100 0 Vin {R}
+V1 V+ 0 5V
+C1 0 Vin 1µF
+.include LM324.txt
+.step param R 100 138.51 0.39
+.op
+.backanno
+.end
