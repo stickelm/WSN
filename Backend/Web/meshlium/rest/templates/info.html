@@ -1,0 +1,39 @@
+<html>
+<head>
+	<title>Server Info</title>
+	<link href="/meshlium/static/main.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+	<table width="100%" class="userTable">
+		<tr>
+			<td class="titlecell">Meshlium REST Services Directory</td>
+		</tr>
+	</table>
+	<table width="100%" class="navTable">
+		<tr valign="top">
+			<td class="breadcrumbs"><a href="/meshlium/rest/services">Home</a></td>
+			<td align="right"><a href="http://www.esridemos.com/arcgis/sdk/rest/servicesdirectory.html" target="_blank">Help</a> | <a href="http://www.esridemos.com/arcgis/rest/services?f=help" target="_blank">API Reference</a></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+		<td class="apiref"><a href="?f=pjson" target="_blank">JSON</a></td>
+		</tr>
+	</table>
+	<h2>Server Info</h2>
+	<div class="rbody">
+	<b>Current Version:</b>	<?php echo $currentVersion ?><br /><br />
+	<b>Full Version:</b> <?php echo $fullVersion ?><br /><br />
+	<b>SOAP URL:</b> <?php echo $soapUrl ?><br /><br />
+	<b>Secure SOAP URL:</b> <?php echo $secureSoapUrl ?><br />	<br />
+	<b>Authentication Information:</b>
+	<br />
+	<ul>
+	<li><i>Is Token Based Security:</i> <?php echo $authInfo['isTokenBasedSecurity']? "true":"false" ?></li>
+	<li><i>Token Service URL:</i> <a href="<?php echo $authInfo['tokenServicesUrl'] ?>" target="_blank"><?php echo $authInfo['tokenServicesUrl'] ?></a></li>
+	<li><i>ShortLived Token Validity: </i> <?php echo $authInfo['shortLivedTokenValidity'] ?><i> minutes</i></li>
+	</ul>
+	</div>
+	<br/><br/>
+</body>
+</html>

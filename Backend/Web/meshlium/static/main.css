@@ -1,0 +1,88 @@
+body {
+  padding-left: 22px; padding-right: 22px; background: #fff; padding-bottom: 0px; margin: 0px; padding-top: 0px; font-family: verdana, arial, helvetica, sans-serif; min-width: 780px;
+}
+html {
+  padding-left: 0px; padding-right: 0px; background: #fff; padding-bottom: 0px; margin: 0px; padding-top: 0px; font-family: verdana, arial, helvetica, sans-serif; min-width: 780px;
+}
+code {
+  font-size: 1.3em; font-family: serif
+}
+
+td {
+  padding-right: 11px; padding-left: 0px; font-size: 0.90em; padding-bottom: 5px; margin: 0px 0px 3px; padding-top: 3px; 
+}
+
+h2 {
+  margin-left: 0px; font-weight: bold; font-size: 1.2em
+}
+h3 {
+  font-weight: bold; font-size: 1.25em; margin-bottom: 0px; 
+}
+li {
+  padding-right: 0px; padding-left: 0px; padding-bottom: 3px; padding-top: 0px; 
+}
+
+.rbody {
+   font-size:0.9em; margin-left: 0px; 
+}
+
+.apiref {
+  font-size: 0.6em; margin: 0px; padding: 0px;
+}
+
+.whitetd {
+  background-color: #ffffff;
+}
+
+.breadcrumbs {
+  padding-right: 0px; padding-left: 0px; font-size: 0.8em; font-weight: bold; padding-bottom: 5px; margin: 0px 0px 3px; padding-top: 0px;
+}
+
+.usertable {
+  font-size: 0.80em;
+}
+
+.navtable {
+  padding-bottom: 5px; margin: 0px 0px 3px; padding-top: 0px; border-bottom: #000 1px solid; border-top: #000 1px solid; background-color: #f7d5d5;
+}
+
+.logintable {
+  padding: 5px; margin: 10px 0px 3px; border: #000 1px solid; background-color: #f7d5d5;
+}
+.formtable {
+  padding: 5px; margin: 10px 0px 3px; border: #000 1px solid; background-color: #f7d5d5;
+}
+.infotable {
+  font-size: 1.1em; padding: 5px; margin: 10px 0px 3px; border: #000 1px solid; background-color: #f7d5d5;
+}
+
+.adminnavtable {
+  padding-bottom: 5px; margin: 0px 0px 3px; padding-top: 0px; border-bottom: #000 1px solid; border-top: #000 1px solid; background-color: #f7efe5;
+}
+
+.adminlogintable {
+  padding: 5px; margin: 10px 0px 3px; border: #000 1px solid; background-color: #f7efe5;
+}
+.adminformtable {
+  padding: 5px; margin: 10px 0px 3px; border: #000 1px solid; background-color: #f7efe5;
+}
+.admininfotable {
+  font-size: 1.1em; padding: 5px; margin: 10px 0px 3px; border: #000 1px solid; background-color: #f7efe5;
+}
+
+.help {
+  padding-right: 11px; padding-left: 0px; font-size: 0.70em; padding-bottom: 5px; margin: 0px 0px 3px; padding-top: 3px; 
+}
+.titlecell {
+  padding-right: 0px; padding-left: 0px; font-size: 1.0em; font-weight:bold; padding-bottom: 5px; margin: 0px 0px 3px; padding-top: 3px; 
+}
+
+.srsmain {
+  font-size: 0.8em; font-weight: bold; border-top: #000 1px solid; background-color: #f7d5d5;
+}
+.srtitle {  font-size: 1.2em; }
+.srcontent {  font-size: 1.0em; }
+.srlinks {  font-size: 0.8em; }
+.srinfo {  font-size: 0.8em; color:#494; }
+
+
