@@ -15,4 +15,4 @@ Black | 0 VDC
 
 ## Circuit Design
 
-It is based on [Solar Irradiance Sensor]() and [RTD Temperature Sensor](). The prototype board can be directly plugged onto Libelium waspmote.
+It is based on [Solar Irradiance Sensor](https://github.com/xianlin/WSN/tree/master/Sensors/Solar%20Irradiance) and [RTD Temperature Sensor](https://github.com/xianlin/WSN/tree/master/Sensors/Temperature). The prototype board can be directly plugged onto Libelium waspmote.
