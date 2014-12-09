@@ -9,12 +9,16 @@ Here we will design a circuit to read the resistance of the PT100 RTD temperatur
 
 The PT100 Sensor [4-Wired connection](http://en.wikipedia.org/wiki/Resistance_thermometer#Four-wire_configuration) diagram and configuration.
 
-[LTspice](https://github.com/xianlin/WSN/tree/master/Sensors/Temperature-Sensor/LTspice) folder contains the circuit file in LTspice format and the simulation results. Based on the results, the linear trend formula is obtained by using excel:
+[LTspice](https://github.com/xianlin/WSN/tree/master/Sensors/Temperature/LTspice) folder contains the circuit file in LTspice format and the simulation results. Based on the results, the linear trend formula is obtained by using excel:
 ```
 Vout = 0.0408 x Resistance(PT100) - 3.08
 ```
 
 ### IC Solution
 
-The above amplifier circuit will yield errors and the best way to convert RTD resistance to temperature is by using ICs such as [MAX31865](). The MAX31865 PT-100 RTD to Digital Breakout Board can be purchased [online](http://playingwithfusion.com/productview.php?pdid=25) with downloadable schematic and arduino sketch files.
+The above amplifier circuit will yield errors and the best way to convert RTD resistance to temperature is by using ICs such as [MAX31865](http://www.maximintegrated.com/en/products/analog/sensors-and-sensor-interface/MAX31865.html). 
+
+The MAX31865 PT-100 RTD to Digital Breakout Board can be purchased [online](http://playingwithfusion.com/productview.php?pdid=25) with downloadable schematic and [arduino sketch files](https://github.com/xianlin/WSN/tree/master/Sensors/Temperature/PWFusion_MAX31865). Just copy the sketch into arduino library folder and upload the example sketch onto Arduino Uno.
+
+
 
