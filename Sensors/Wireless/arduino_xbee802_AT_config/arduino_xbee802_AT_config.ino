@@ -18,7 +18,7 @@ void setup() {
   {
     Serial.println();
     
-    Serial.println("ATAP 2");
+    Serial.println("ATAP 0");
     delay(100);
     while (Serial.available() > 0) {
       Serial.write(Serial.read());
