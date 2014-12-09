@@ -12,3 +12,7 @@ Orange | 55, 3 mV/(1000W/qm)
 Yellow, Red | PT100
 Green, Brown | PT100
 Black | 0 VDC
+
+## Circuit Design
+
+It is based on [Solar Irradiance Sensor]() and [RTD Temperature Sensor](). The prototype board can be directly plugged onto Libelium waspmote.
