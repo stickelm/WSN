@@ -7155,17 +7155,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <junction x="63.5" y="86.36"/>
 </segment>
 </net>
-<net name="N$3" class="0">
-<segment>
-<pinref part="R1" gate="G$1" pin="2"/>
-<pinref part="IC1" gate="A" pin="+IN"/>
-<wire x1="43.18" y1="111.76" x2="48.26" y2="111.76" width="0.1524" layer="91"/>
-<pinref part="C1" gate="G$1" pin="1"/>
-<wire x1="48.26" y1="111.76" x2="83.82" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="48.26" y1="93.98" x2="48.26" y2="111.76" width="0.1524" layer="91"/>
-<junction x="48.26" y="111.76"/>
-</segment>
-</net>
 <net name="SOLAR_OUTPUT" class="0">
 <segment>
 <pinref part="R2" gate="G$1" pin="2"/>
@@ -7277,6 +7266,22 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="215.9" y1="55.88" x2="215.9" y2="106.68" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="DIGITAL1"/>
 <wire x1="215.9" y1="106.68" x2="195.58" y2="106.68" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="R1" gate="G$1" pin="2"/>
+<pinref part="IC1" gate="A" pin="+IN"/>
+<wire x1="43.18" y1="111.76" x2="48.26" y2="111.76" width="0.1524" layer="91"/>
+<pinref part="C1" gate="G$1" pin="1"/>
+<wire x1="48.26" y1="111.76" x2="83.82" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="93.98" x2="48.26" y2="111.76" width="0.1524" layer="91"/>
+<junction x="48.26" y="111.76"/>
+<wire x1="132.08" y1="121.92" x2="48.26" y2="121.92" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="121.92" x2="48.26" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="132.08" y1="121.92" x2="132.08" y2="114.3" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="ANALOG3"/>
+<wire x1="132.08" y1="114.3" x2="142.24" y2="114.3" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
