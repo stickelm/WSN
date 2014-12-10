@@ -137,10 +137,11 @@ void setup()
  
 void loop()
 {
-  delay(1500);                                   // 1500ms delay... can be much faster
+  delay(2000);                                   // 1500ms delay... can be much faster
   
   static struct var_max31865 RTD_CH0;
   double tmp;
+  double val;
   
   struct var_max31865 *rtd_ptr;
   rtd_ptr = &RTD_CH0;
@@ -197,4 +198,12 @@ void loop()
     }
   }  // end of fault handling
   
+  // Measure Solar Irradiance Reading and Print to Serial Port
+  val = (double)analogRead(ANALOG1) / 1024 * 3.3 * 1000 / 50;
+  USB.print("Solar Irradiance = ");     // Print Solar Irradiance Reading in mV               
+  USB.print(val);                          
+  USB.println(" mV");                   
+  
 }
+
+
