@@ -1,20 +1,20 @@
 /*  
 *   
 *  Circuit:
-*    Waspmote V1.2  -->  RTD MAX31865 Convert Board
-*    CS: pin 10    -->  SS, CH1
-*    MOSI: pin 11  MOSI: pin 51  -->  SDI (must not be changed for hardware SPI)
-*    MISO: pin 12  MISO: pin 50  -->  SDO (must not be changed for hardware SPI)
-*    SCK:  pin 13  SCK:  pin 52  -->  SCLK (must not be changed for hardware SPI)
-*    GND           GND           -->  GND
-*    5V            5V            -->  Vin (supply with same voltage as Arduino I/O, 5V) 
+*    Waspmote V1.2      -->     RTD MAX31865 Convert Board  
+*    DIGITAL1: pin S12  -->     SS: pin 2
+*    MOSI: pin A11      -->     MOSI: pin 4  -->  SDI (must not be changed for hardware SPI)
+*    MISO: pin A12      -->     MISO: pin 6  -->  SDO (must not be changed for hardware SPI)
+*    SCK:  pin A7       -->     SCK:  pin 8  -->  SCLK (must not be changed for hardware SPI)
+*    GND: pin A6        -->     GND: pin 9 or 10
+*    5V SENSOR POWER: pin S22  -->  VCC: pin 11 or 12 -->  Voltage 5V
 */
 
 #include <WaspSensorPrototyping_v20.h>
 
 int8_t CS_PIN = DIGITAL1;
 
-struct var_max31865{
+struct var_seris_sensor{
     uint16_t rtd_res_raw;		// RTD IC raw resistance register
     uint8_t  status;			// RTD status - full status code
     uint8_t  conf_reg;			// Configuration register readout
@@ -24,7 +24,7 @@ struct var_max31865{
 };
 
 
-void MAX31865_config(void) 
+void SERIS_SENSOR_config(void) 
 {
   // take the chip select low to select the device:
   digitalWrite(CS_PIN, LOW);
@@ -33,7 +33,7 @@ void MAX31865_config(void)
   SPI.transfer(0x80);    // Send config register location to chip
                             // 0x8x to specify 'write register value' 
                             // 0xx0 to specify 'configuration register'
-  SPI.transfer(0xC2);    // Write config to IC
+  SPI.transfer(0xC2);    // Write config to IC, 0xC2 --> 1100 0010
                             // bit 7: Vbias -> 1 (ON)
                             // bit 6: conversion mode -> 1 (AUTO)
                             // bit 5: 1-shot -> 0 (off)
@@ -59,7 +59,7 @@ void MAX31865_config(void)
 }
 
 
-void MAX31865_full_read(struct var_max31865 *rtd_ptr)
+void SERIS_SENSOR_full_read(struct var_seris_sensor *seris_sensor)
 {
   // Function to unpack and store MAX31865 data
   uint16_t _temp_u16, _rtd_res;
@@ -80,32 +80,32 @@ void MAX31865_full_read(struct var_max31865 *rtd_ptr)
 	// Low Fault Threshold LSB
 	// Fault Status
 
-  rtd_ptr->conf_reg = SPI.transfer(0x00);	// read 1st 8 bits
+  seris_sensor->conf_reg = SPI.transfer(0x00);	// read 1st 8 bits
 
   _rtd_res = SPI.transfer(0x00);		    // read 2nd 8 bits
   _rtd_res <<= 8;				       		// shift data 8 bits left
   _rtd_res |= SPI.transfer(0x00);  			// read 3rd 8 bits
-  rtd_ptr->rtd_res_raw = _rtd_res >> 1;		// store data after 1-bit right shift
+  seris_sensor->rtd_res_raw = _rtd_res >> 1;		// store data after 1-bit right shift
 
   _temp_u16 = SPI.transfer(0x00);			// read 4th 8 bits
   _temp_u16 <<= 8;							// shift data 8 bits left
   _temp_u16 |= SPI.transfer(0x00);			// read 5th 8 bits
-  rtd_ptr->HFT_val = _temp_u16 >> 1;		// store data after 1-bit right shift
+  seris_sensor->HFT_val = _temp_u16 >> 1;		// store data after 1-bit right shift
 
   _temp_u16 = SPI.transfer(0x00);			// read 6th 8 bits
   _temp_u16 <<= 8;							// shift data 8 bits left
   _temp_u16 |= SPI.transfer(0x00);			// read 7th 8 bits
-  rtd_ptr->LFT_val = _temp_u16;				// store data after 1-bit right shift
+  seris_sensor->LFT_val = _temp_u16;				// store data after 1-bit right shift
 
-  rtd_ptr->status = SPI.transfer(0x00);		// read 8th 8 bits
+  seris_sensor->status = SPI.transfer(0x00);		// read 8th 8 bits
 
   digitalWrite(CS_PIN, HIGH);					// set CS high to finish read
   
   // re-write config if no valid read or a fault present
   // keep in mind some faults re-set immediately (HFT/LFT)
-  if((0 == _rtd_res) || (0 != rtd_ptr->status))  
+  if((0 == _rtd_res) || (0 != seris_sensor->status))  
   {
-     MAX31865_config();				// call config function
+     SERIS_SENSOR_config();				// call config function
   }
 }
 
@@ -128,7 +128,7 @@ void setup()
   
   // initalize the chip select pin
   pinMode(CS_PIN, OUTPUT);
-  MAX31865_config();
+  SERIS_SENSOR_config();
   
   // give the sensor time to set up
   delay(100);  
@@ -137,29 +137,28 @@ void setup()
  
 void loop()
 {
-  delay(2000);                                   // 1500ms delay... can be much faster
+  delay(2000);                                   // 2000ms delay... can be much faster
   
-  static struct var_max31865 RTD_CH0;
+  static struct var_seris_sensor SERIS;
   double tmp;
-  double val;
   
-  struct var_max31865 *rtd_ptr;
-  rtd_ptr = &RTD_CH0;
-  MAX31865_full_read(rtd_ptr);          // Update MAX31855 readings 
+  struct var_seris_sensor *seris_sensor;
+  seris_sensor = &SERIS;
+  SERIS_SENSOR_full_read(seris_sensor);          // Update SERIS SENSOR readings 
   
-  // ******************** Print RTD 0 Information ********************
-  USB.println("RTD Sensor 0:");              // Print RTD0 header
+  // ******************** Print RTD Sensor Information ********************
+  USB.println("RTD Sensor:");              // Print RTD header
   
-  if(0 == RTD_CH0.status)                       // no fault, print info to serial port
+  if(0 == SERIS.status)                       // no fault, print info to serial port
   {
     // calculate RTD resistance
-    tmp = (double)RTD_CH0.rtd_res_raw * 400 / 32768;
+    tmp = (double)SERIS.rtd_res_raw * 400 / 32768;
     USB.print("Rrtd = ");                  // print RTD resistance heading
     USB.print(tmp);                        // print RTD resistance
     USB.println(" ohm");
     // calculate RTD temperature (simple calc, +/- 2 deg C from -100C to 100C)
     // more accurate curve can be used outside that range
-    tmp = ((double)RTD_CH0.rtd_res_raw / 32) - 256;
+    tmp = ((double)SERIS.rtd_res_raw / 32) - 256;
     USB.print("Trtd = ");                    // print RTD temperature heading
     USB.print(tmp);                          // print RTD resistance
     USB.println(" deg C");                   // print RTD temperature heading
@@ -167,28 +166,28 @@ void loop()
   else 
   {
     USB.print("RTD Fault, register: ");
-    USB.print(RTD_CH0.status);
-    if(0x80 & RTD_CH0.status)
+    USB.print(SERIS.status);
+    if(0x80 & SERIS.status)
     {
       USB.println("RTD High Threshold Met");  // RTD high threshold fault
     }
-    else if(0x40 & RTD_CH0.status)
+    else if(0x40 & SERIS.status)
     {
       USB.println("RTD Low Threshold Met");   // RTD low threshold fault
     }
-    else if(0x20 & RTD_CH0.status)
+    else if(0x20 & SERIS.status)
     {
       USB.println("REFin- > 0.85 x Vbias");   // REFin- > 0.85 x Vbias
     }
-    else if(0x10 & RTD_CH0.status)
+    else if(0x10 & SERIS.status)
     {
       USB.println("FORCE- open");             // REFin- < 0.85 x Vbias, FORCE- open
     }
-    else if(0x08 & RTD_CH0.status)
+    else if(0x08 & SERIS.status)
     {
       USB.println("FORCE- open");             // RTDin- < 0.85 x Vbias, FORCE- open
     }
-    else if(0x04 & RTD_CH0.status)
+    else if(0x04 & SERIS.status)
     {
       USB.println("Over/Under voltage fault");  // overvoltage/undervoltage fault
     }
@@ -198,12 +197,29 @@ void loop()
     }
   }  // end of fault handling
   
-  // Measure Solar Irradiance Reading and Print to Serial Port
-  val = (double)analogRead(ANALOG1) / 1024 * 3.3 * 1000 / 50;
-  USB.print("Solar Irradiance = ");     // Print Solar Irradiance Reading in mV               
-  USB.print(val);                          
-  USB.println(" mV");                   
+    // ******************** Print Solar Irradiance Sensor Information ********************
+    USB.println("Solar Irradiance Sensor:");       // Print Solar Irradiance Reading header
   
+    // calculate solar irradiance voltage
+    tmp = (double) analogRead(ANALOG1) / 1024 * 3.3 * 1000;
+    USB.print("ADC Voltage Reading = ");
+    USB.print(tmp);
+    USB.println(" mV");
+    if (tmp < 99.97)
+    {
+        tmp = 0;
+    } else
+    {
+        tmp = (tmp - 99.97) / 49.152;         // Linear regression formula
+    }
+    USB.print("Calculated Irradiance = ");     
+    USB.print(tmp);                        // print solar irradiance voltage
+    USB.println(" mV");
+    
+//    // In case you want to know the irradiance input voltage (not accurate due to ADC error)
+//    tmp = (double) analogRead(ANALOG3) / 1024 * 3.3 * 1000;
+//    USB.print("Input Irradiance (With Error)= ");     
+//    USB.print(tmp);                        // print solar irradiance voltage
+//    USB.println(" mV");
+    
 }
-
-
