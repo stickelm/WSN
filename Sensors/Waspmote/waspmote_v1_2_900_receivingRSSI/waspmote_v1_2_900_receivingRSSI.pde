@@ -69,10 +69,6 @@ void loop()
       Utils.setLED(LED1, LED_ON);
       delay(1000);
       Utils.setLED(LED1, LED_OFF);
-    } else {
-      Utils.setLED(LED1, LED_ON);
-      delay(1000);
-      Utils.setLED(LED1, LED_OFF);
     }
   }
 }

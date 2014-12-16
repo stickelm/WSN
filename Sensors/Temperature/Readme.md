@@ -23,3 +23,7 @@ The MAX31865 PT-100 RTD to Digital Breakout Board can be purchased [online](http
 The connection from arduino to the sensor is called [4-Wired connection](http://en.wikipedia.org/wiki/Resistance_thermometer#Four-wire_configuration). It will give very accurate result.
 
 
+### Reference
+
+[4x Multiplexed RTD Temperature sensor module](http://openenergymonitor.org/emon/buildingblocks/rtd-temperature-sensing)
+
