@@ -1,3 +1,12 @@
+### Waspmote Power
+
+Waspmote can be powered from the solar panel connector, but with the limitation of the charging current:
+
+Waspmote powered only by USB --> max current is 100 mA. Not enough for radio modules
+Waspmote powered only by Solar panel --> max current is 280 mA. Not enough for radio modules
+Waspmote with battery --> enough current for all radio modules.
+
+
 ### Begin
 
 The default message printed by waspmote via the USB to Serial console
