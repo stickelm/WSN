@@ -11,6 +11,14 @@
 */
 
 #include <WaspSensorPrototyping_v20.h>
+#include <WaspXBee900.h>
+#include <WaspFrame.h>
+
+//Pointer to an XBee packet structure
+packetXBee* packet;
+
+// Destination MAC address
+char* MAC_ADDRESS="0013A20040A81815";
 
 int8_t CS_PIN = DIGITAL1;
 
@@ -113,7 +121,20 @@ void setup()
 {
   //Turn on the USB and print a start message
   USB.ON();
-  USB.println(F("start"));
+  USB.println(F("Start and Sending"));
+  
+  // Show the remaining battery level
+  USB.print(F("Battery Level: "));
+  USB.print(PWR.getBatteryLevel(),DEC);
+  USB.print(F(" %"));
+     
+  // Show the battery Volts
+  USB.print(F(" | Battery (Volts): "));
+  USB.print(PWR.getBatteryVolts());
+  USB.println(F(" V"));
+  
+  // Turn on the XBee
+  xbee900.ON();
   
   //Turn on the sensor board
   SensorProtov20.ON();
@@ -137,7 +158,7 @@ void setup()
  
 void loop()
 {
-  delay(2000);                                   // 2000ms delay... can be much faster
+  delay(5000);                                   // 5000ms delay... can be much faster
   
   static struct var_seris_sensor SERIS;
   double tmp;
@@ -231,5 +252,48 @@ void loop()
     USB.print(F(" | Battery (Volts): "));
     USB.print(PWR.getBatteryVolts());
     USB.println(F(" V"));
+    
+  ///////////////////////////////////////////
+  // 1. Create ASCII frame
+  /////////////////////////////////////////// 
+   
+  // 1.1. Create new frame
+  frame.createFrame(ASCII, "SERIS_XBEE_S3B"); 
+   
+  // 1.2. add frame fields
+  frame.addSensor(SENSOR_STR, "XBee frame");
+  frame.addSensor(SENSOR_BAT, PWR.getBatteryLevel());
+   
+  ///////////////////////////////////////////
+  // 2. Send packet
+  /////////////////////////////////////////// 
+   
+  // 2.1. Set parameters to packet:
+  packet=(packetXBee*) calloc(1,sizeof(packetXBee)); // Memory allocation
+  packet->mode=UNICAST; // Choose transmission mode: UNICAST or BROADCAST
+   
+  // 2.2. Set destination XBee parameters to packet
+  xbee900.setDestinationParams(packet, MAC_ADDRESS, frame.buffer, frame.length); 
+   
+  // 2.3. Send XBee packet
+  xbee900.sendXBee(packet);
+   
+  // 2.4. Check TX flag
+  if( xbee900.error_TX == 0)
+  {
+    USB.println(F("ok"));
+    Utils.blinkLEDs(500);
+  }
+  else
+  {
+    USB.println(F("error"));
+    Utils.setLED(LED0,LED_ON);
+    delay(500);
+    Utils.setLED(LED0,LED_OFF);
+  }
+   
+  // 2.5. Free variables
+  free(packet);
+  packet=NULL;
     
 }

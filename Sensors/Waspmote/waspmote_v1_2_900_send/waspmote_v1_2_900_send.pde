@@ -56,17 +56,14 @@ void loop()
   if( xbee900.error_TX == 0)
   {
     USB.println(F("ok"));
-    Utils.setLED(LED0, LED_ON);
-    delay(500);
-    Utils.setLED(LED0, LED_OFF);
-    Utils.setLED(LED1, LED_ON);
-    delay(500);
-    Utils.setLED(LED1, LED_OFF);
+    Utils.blinkLEDs(500);
   }
   else
   {
     USB.println(F("error"));
-    Utils.blinkLEDs(1000);
+    Utils.setLED(LED0,LED_ON);
+    delay(500);
+    Utils.setLED(LED0,LED_OFF);
   }
    
   // 2.5. Free variables
