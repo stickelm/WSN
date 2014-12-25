@@ -14,6 +14,9 @@
 #include <WaspFrame.h>
 #include <WaspSensorPrototyping_v20.h>
 
+#define key_access "LIBELIUM"
+#define id_mote "YSTCM_Mote"
+
 // Pointer an XBee packet structure 
 packetXBee* packet; 
 
@@ -21,7 +24,7 @@ packetXBee* packet;
 char* MAC_ADDRESS="0013A20040A81815";
 
 // Node identifier
-char* NODE_ID="YSTCM";
+char* NODE_ID="YSTCM01";
 
 // Sleeping time DD:hh:mm:ss
 char* sleepTime = "00:00:00:10";    
@@ -138,6 +141,12 @@ void setup()
   // Turn on the RTC
   RTC.ON();
   
+  // Write Authentication Key to EEPROM memory
+  Utils.setAuthKey(key_access);
+  
+  // Write Mote ID to EEPROM memory
+  Utils.setID(id_mote);
+  
   ////////////////////////////////////////////////
   // 1. Initial message composition
   ////////////////////////////////////////////////
@@ -167,6 +176,9 @@ void setup()
 
   // 2.1 Power XBee
   xbee900.ON();
+  
+  // CheckNewProgram is mandatory in every OTA program
+  xbee900.checkNewProgram(); 
 
   // 2.2 Memory allocation
   packet = (packetXBee*) calloc(1,sizeof(packetXBee));
@@ -335,7 +347,7 @@ void loop()
 
   // 5.1 Power XBee
   xbee900.ON();
-
+  
   // 5.2 Memory allocation
   packet = (packetXBee*) calloc(1,sizeof(packetXBee));
 
@@ -361,7 +373,21 @@ void loop()
   // 5.7 Free variables
   free(packet);
   packet=NULL;
-
+  
+  // Check if new data is available, then do OTAP
+  if( xbee900.available() )
+  {
+    xbee900.treatData();
+    // Keep inside this loop while a new program is being received
+    while( xbee900.programming_ON  && !xbee900.checkOtapTimeout() )
+    {
+      if( xbee900.available() )
+      {
+        xbee900.treatData();
+      }
+    }
+  }
+  
   // 5.8 Communication module to OFF
   xbee900.OFF();
   delay(100);
