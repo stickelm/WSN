@@ -37,7 +37,7 @@ void loop()
   // 1.2. add frame fields
   frame.addSensor(SENSOR_STR, "XBee frame");
   frame.addSensor(SENSOR_BAT, PWR.getBatteryLevel());
-   
+  
   ///////////////////////////////////////////
   // 2. Send packet
   /////////////////////////////////////////// 
