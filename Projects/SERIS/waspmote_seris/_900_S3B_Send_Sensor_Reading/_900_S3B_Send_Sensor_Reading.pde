@@ -143,12 +143,77 @@ void setup()
   // Turn on the RTC
   RTC.ON();
   // Setting time [yy:mm:dd:dow:hh:mm:ss]
-  RTC.setTime("14:12:25:04:19:40:00");
+  RTC.setTime("14:12:25:19:00:00:00");
   USB.print(F("Setting time: "));
-  USB.println(F("14:12:25:04:19:40:00"));
+  USB.println(F("14:12:25:19:00:00:00"));
   
+  // Write Authentication Key to EEPROM memory
+  Utils.setAuthKey(key_access);
+  
+  // Write Mote ID to EEPROM memory
+  Utils.setID(id_mote);
+  
+  ////////////////////////////////////////////////
+  // 1. Initial message composition
+  ////////////////////////////////////////////////
+
+  // 1.1 Set mote Identifier (16-Byte max)
+  frame.setID(NODE_ID);	
+  
+  // 1.2 Set Frame Size (Link encryp disabled, AES encryp disabled)
+  frame.setFrameSize(XBEE_900, DISABLED, DISABLED);
+  USB.print(F("\nframe size (900, UNICAST_64B, XBee encryp Disabled, AES encryp Disabled):"));
+  USB.println(frame.getFrameSize(),DEC);  
+  USB.println(); 
+
+  // 1.3 Create new frame
+  frame.createFrame();  
+
+  // 1.4 Set frame fields (String - char*)
+  frame.addSensor(SENSOR_STR, (char*) "SERIS SENSOR");
+
+  // 1.5 Print frame
+  frame.showFrame();
+
+
+  ////////////////////////////////////////////////
+  // 2. Send initial message
+  ////////////////////////////////////////////////
+
   // 2.1 Power XBee
   xbee900.ON();
+  
+  // CheckNewProgram is mandatory in every OTA program
+  xbee900.checkNewProgram(); 
+
+  // 2.2 Memory allocation
+  packet = (packetXBee*) calloc(1,sizeof(packetXBee));
+
+  // 2.3 Choose transmission mode: UNICAST or BROADCAST
+  packet -> mode = UNICAST;
+
+  // 2.4 Set destination XBee parameters to packet
+  xbee900.setDestinationParams( packet, MAC_ADDRESS, frame.buffer, frame.length);  
+
+  // 2.5 Send XBee packet
+  xbee900.sendXBee(packet);
+
+  if( xbee900.error_TX == 0 ) 
+  {
+    USB.println(F("ok"));
+  }
+  else 
+  {
+    USB.println(F("error"));
+  }
+
+  // 2.6 Free variables
+  free(packet);
+  packet=NULL;
+
+  // 2.7 Communication module to OFF
+  xbee900.OFF();
+  delay(100);
 
 }
 
@@ -161,7 +226,6 @@ void loop()
   USB.println(F("Measuring sensors..."));
 
   SensorProtov20.ON();
-  delay(100);
   
   // setup for the the SPI library:
   SPI.begin();                            // begin SPI
@@ -261,7 +325,6 @@ void loop()
 //    USB.println(" mV");
 
   SensorProtov20.OFF();
-  delay(100);
   
   RTC.getTime(); 
 
@@ -287,6 +350,9 @@ void loop()
   // 5. Send message
   ////////////////////////////////////////////////
 
+  // 5.1 Power XBee
+  xbee900.ON();
+  
   // 5.2 Memory allocation
   packet = (packetXBee*) calloc(1,sizeof(packetXBee));
 
@@ -313,7 +379,6 @@ void loop()
   free(packet);
   packet=NULL;
   
-  /*
   // Check if new data is available, then do OTAP
   if( xbee900.available() )
   {
@@ -327,14 +392,17 @@ void loop()
       }
     }
   }
-  */
   
+  // 5.8 Communication module to OFF
+  xbee900.OFF();
+  delay(100);
+
+
   ////////////////////////////////////////////////
   // 6. Entering Deep Sleep mode
   ////////////////////////////////////////////////
-  //USB.println(F("Going to sleep..."));
-  //USB.println();
-  //PWR.deepSleep(sleepTime, RTC_OFFSET, RTC_ALM1_MODE1, ALL_OFF);
+  USB.println(F("Going to sleep..."));
+  USB.println();
+  PWR.deepSleep(sleepTime, RTC_OFFSET, RTC_ALM1_MODE1, ALL_OFF);
 
-  delay(5000);
 }
