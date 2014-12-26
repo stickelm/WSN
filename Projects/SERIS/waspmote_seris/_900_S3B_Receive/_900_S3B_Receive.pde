@@ -7,9 +7,48 @@ void setup()
   // Init USB port
   USB.ON();
   USB.println(F("900_S3B_Receive"));
+  
+  // Show the remaining battery level
+  USB.print(F("Battery Level: "));
+  USB.print(PWR.getBatteryLevel(),DEC);
+  USB.print(F(" %"));
+  
+  // Show the battery Volts
+  USB.print(F(" | Battery (Volts): "));
+  USB.print(PWR.getBatteryVolts());
+  USB.println(F(" V"));
 
   // Powers XBee
   xbee900.ON();
+  delay(100);
+  
+  if(!xbee900.getOwnMacLow()) 
+  {
+    USB.print(F("MAC Low: "));
+    USB.printHex(xbee900.sourceMacLow[0]);
+    USB.printHex(xbee900.sourceMacLow[1]);
+    USB.printHex(xbee900.sourceMacLow[2]);
+    USB.printHex(xbee900.sourceMacLow[3]);
+    USB.println();
+  }
+  else 
+  {
+    USB.println(F("error"));  
+  }
+  
+  if(!xbee900.getOwnMacHigh()) 
+  {
+    USB.print(F("MAC High: "));
+    USB.printHex(xbee900.sourceMacHigh[0]);
+    USB.printHex(xbee900.sourceMacHigh[1]);
+    USB.printHex(xbee900.sourceMacHigh[2]);
+    USB.printHex(xbee900.sourceMacHigh[3]);
+    USB.println();
+  }
+  else 
+  {
+    USB.println(F("error"));  
+  }
 }
 
 

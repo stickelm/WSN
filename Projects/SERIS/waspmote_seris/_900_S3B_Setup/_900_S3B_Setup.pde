@@ -12,6 +12,16 @@ void setup()
   USB.ON();
   USB.println(F("900_S3B_Setup"));
   
+  // Show the remaining battery level
+  USB.print(F("Battery Level: "));
+  USB.print(PWR.getBatteryLevel(),DEC);
+  USB.print(F(" %"));
+  
+  // Show the battery Volts
+  USB.print(F(" | Battery (Volts): "));
+  USB.print(PWR.getBatteryVolts());
+  USB.println(F(" V"));
+  
   // init XBee
   xbee900.ON();
               

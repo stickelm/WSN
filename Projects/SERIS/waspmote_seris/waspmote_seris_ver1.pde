@@ -26,6 +26,9 @@ char* MAC_ADDRESS="0013A20040C369C2";
 // Node identifier
 char* NODE_ID="YSTCM01";
 
+// Current Time When Upload Hex File
+char* currentTime = "14:12:26:06:13:10:00"; 
+
 // Sleeping time DD:hh:mm:ss
 char* sleepTime = "00:00:00:10";    
 
@@ -143,12 +146,9 @@ void setup()
   // Turn on the RTC
   RTC.ON();
   // Setting time [yy:mm:dd:dow:hh:mm:ss]
-  RTC.setTime("14:12:25:04:19:40:00");
+  RTC.setTime(currentTime);
   USB.print(F("Setting time: "));
-  USB.println(F("14:12:25:04:19:40:00"));
-  
-  // 2.1 Power XBee
-  xbee900.ON();
+  USB.println(RTC.getTime());
 
 }
 
@@ -161,19 +161,20 @@ void loop()
   USB.println(F("Measuring sensors..."));
 
   SensorProtov20.ON();
-  delay(100);
   
   // setup for the the SPI library:
   SPI.begin();                            // begin SPI
   SPI.setClockDivider(SPI_CLOCK_DIV16);   // SPI speed to SPI_CLOCK_DIV16 (1MHz)
   SPI.setDataMode(SPI_MODE3);             // MAX31865 works in MODE1 or MODE3
+  // give the SPI time to set up
+  delay(200);
   
   // initalize the chip select pin
   pinMode(CS_PIN, OUTPUT);
   SERIS_SENSOR_config();
   
   // give the sensor time to set up
-  delay(100);
+  delay(200);
   
   static struct var_seris_sensor SERIS;
   double tmp;
@@ -261,9 +262,8 @@ void loop()
 //    USB.println(" mV");
 
   SensorProtov20.OFF();
-  delay(100);
   
-  RTC.getTime(); 
+  USB.println(RTC.getTime()); 
 
   ////////////////////////////////////////////////
   // 4. Message composition
@@ -279,14 +279,17 @@ void loop()
   frame.addSensor(SENSOR_PAR, solar );
   
   // 4.3 Print frame
-  // Example:  <=>#35689391#N01#1#STR:-4.50#TIME:18-11-22#BAT:47#
+  // Example:  <=>?#35689391#N01#1#STR:-4.50#TIME:18-11-22#BAT:47#
   frame.showFrame();
-
 
   ////////////////////////////////////////////////
   // 5. Send message
   ////////////////////////////////////////////////
-
+  
+  // 2.1 Power XBee
+  xbee900.ON();
+  delay(500);
+  
   // 5.2 Memory allocation
   packet = (packetXBee*) calloc(1,sizeof(packetXBee));
 
@@ -313,7 +316,7 @@ void loop()
   free(packet);
   packet=NULL;
   
-  /*
+  
   // Check if new data is available, then do OTAP
   if( xbee900.available() )
   {
@@ -327,14 +330,13 @@ void loop()
       }
     }
   }
-  */
+  
   
   ////////////////////////////////////////////////
   // 6. Entering Deep Sleep mode
   ////////////////////////////////////////////////
-  //USB.println(F("Going to sleep..."));
-  //USB.println();
-  //PWR.deepSleep(sleepTime, RTC_OFFSET, RTC_ALM1_MODE1, ALL_OFF);
+  USB.println(F("Going to sleep..."));
+  USB.println();
+  PWR.deepSleep(sleepTime, RTC_OFFSET, RTC_ALM1_MODE1, ALL_OFF);
 
-  delay(5000);
 }
