@@ -95,8 +95,13 @@ void loop()
         xbee900.packet_finished[xbee900.pos-1]=NULL; 
         
         // decrement the received packet counter
-        xbee900.pos--; 
+        xbee900.pos--;
+        
+        // green LED on
+        Utils.setLED(LED1, LED_ON);
+        delay(500);
+        Utils.setLED(LED1, LED_OFF);
       }
-    }
+    } 
   }
 } 

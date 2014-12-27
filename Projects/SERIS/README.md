@@ -36,3 +36,84 @@ Black | 0 VDC
 ## Circuit Design
 
 It is based on the code and circuit in the folder [Solar Irradiance Sensor](https://github.com/xianlin/WSN/tree/master/Sensors/Solar%20Irradiance) and [RTD Temperature Sensor](https://github.com/xianlin/WSN/tree/master/Sensors/Temperature). The prototype board/shield can be directly plugged onto the Libelium waspmote device.
+
+
+## Software
+
+
+### Xbee Frame
+
+XBee received frame details
+```
+Receive Packet (API 2)
+
+7E 00 4C 90 00 7D 33 A2 00 40 C3 69 3F FF FE 41 3C 3D 3E 80 04 23 33 38 37 32 33 35 31 36 34 23 4E 30 31 23 31 35 33 23 54 49 4D 45 3A 31 34 2D 34 39 2D 33 33 23 42 41 54 3A 36 39 23 54 43 41 3A 33 35 2E 39 31 23 50 41 52 3A 38 2E 36 35 23 E4
+
+    - Start delimiter: 7E
+    - Length: 00 4C (76)
+    - Frame type: 90 (Receive Packet)
+    - 64-bit source address: 00 13 A2 00 40 C3 69 3F
+    - 16-bit source address: FF FE
+    - Receive options: 41
+    - Received data: 3C 3D 3E 80 04 23 33 38 37 32 33 35 31 36 34 23 4E 30 31 23 31 35 33 23 54 49 4D 45 3A 31 34 2D 34 39 2D 33 33 23 42 41 54 3A 36 39 23 54 43 41 3A 33 35 2E 39 31 23 50 41 52 3A 38 2E 36 35 23
+    - Checksum: E4
+```
+
+Received data convert from Hex to ASCII
+```
+    <=>#387235164#N01#153#TIME:14-49-33#BAT:69#TCA:35.91#PAR:8.65#
+```
+
+```python
+#! /usr/bin/python
+
+import re
+import serial, sys, string
+import httplib
+
+# Domain you want to post to: localhost would be an emoncms installation on your own laptop
+# this could be changed to emoncms.org to post to emoncms.org
+domain = "localhost"
+
+# Location of emoncms in your server, the standard setup is to place it in a folder called emoncms
+# To post to emoncms.org change this to blank: ""
+emoncmspath = "emoncms"
+
+# Write apikey of emoncms account
+apikey = "b53ec1abe610c66009b207d6207f2c9e"
+
+# Node id youd like the emontx to appear as
+nodeid = 5
+
+conn = httplib.HTTPConnection(domain)
+
+# Set this to the serial port of your emontx and baud rate, 9600 is standard emontx baud rate
+ser = serial.Serial('/dev/ttyUSB0', 115200)
+
+breakChar = '<'
+
+while True:
+    # Measge Format: <=>#387235164#N01#153#TIME:14-49-33#BAT:69#TCA:35.91#PAR:8.65#
+    msgStr = ''
+    checkBreak = ser.read(1)
+    if checkBreak == breakChar:
+        checkBreak = ''
+        while checkBreak != breakChar: 
+            checkBreak = ser.read(1)
+            msgStr += checkBreak
+        
+        print msgStr
+        Results = re.findall(r'#(.*)#(.*)#(.*)#(.*)#(.*)#(.*)#(.*)#',msgStr)
+        for result in Results:
+            battery = result[4]
+            temperature = result[5]
+            solar = result[6]
+        print battery,temperature,solar    
+        '''
+        # Send to emoncms
+        conn.request("GET", "/"+emoncmspath+"/input/post.json?apikey="+apikey+"&node="+str(nodeid)+"&csv="+csv)
+        response = conn.getresponse()
+        print response.read()
+        '''
+ser.close()
+```
