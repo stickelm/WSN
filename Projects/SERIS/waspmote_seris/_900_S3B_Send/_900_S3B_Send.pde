@@ -1,12 +1,20 @@
 #include <WaspXBee900.h>
+#include <WaspFrame.h>
 
-int rssi;
+//Pointer to an XBee packet structure 
+packetXBee* packet; 
+
+// Destination MAC address
+//////////////////////////////////////////
+char* MAC_ADDRESS="0013A20040BEA8EC";
+//////////////////////////////////////////
+
 
 void setup()
-{  
+{
   // Init USB port
   USB.ON();
-  USB.println(F("900_S3B_Receive"));
+  USB.println(F("900_S3B Sending example"));
   
   // Show the remaining battery level
   USB.print(F("Battery Level: "));
@@ -17,7 +25,7 @@ void setup()
   USB.print(F(" | Battery (Volts): "));
   USB.print(PWR.getBatteryVolts());
   USB.println(F(" V"));
-
+  
   RTC.ON();
   //RTC.setTime("14:12:29:02:12:15:00");
   USB.println(RTC.getTime());
@@ -93,62 +101,64 @@ void setup()
   }
 
   USB.println(F("-------------------")); 
+  
 }
 
 
 void loop()
-{ 
-  // Check available data in RX buffer
-  if( xbee900.available() > 0 ) 
-  {
-    // Treat available bytes in order to parse the information as XBee packets
-    xbee900.treatData(); 
-    
-    // Check RX flag after 'treatData'
-    if( !xbee900.error_RX ) 
-    {
-      // Read available packets
-      while( xbee900.pos>0 )
-      {
-        // Available information in 'xbee900.packet_finished' structure
-        // HERE it should be introduced the User's packet treatment        
-        // For example: show DATA field:
-        USB.print(F("Data: "));             
-        for(int i=0;i<xbee900.packet_finished[xbee900.pos-1]->data_length;i++)          
-        {           
-          USB.print(xbee900.packet_finished[xbee900.pos-1]->data[i],BYTE);          
-        }
-        USB.print(" , Time: ");
-        USB.println(RTC.getTime());
-        
-        // get RSSI signal and make conversion to -dBm
-        xbee900.getRSSI();  
-        if( !xbee900.error_AT )
-        {
-          rssi=xbee900.valueRSSI[0];
-          rssi*=-1;
-          USB.print(F("RSSI(dBm): "));
-          USB.print(rssi,DEC);
-          USB.print(" , Time: ");
-          USB.println(RTC.getTime());
-        }  
+{    
+  ///////////////////////////////////////////
+  // 1. Create ASCII frame
+  ///////////////////////////////////////////  
+  
+  // 1.1. Create new frame
+  frame.createFrame(ASCII, "WASPMOTE_XBEE");  
+  
+  // 1.2. add frame fields
+  frame.addSensor(SENSOR_STR, "S3B frame");
+  frame.addSensor(SENSOR_BAT, PWR.getBatteryLevel()); 
 
-        // Once a packet has been read it is necessary to 
-        // free the allocated memory for this packet
-        // free memory
-        free(xbee900.packet_finished[xbee900.pos-1]); 
-        
-        // free pointer
-        xbee900.packet_finished[xbee900.pos-1]=NULL; 
-        
-        // decrement the received packet counter
-        xbee900.pos--;
-        
-        // green LED on
-        Utils.setLED(LED1, LED_ON);
-        delay(500);
-        Utils.setLED(LED1, LED_OFF);
-      }
-    } 
+  
+  ///////////////////////////////////////////
+  // 2. Send packet
+  ///////////////////////////////////////////  
+  
+  // 2.1. Set parameters to packet:
+  packet=(packetXBee*) calloc(1,sizeof(packetXBee)); // Memory allocation
+  packet->mode=UNICAST; // Choose transmission mode: UNICAST or BROADCAST
+  
+  // 2.2. Set destination XBee parameters to packet
+  xbee900.setDestinationParams( packet, MAC_ADDRESS, frame.buffer, frame.length);  
+  
+  // 2.3. Send XBee packet
+  xbee900.sendXBee(packet);
+  
+  // 2.4. Check TX flag
+  if( xbee900.error_TX == 0) 
+  {
+    USB.print(F("ok : "));
+    USB.println(RTC.getTime());
+    // green LED on
+    Utils.setLED(LED1, LED_ON);
+    delay(500);
+    Utils.setLED(LED1, LED_OFF);
+    // Wait for ten seconds
+    delay(10000);
   }
+  else
+  { 
+    USB.print(F("error : "));
+    USB.println(RTC.getTime());
+    // red LED on
+    Utils.setLED(LED0, LED_ON);
+    delay(500);
+    Utils.setLED(LED0, LED_OFF);
+    // Wait for two seconds
+    delay(2000);
+  }
+  
+  // 2.5. Free variables
+  free(packet);
+  packet=NULL;
+
 }
