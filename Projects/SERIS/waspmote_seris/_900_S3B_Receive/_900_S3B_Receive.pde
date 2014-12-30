@@ -1,5 +1,8 @@
 #include <WaspXBee900.h>
 
+#define key_access "SERIS"
+#define id_mote "SERIS_SENSOR_01"
+
 int rssi;
 
 void setup()
@@ -7,6 +10,12 @@ void setup()
   // Init USB port
   USB.ON();
   USB.println(F("900_S3B_Receive"));
+  
+  // Write Authentication Key to EEPROM memory
+  Utils.setAuthKey(key_access);
+  
+  // Write Mote ID to EEPROM memory
+  Utils.setID(id_mote);
   
   // Show the remaining battery level
   USB.print(F("Battery Level: "));
@@ -92,7 +101,11 @@ void setup()
     USB.println(F("error"));  
   }
 
-  USB.println(F("-------------------")); 
+  USB.println(F("-------------------"));
+  
+  // CheckNewProgram is mandatory in every OTA program
+  xbee900.checkNewProgram(); 
+  
 }
 
 
