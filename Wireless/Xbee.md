@@ -18,3 +18,7 @@ Steps:
 [Sparkfun XCTU and XBee Tutorial] (https://learn.sparkfun.com/tutorials/exploring-xbees-and-xctu#introduction)
 
 [XBee-PRO 900HP Available Frequencies In Various Countries](http://www.digi.com/support/kbase/kbaseresultdetl?id=3417)
+
+[The World of XBee](http://www.desert-home.com/p/the-world-of-xbee.html)
+
+[Jeff's XBee Blog](https://jeffskinnerbox.wordpress.com/tag/xbee/)
