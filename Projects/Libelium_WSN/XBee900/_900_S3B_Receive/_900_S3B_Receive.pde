@@ -1,7 +1,8 @@
 #include <WaspXBee900.h>
+#include <WaspXBee802.h>
 
-#define key_access "SERIS"
-#define id_mote "SERIS_SENSOR_01"
+#define key_access "SERIS001"
+#define id_mote "WASPMOTE_YSTCM01"
 
 int rssi;
 
@@ -30,14 +31,13 @@ void setup()
   RTC.ON();
   //RTC.setTime("14:12:29:02:12:15:00");
   USB.println(RTC.getTime());
+  USB.println(F("-------------------"));
   
-  // Powers XBee
+  // Powers XBee 900 S3B on socket 0
   xbee900.ON();
   delay(500);
+  USB.println("XBee 900 S3B Info...");
   
-  /////////////////////////////////////
-  // 1. get PAN ID
-  /////////////////////////////////////
   if(!xbee900.getPAN()) 
   {
     USB.print(F("PANID: "));
@@ -50,10 +50,6 @@ void setup()
     USB.println(F("error"));  
   }
 
-
-  /////////////////////////////////////
-  // 2. get Encryption mode
-  /////////////////////////////////////
   if(!xbee900.getEncryptionMode()) 
   {
     USB.print(F("Encryption mode: "));
@@ -64,11 +60,7 @@ void setup()
   {
     USB.println(F("error"));  
   }
-  
 
-  /////////////////////////////////////
-  // 3. Get the 32 lower bits of my MAC address
-  /////////////////////////////////////
   if(!xbee900.getOwnMacLow()) 
   {
     USB.print(F("MAC Low: "));
@@ -83,10 +75,6 @@ void setup()
     USB.println(F("error"));  
   }
   
-  
-  /////////////////////////////////////
-  // 4. Get the 32 lower bits of my MAC address
-  /////////////////////////////////////
   if(!xbee900.getOwnMacHigh()) 
   {
     USB.print(F("MAC High: "));
@@ -103,8 +91,77 @@ void setup()
 
   USB.println(F("-------------------"));
   
+  // Powers XBee 802 On socket 1
+  xbee802.ON(SOCKET1);
+  delay(500);
+  USB.println("XBee 802.15.4 Info...");
+  
+  if(!xbee802.getPAN()) 
+  {
+    USB.print(F("PANID: "));
+    USB.printHex(xbee802.PAN_ID[0]);
+    USB.printHex(xbee802.PAN_ID[1]);
+    USB.println();
+  }
+  else 
+  {
+    USB.println(F("error"));  
+  }
+
+  if(!xbee802.getChannel()) 
+  {
+    USB.print(F("Channel: "));
+    USB.printHex(xbee802.channel);
+    USB.println();
+  }
+  else 
+  {
+    USB.println(F("error"));  
+  }
+  
+  if(!xbee802.getEncryptionMode()) 
+  {
+    USB.print(F("Encryption mode: "));
+    USB.printHex(xbee802.encryptMode);
+    USB.println();
+  }
+  else 
+  {
+    USB.println(F("error"));  
+  }
+
+  if(!xbee802.getOwnMacLow()) 
+  {
+    USB.print(F("MAC Low: "));
+    USB.printHex(xbee802.sourceMacLow[0]);
+    USB.printHex(xbee802.sourceMacLow[1]);
+    USB.printHex(xbee802.sourceMacLow[2]);
+    USB.printHex(xbee802.sourceMacLow[3]);
+    USB.println();
+  }
+  else 
+  {
+    USB.println(F("error"));  
+  }
+  
+  if(!xbee802.getOwnMacHigh()) 
+  {
+    USB.print(F("MAC High: "));
+    USB.printHex(xbee802.sourceMacHigh[0]);
+    USB.printHex(xbee802.sourceMacHigh[1]);
+    USB.printHex(xbee802.sourceMacHigh[2]);
+    USB.printHex(xbee802.sourceMacHigh[3]);
+    USB.println();
+  }
+  else 
+  {
+    USB.println(F("error"));  
+  }
+
+  USB.println(F("-------------------"));
+  
   // CheckNewProgram is mandatory in every OTA program
-  xbee900.checkNewProgram(); 
+  xbee802.checkNewProgram(); 
   
 }
 
@@ -131,7 +188,8 @@ void loop()
         {           
           USB.print(xbee900.packet_finished[xbee900.pos-1]->data[i],BYTE);          
         }
-        USB.print(" , Time: ");
+        USB.println("");
+        USB.print("Time: ");
         USB.println(RTC.getTime());
         
         // get RSSI signal and make conversion to -dBm
@@ -141,9 +199,10 @@ void loop()
           rssi=xbee900.valueRSSI[0];
           rssi*=-1;
           USB.print(F("RSSI(dBm): "));
-          USB.print(rssi,DEC);
-          USB.print(" , Time: ");
-          USB.println(RTC.getTime());
+          USB.println(rssi,DEC);
+          USB.print("Time: ");
+          USB.print(RTC.getTime());
+          USB.println("");
         }  
 
         // Once a packet has been read it is necessary to 

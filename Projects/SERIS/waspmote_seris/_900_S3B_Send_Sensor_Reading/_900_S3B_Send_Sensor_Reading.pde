@@ -14,7 +14,7 @@
 #include <WaspFrame.h>
 #include <WaspSensorPrototyping_v20.h>
 
-#define key_access "LIBELIUM"
+#define key_access "SERIS"
 #define id_mote "WASPMOTE_YSTCM01"
 
 // Pointer an XBee packet structure 
