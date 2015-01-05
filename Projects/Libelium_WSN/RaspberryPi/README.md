@@ -2,7 +2,7 @@
 
 * install python mysql module `sudo apt-get install python-mysqldb`.
 * install minicom serial port tool `sudo apt-get install minicom`.
-* install serial port python module `sudo apt-get install librxtx-java`.
+* install serial port Java module `sudo apt-get install librxtx-java`.
     
     This command will install the raspberry pi compatible `librxtxSerial.so` inside `/usr/lib/jni` and a `RXTXcomm.jar` inside `/usr/share/java/RXTXcomm.jar`.
 

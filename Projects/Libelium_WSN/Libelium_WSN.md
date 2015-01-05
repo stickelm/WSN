@@ -168,44 +168,7 @@ The configuration parameter is as the below:
         
         sample text
 
-## XBee USB Dongle
-Another very useful feature the Libelium product offer is the OTAP (Over the Air Programming). The USB dongle with XBee chip connected to your comuter can send files/commands to the remote waspmote node over the air by using a java program `otap.jar` in command line mode. 
 
-### OTAP
-To acheive successful OTAP via 802.15.4 protocol, there are some requirments/preparations need to be done:
-
-#### USB Dongle with XBee Module
-
-Using X-CTU software to configure the XBee before installing on the USB dongle.
-
-* Baud Rate: 38400 
-
-This is the speed at which the java program `otap.jar` talk to the serial-USB port on your PC. On your computer, the USB to serial port baud rate configuration has to be set to `38400`, use windows device manager to change it if you are using Windows.
-
-* API Mode: `1` 
-
-Easy to use, but doesn't provide the added reliability of using the `AP=2`, escape character sequence, same here, the java program didn't use the AP=2 mode so you have to set this to `AP=1`.
-
-* Xbee.conf
-
-There is a configuration file `Xbee.conf` in the OTAP software directory. The content need to be set to the same `PAN ID`, `Channel` etc as both the XBee USB Dongle and Waspmote Node XBee module. The `xbeeModel` has to be the same as your Gateway Xbee module firmware reading, in this case it is `802.15.41`. You can use X-CTU software to change/update firmware of Xbee if necessary.
-
-#### Waspmote Node with XBee Module
-
-Take out the Xbee module on the waspmote and use X-CTU to set the below parameters:
-
-* PANID, CH set to the same as the Gateway Xbee;
-* Firmware: set the same as your USB Dongle, in my case it's `802.15.4`.
-* Baud Rate: `115200` (NOT `38400` because this Xbee is talking to MCU on the waspmote at `115200` bps)
-* AP=`2` (API mode is `2` as it supports escape character sequence)
-
-Now put back the Xbee module onto the waspmote and upload the example code `OTA_03_802`. (in your Waspmote IDE example folder and `OTA` subfolder), you can change the `id_mote` as you want, but don't change the key_access as it must be the same key in `Xbee.conf` file on your PC.
-
-Connect the waspmote with battery and turn on the switch, connect the USB dongle to your PC USB port and under windows command line, type OTAP command:
-
-    .\otap -scan_nodes --mode BROADCAST
-
-You are Done with OTAP broadcast discovery.
 
 
 
