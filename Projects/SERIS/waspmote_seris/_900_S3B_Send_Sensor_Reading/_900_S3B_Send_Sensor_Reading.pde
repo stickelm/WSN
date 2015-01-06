@@ -149,6 +149,19 @@ void setup()
   }
 
   USB.println(F("-------------------"));
+
+  USB.println(F("SPI Setup..."));
+  // setup for the the SPI library:
+  SPI.begin();                            // begin SPI
+  SPI.setClockDivider(SPI_CLOCK_DIV16);   // SPI speed to SPI_CLOCK_DIV16 (1MHz)
+  SPI.setDataMode(SPI_MODE3);             // MAX31865 works in MODE1 or MODE3
+  
+  // initalize the chip select pin
+  pinMode(CS_PIN, OUTPUT);
+  SERIS_SENSOR_config(); 
+  
+  USB.println(F("SPI Setup Done..."));
+  
   
 }
 
@@ -167,14 +180,14 @@ void loop()
   SPI.setClockDivider(SPI_CLOCK_DIV16);   // SPI speed to SPI_CLOCK_DIV16 (1MHz)
   SPI.setDataMode(SPI_MODE3);             // MAX31865 works in MODE1 or MODE3
   // give the SPI time to set up
-  delay(200);
+  delay(100);
   
   // initalize the chip select pin
   pinMode(CS_PIN, OUTPUT);
   SERIS_SENSOR_config();
   
   // give the sensor time to set up
-  delay(200);
+  delay(100);
   
   static struct var_seris_sensor SERIS;
   double tmp;
@@ -335,34 +348,39 @@ void loop()
   */
   else 
   {   
-      unsigned long previous = millis();
-      // Set OTA timeout to 10 seconds
-      unsigned long otaTimeout = 10000;
-      while (millis() - previous < otaTimeout)
+      otap(10000);
+  }
+    
+}
+
+
+void otap(unsigned long otaTimeout)
+{
+    unsigned long previous = millis();
+    
+    while (millis() - previous < otaTimeout)
+    {
+    // Do OTA stuff, check if new data is available
+    if( xbee900.available() )
+    {
+      xbee900.treatData();
+      // Keep inside this loop while a new program is being received
+      while( xbee900.programming_ON  && !xbee900.checkOtapTimeout() )
       {
-        // Do OTA stuff, check if new data is available
         if( xbee900.available() )
         {
           xbee900.treatData();
-          // Keep inside this loop while a new program is being received
-          while( xbee900.programming_ON  && !xbee900.checkOtapTimeout() )
-          {
-            if( xbee900.available() )
-            {
-              xbee900.treatData();
-            }
-          }
         }
-        // Blink LED1 while messages are not received
-        //Utils.setLED(LED1,LED_ON);
-        //delay(100);
-        //Utils.setLED(LED1,LED_OFF);
-        //delay(100);
-        //avoid millis overflow problem
-        if( millis() < previous ) previous = millis(); 
       }
-  }
-    
+    }
+    // Blink LED1 while messages are not received
+    //Utils.setLED(LED1,LED_ON);
+    //delay(100);
+    //Utils.setLED(LED1,LED_OFF);
+    //delay(100);
+    //avoid millis overflow problem
+    if( millis() < previous ) previous = millis(); 
+    }
 }
 
 
