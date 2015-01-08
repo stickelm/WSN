@@ -22,3 +22,6 @@ Steps:
 [The World of XBee](http://www.desert-home.com/p/the-world-of-xbee.html)
 
 [Jeff's XBee Blog](https://jeffskinnerbox.wordpress.com/tag/xbee/)
+
+[Use XBee API mode with Python]([Use XBee API mode with Python](https://github.com/serdmanczyk/XBee_802.15.4_APIModeTutorial)
+)
