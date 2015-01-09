@@ -1,6 +1,6 @@
 #! /usr/bin/python
 
-import re, httplib, datetime
+import re, httplib, time
 import serial, sys, string
 
 # Domain you want to post to: localhost would be an emoncms installation on your own laptop
@@ -12,13 +12,13 @@ domain = "emoncms.org"
 emoncmspath = ""
 
 # Write apikey of emoncms account
-apikey = "c095938e798c0979d072c96948166651"
+apikey = "api_key"
 
 # Node id youd like the emontx to appear as
 nodeid = 5
 
 #Initialization
-ser = serial.Serial('/dev/ttyUSB0', 115200)
+ser = serial.Serial('/dev/ttyAMA0', 115200)
 
 while True:
         # Measge Format: <=>#387235164#N01#153#TIME:14-49-33#BAT:69#TCA:35.91#PAR:8.65#
@@ -45,16 +45,13 @@ while True:
 
                 try:
                         # Send to emoncms
-                        # http://amilab-emon.homelinux.org/emoncms/input/post.json?apikey=b53ec1abe610c66009b207d6207f2c9e&node=5&json={BAT:69,TCA:35.91,PAR:8.65}
+                        # http://domain.org/emoncms/input/post.json?apikey=b53ec1abe610c66009b207d6207f2c9e&node=5&json={BAT:69,TCA:35.91,PAR:8.65}
                         conn = httplib.HTTPConnection(domain)
                         conn.request("GET", "/input/post.json?apikey="+apikey+"&node="+str(nodeid)+"&json={BAT:"+battery+",TCA:"+temperature+",PAR:"+solar+"}")
                         # print("/input/post.json?apikey="+apikey+"&node="+str(nodeid)+"&json={BAT:"+battery+",TCA:"+temperature+",PAR:"+solar+"}")
                         response = conn.getresponse()
                         string = response.read()
+                        # print string
                 except httplib.BadStatusLine:
-                        # print e
-                        f = open('/tmp/badstatusline.txt','wb')
-                        f.write(time.strftime("%H:%M:%S")+" badstatusline\n")
-                        f.close()
-
+                        continue
                 conn.close()
