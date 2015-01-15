@@ -45,8 +45,8 @@ while True:
 
                 try:
                         # Send to emoncms
-                        # http://domain.org/emoncms/input/post.json?apikey=b53ec1abe610c66009b207d6207f2c9e&node=5&json={BAT:69,TCA:35.91,PAR:8.65}
-                        conn = httplib.HTTPConnection(domain)
+                        # http://amilab-emon.homelinux.org/emoncms/input/post.json?apikey=API_KEY&node=5&json={BAT:69,TCA:35.91,PAR:8.65}
+                        conn = httplib.HTTPConnection(domain, timeout=60)
                         conn.request("GET", "/input/post.json?apikey="+apikey+"&node="+str(nodeid)+"&json={BAT:"+battery+",TCA:"+temperature+",PAR:"+solar+"}")
                         # print("/input/post.json?apikey="+apikey+"&node="+str(nodeid)+"&json={BAT:"+battery+",TCA:"+temperature+",PAR:"+solar+"}")
                         response = conn.getresponse()
@@ -54,4 +54,8 @@ while True:
                         # print string
                 except httplib.BadStatusLine:
                         continue
+                except (httplib.HTTPException, socket.err) as ex:
+                        time.sleep(30)
+                        continue
                 conn.close()
+
