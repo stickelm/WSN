@@ -1,3 +1,22 @@
+### Waspmote Sensor
+
+[Motion - PIR Sensor](http://learn.parallax.com/KickStart/555-28027)
+![Parallax PIR Sensor Pinout](http://learn.parallax.com/sites/default/files/content/kickstart/images/PIR-3.png)
+
+[Humidity - 808H5V5](http://microcontrollershop.com/product_info.php?products_id=6778)
+![808H5V5 Sensor Image](http://microcontrollershop.com/Images/ch0052.jpg)
+
+[Temperature - MCP9700A](http://www.microchip.com/wwwproducts/Devices.aspx?dDocName=en027103)
+![MCP9700A Pinout](http://starter-kit.nettigo.eu/wp-content/uploads/2010/09/mcp9700-pins.png)
+
+[Light - LDR, Wikipedia](http://en.wikipedia.org/wiki/Photoresistor)
+* Resistance in darkness: 20M ohm
+* Resistance in light: 5 to 20K ohm
+You can connect a 1K ohm resistor in series with LDR sensor and measure the voltage drop to get light intensitiy.
+
+[Noise - Microphone WM-61A]()
+
+
 ### Waspmote Power
 
 Waspmote can be powered from the solar panel connector, but with the limitation of the charging current:
