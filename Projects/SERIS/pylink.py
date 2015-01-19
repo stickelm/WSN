@@ -1,7 +1,8 @@
 #! /usr/bin/python
 
-import re, httplib, time
-import serial, sys, string
+import sys, string
+import serial, re, time
+import httplib, socket
 
 # Domain you want to post to: localhost would be an emoncms installation on your own laptop
 # this could be changed to emoncms.org to post to emoncms.org
@@ -12,13 +13,13 @@ domain = "emoncms.org"
 emoncmspath = ""
 
 # Write apikey of emoncms account
-apikey = "api_key"
+apikey = "API_KEY"
 
 # Node id youd like the emontx to appear as
 nodeid = 5
 
 #Initialization
-ser = serial.Serial('/dev/ttyAMA0', 115200)
+ser = serial.Serial('/dev/ttyUSB0', 57600)
 
 while True:
         # Measge Format: <=>#387235164#N01#153#TIME:14-49-33#BAT:69#TCA:35.91#PAR:8.65#
@@ -54,8 +55,10 @@ while True:
                         # print string
                 except httplib.BadStatusLine:
                         continue
-                except (httplib.HTTPException, socket.err) as ex:
-                        time.sleep(30)
+                except (httplib.HTTPException, socket.error) as ex:
+                        # In case the domain is not reacheable, API server is down
+                        # Because of 10 seconds sample rate, after 6s + 4s, serial port will read the next value
+                        time.sleep(6) 
                         continue
                 conn.close()
 
