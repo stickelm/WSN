@@ -26,7 +26,7 @@ yeelink_temp = []
 yeelink_solar = []
 
 #Initialization of serial port to read the sensor reading
-ser = serial.Serial('/dev/ttyUSB0', 57600)
+ser = serial.Serial('/dev/ttyUSB0', 115200)
 
 def emoncms_upload(b,t,s,time_st):
     try:
