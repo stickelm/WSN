@@ -13,10 +13,27 @@ The [Analog to Digital Conversion on the XBee 802.15.4](http://www.digi.com/supp
 
 The 
 [SparkFun XBee Explorer Regulated Breakout Board](https://www.sparkfun.com/products/11373) will be come in handy for prototyping.
-![Breakout Board Pinout - Backside](https://cdn.sparkfun.com//assets/parts/7/1/1/5/11373-03.jpg)
+
+<img src="https://cdn.sparkfun.com//assets/parts/7/1/1/5/11373-03.jpg" align="left" height="200" >
+
 Please note that the *RES* pin on this breakout board is the *Vref* pin on XBee when you are doing ADC.
 
 The online [DIGI API Frame Tool](http://ftp1.digi.com/support/utilities/digi_apiframes2.htm) would be nice if you want to interpret your HEX value of received data.
+
+#### Example
+
+Configure XBee as a sensor:
+
+```
+ATMY1   MY 16bit address is 0x0001
+ATDH0   Enable 16bit address transmission
+ATDL2   The 16bit destination address is 0x0002
+ATD02
+ATD13
+ATD22
+ATD32
+ATIR2710
+```
 
 ### XBee As Remote Control
 
