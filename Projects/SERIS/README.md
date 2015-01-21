@@ -64,56 +64,10 @@ Received data convert from Hex to ASCII
     <=>#387235164#N01#153#TIME:14-49-33#BAT:69#TCA:35.91#PAR:8.65#
 ```
 
-```python
-#! /usr/bin/python
+[Python scripts](https://github.com/xianlin/WSN/blob/master/Projects/SERIS/pylink.py) read serial port and upload data to the cloud
 
-import re
-import serial, sys, string
-import httplib
-
-# Domain you want to post to: localhost would be an emoncms installation on your own laptop
-# this could be changed to emoncms.org to post to emoncms.org
-domain = "localhost"
-
-# Location of emoncms in your server, the standard setup is to place it in a folder called emoncms
-# To post to emoncms.org change this to blank: ""
-emoncmspath = "emoncms"
-
-# Write apikey of emoncms account
-apikey = "b53ec1abe610c66009b207d6207f2c9e"
-
-# Node id youd like the emontx to appear as
-nodeid = 5
-
-conn = httplib.HTTPConnection(domain)
-
-# Set this to the serial port of your emontx and baud rate, 9600 is standard emontx baud rate
-ser = serial.Serial('/dev/ttyUSB0', 115200)
-
-breakChar = '<'
-
-while True:
-    # Measge Format: <=>#387235164#N01#153#TIME:14-49-33#BAT:69#TCA:35.91#PAR:8.65#
-    msgStr = ''
-    checkBreak = ser.read(1)
-    if checkBreak == breakChar:
-        checkBreak = ''
-        while checkBreak != breakChar: 
-            checkBreak = ser.read(1)
-            msgStr += checkBreak
-        
-        print msgStr
-        Results = re.findall(r'#(.*)#(.*)#(.*)#(.*)#(.*)#(.*)#(.*)#',msgStr)
-        for result in Results:
-            battery = result[4]
-            temperature = result[5]
-            solar = result[6]
-        print battery,temperature,solar    
-        '''
-        # Send to emoncms
-        conn.request("GET", "/"+emoncmspath+"/input/post.json?apikey="+apikey+"&node="+str(nodeid)+"&csv="+csv)
-        response = conn.getresponse()
-        print response.read()
-        '''
-ser.close()
+```
+# run script at background when restart raspberry pi
+sudo vi /etc/rc.local
+nohup python /home/pi/scripts/python/pylink.py >/tmp/output.txt 2>&1 &
 ```
