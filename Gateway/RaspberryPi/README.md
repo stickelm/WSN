@@ -1,7 +1,7 @@
 ### Steps
 
 Format SD card, install noobs raspbian, change timezone/keyboard
-```
+```shell
 sudo apt-get update
 sudo apt-get install minicom -y
 sudo apt-get install ddclient -y
@@ -32,3 +32,14 @@ server=members.dyndns.org
 ## Dynamic DNS hosts
 domain.dyndns.org
 ```
+
+Downnload necessary code, [XBee python library](https://code.google.com/p/python-xbee/) and [XIG](https://code.google.com/p/xig/)
+
+```shell
+wget https://python-xbee.googlecode.com/files/XBee-2.1.0.tar.gz
+wget http://examples.digi.com/downloads/xig/v1.5.1/xig-linux_src-1.5.1.zip
+# Enter the XBee python library directory and install it
+sudo python setup.py install
+```
+
+Follow the [XIG guide](https://code.google.com/p/xig/wiki/UserDocumentation) and setup the XIG
