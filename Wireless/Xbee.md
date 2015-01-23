@@ -14,7 +14,7 @@ The [Analog to Digital Conversion on the XBee 802.15.4](http://www.digi.com/supp
 The 
 [SparkFun XBee Explorer Regulated Breakout Board](https://www.sparkfun.com/products/11373) will be come in handy for prototyping.
 
-<img src="https://cdn.sparkfun.com//assets/parts/7/1/1/5/11373-03.jpg" align="left" height="200" >
+<img src="https://cdn.sparkfun.com//assets/parts/7/1/1/5/11373-03.jpg" height="200" >
 
 Please note that the *RES* pin on this breakout board is the *Vref* pin on XBee when you are doing ADC.
 
