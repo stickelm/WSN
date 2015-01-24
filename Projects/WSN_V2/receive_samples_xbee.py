@@ -79,9 +79,9 @@ def save_reading_lewei50(time_st, temp, hum, API_KEY):
 	data = [{"Name":"1","Value":str(temp)},{"Name":"2","Value":str(hum)}]
         conn_lewei50 = httplib.HTTPConnection("www.lewei50.com")
         conn_lewei50.request("POST", "/api/V1/gateway/UpdateSensors/01", json.dumps(data), headers=headers_lewei50)
-        r = conn_lewei50.getresponse()
-        string = r.read()
-        print string
+        #r = conn_lewei50.getresponse()
+        #string = r.read()
+        #print string
     except httplib.BadStatusLine:
         print "Httplib Badstatus "+time_st
         pass
