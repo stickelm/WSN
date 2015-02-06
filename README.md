@@ -13,12 +13,12 @@ Large fleet of cloud connected devices solving a business problem
 #### Usages
 * Monitoring(Devices,Enviroment)
 * Device Management
-** Secure,monitor,manage large fleet of deployed devices
-** Configure the device
-** Update the firmware/app
-** Monitor and gather connectivity statistics
-
-    Interoperability is the key!
+  * Secure,monitor,manage large fleet of deployed devices
+  * Configure the device
+  * Update the firmware/app
+  * Monitor and gather connectivity statistics
+   
+   Interoperability is the key!
 
     D.M. protocols
     * TR-069
