@@ -1,11 +1,31 @@
-## Background
+## M2M/IoT
+Can you explain what is IoT/M2M application?
 
-Zigbee is a low-power, low-cost, wireless sensor networking protocol defined by the Zigbee Alliance. The protocol was designed for low data rate wireless networks to facilitate automation and monitoring for applications such as home/building/HVAC automation, industrial control, farming, patient monitoring, and many other applications that could take advantage of low cost wireless communication and don't have a high data rate requirement.
+Large fleet of cloud connected devices solving a business problem
 
-## Motivation
+(e.g. electrical power usage monitoring,turck fleet tracking)
 
-One of the problems with the current state of Zigbee is that the software is either provided by semiconductor suppliers and bound to their hardware, or is proprietary and requires heavy licensing fees. This causes some major issues that I have a problem with:
+#### Protocols
+* XMPP
+* MQTT
+* COAP
 
-* It's very difficult for individual electronics enthusiasts to create their own Zigbee designs since they usually cannot afford the licensing fees or the costs of the proprietary tools (compilers, debuggers, etc) associated with developing a Zigbee application. In many cases, some of the most innovative creations come from individual enthusiasts or people with specific domain knowledge that might not be addressed by software or semiconductor vendors. I'm hoping that having a free stack with full source code access will allow people the freedom to create interesting things and hopefully create projects that can improve other people's lives.
+#### Usages
+* Monitoring(Devices,Enviroment)
+* Device Management
+** Secure,monitor,manage large fleet of deployed devices
+** Configure the device
+** Update the firmware/app
+** Monitor and gather connectivity statistics
 
-* It's almost impossible to mix and match hardware to optimize an application. Some designs are limited to using an ARM microcontroller since it may be part of an SOC that's needed for a specific application, ie: MP3 or video decoding. However the application would benefit from the addition of wireless communications. There currently isn't an easy way to take an MCU such as an ARM based one and mix it with an 802.15.4 radio from a different vendor to make a Zigbee application. This is because the Zigbee software given away by semiconductor vendors is either in binary form or contains a license clause which only permits the use of the software with their hardware. Software companies selling proprietary stacks usually charge stack licensing fees that can go upwards of $50k and also require fees for driver modification for specific MCUs. One of the goals of this project is to provide a free Zigbee stack which will give designer's flexibility in choosing their components with no proprietary lock-in.
+    Interoperability is the key!
+
+    D.M. protocols
+    * TR-069
+    * OMA-DM
+    * Lightweight M2M
+
+* Device Control
+
+#### References
+
