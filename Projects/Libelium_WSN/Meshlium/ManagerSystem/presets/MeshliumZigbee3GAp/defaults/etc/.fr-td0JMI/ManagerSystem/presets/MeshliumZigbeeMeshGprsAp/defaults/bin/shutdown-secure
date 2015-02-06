@@ -1,5 +1,0 @@
-s=`cat /mnt/lib/.info/shutdowns`
-total=`expr 1 + $s`
-echo $total > /mnt/lib/.info/shutdowns
-remountro
-shutdown -h 0
