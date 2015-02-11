@@ -29,3 +29,17 @@ Large fleet of cloud connected devices solving a business problem
 
 #### References
 
+## Project
+* Cameras
+  * Managment (Location,Access Control, Configuration etc.)
+  * Video (Streaming)
+  * Images (Analytics)
+* Servers/Computers
+  * Management (Location, Access, Configuration, Reboot)
+  * Status (CPU temp/load, Harddisk health, Memory etc.)
+  * Virtualized App/Machines (each VM/Apps status report)
+* Environment Sensors
+  * Sensor Readings
+  * Sensor Configurations
+  * Sensor Locations
+
