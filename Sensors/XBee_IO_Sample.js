@@ -21,6 +21,7 @@ DIO2 -- PIR sensor output
 Sensor Circuit:
 Vcc -- 3.3V
 LDR Pull-up Resistor -- 1K ohm
+PIR output resistor -- 220 ohm
 */
 
 var util = require('util')
