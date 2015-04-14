@@ -21,7 +21,7 @@ DIO2 -- PIR sensor output
 Sensor Circuit:
 Vcc -- 3.3V
 LDR Pull-up Resistor -- 1K ohm
-PIR output resistor -- 220 ohm
+PIR output resistor -- 220 ohm (http://learn.parallax.com/propeller-c-simple-devices/pir-motion-sensor)
 */
 
 var util = require('util')
