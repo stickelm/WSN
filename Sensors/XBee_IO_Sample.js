@@ -1,4 +1,6 @@
 /**
+ * Nodejs app to read serial port from the base XBee module via USB, the IO sample data is from a remote XBee sesnor
+ * 
 Remote XBee Setting:
 CH: 10      ID: 1234
 DL: FF      MY: 31
@@ -21,7 +23,7 @@ DIO2 -- PIR sensor output
 Sensor Circuit:
 Vcc -- 3.3V
 LDR Pull-up Resistor -- 1K ohm
-PIR output resistor -- 220 ohm (http://learn.parallax.com/propeller-c-simple-devices/pir-motion-sensor)
+PIR Pull-down resistor -- 1K ohm
 */
 
 var util = require('util')
