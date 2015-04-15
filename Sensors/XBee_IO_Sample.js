@@ -43,15 +43,16 @@ var serialPort = new SerialPort("/dev/ttyUSB0", {
 
 // All frames parsed by the XBee will be emitted here
 xbeeAPI.on("frame_object", function(frame) {
-    // console.log(">>", util.inspect(frame.data));
-    
+    console.log(">>", util.inspect(frame.data));
+
     var ldrV = frame.data.analogSamples[0].ADC0 / 1023.0 * 3.3;
     var l = Math.round(250 / ( 1 * ((3.3 - ldrV) / ldrV)));
-    var t = Math.round((frame.data.analogSamples[0].ADC1 / 1023 * 3.3 - 0.5) * 100 * 100) / 100;
-    
+    var m = ( frame.data.digitalSamples == 0 ? false : true);
     var data = {
-        'temperature':  t+ ' deg',
-        'luminosity': l + ' lx'
+        'temperature': Math.round((frame.data.analogSamples[0].ADC1 / 1023 * 3.3 - 0.5) * 100 * 100) / 100 + ' deg',
+        'luminosity': l + ' lx',
+        'motion': m
     };
     console.log(data);
 });
+
