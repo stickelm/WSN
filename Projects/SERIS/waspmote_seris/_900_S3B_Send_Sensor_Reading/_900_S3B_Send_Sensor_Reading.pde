@@ -285,7 +285,7 @@ void loop()
   ////////////////////////////////////////////////
 
   // 4.1 Create new frame
-  frame.createFrame();  
+  frame.createFrame(ASCII);  
 
   // 4.2 Add frame fields
   frame.addSensor(SENSOR_TIME, RTC.hour, RTC.minute, RTC.second );
