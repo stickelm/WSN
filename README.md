@@ -1,45 +1,19 @@
-## M2M/IoT
-Can you explain what is IoT/M2M application?
+# IDMI IoT Testbed
 
-Large fleet of cloud connected devices solving a business problem
+## Introduction
 
-(e.g. electrical power usage monitoring,turck fleet tracking)
+The goal of the project is to produce an entire hardware/software suite that lets people configure, control and monitor their places the way they want.
 
-#### Protocols
-* XMPP
-* MQTT
-* COAP
+The testbed includes the customized Arduino hardware designed specifically for the smart home/building scenario; a raspberry-pi device acting as an internet gateway for the Arduino devices; a server platform for managing and control those devices and interpret the device data; and, perhaps most importantly, mobile apps for Android and iOS so that you can control all of the smart gadgets/devices from one interface.
 
-#### Usages
-* Monitoring(Devices,Enviroment)
-* Device Management
-  * Secure,monitor,manage large fleet of deployed devices
-  * Configure the device
-  * Update the firmware/app
-  * Monitor and gather connectivity statistics
-   
-   Interoperability is the key!
+You can use the web and mobile apps to control anything that’s connected to the server, whether that’s a lighting system, an IP camera, or the locks on the door. It can become, in short, a remote control and monitor tool for your space.
 
-    D.M. protocols
-    * TR-069
-    * OMA-DM
-    * Lightweight M2M
+It was inspired by [Calaos](http://calaos.fr/en/) project.
 
-* Device Control
 
-#### References
+TO:
 
-## Project
-* Cameras
-  * Managment (Location,Access Control, Configuration etc.)
-  * Video (Streaming)
-  * Images (Analytics)
-* Servers/Computers
-  * Management (Location, Access, Configuration, Reboot)
-  * Status (CPU temp/load, Harddisk health, Memory etc.)
-  * Virtualized App/Machines (each VM/Apps status report)
-* Environment Sensors
-  * Sensor Readings
-  * Sensor Configurations
-  * Sensor Locations
+Task matrix for assignments (tier 1,2,3,4)
+put somewhere public can access
+
 
